@@ -1,0 +1,26 @@
+{
+    "items": [
+        { "name": "water", "count": 342, "label": "Water" },
+        { "name": "vodka", "count": 30, "label": "Vodka" },
+        { "name": "bread", "count": 248, "label": "Cheese Burger" },
+        {
+            "name": "repairkit_advanced",
+            "count": 8,
+            "label": "Advanced Repairkit"
+        },
+        { "name": "nitro", "count": 2, "label": "Nitro" },
+        { "name": "energy_drink", "count": 11, "label": "Energy Drink" },
+        { "name": "redgull", "count": 2, "label": "Redbull" },
+        { "name": "coke", "count": 95, "label": "Coke (1G)" },
+        { "name": "paper", "count": 35, "label": "Paper" },
+        { "name": "gold", "count": 11, "label": "Gold" },
+        { "name": "handcuffs", "count": 23, "label": "Handcuffs" },
+        { "name": "adderall", "count": 51, "label": "Adderall" },
+        { "name": "iron", "count": 143, "label": "Iron" }
+    ],
+    "weapons": [
+        { "ammo": 30, "name": "WEAPON_PETROLCAN", "label": "Jerrycan" },
+        { "ammo": 1, "name": "WEAPON_BALL", "label": "Ball" }
+    ],
+    "black_money": [{ "amount": 0 }]
+}
