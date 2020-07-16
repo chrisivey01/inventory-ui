@@ -1,4 +1,5 @@
 import * as types from "./inventory.actions";
+import Api from "../apis/apis";
 
 const initialState = {
     inventoryShow: false,
@@ -6,8 +7,8 @@ const initialState = {
         items: [],
         black_money: [{ amount: 0 }],
         weapons: [{}],
-        flattenedInventory: new Array(25).fill(null),
     },
+    flattened: [],
     otherInventory: new Array(50).fill(undefined),
     selectedItemIndex: null,
     useItem: {},
@@ -15,6 +16,8 @@ const initialState = {
 };
 
 const inventoryReducer = (state = initialState, action) => {
+    let inventory = { ...state.inventoryData };
+    let flattened = [...state.flattened];
     switch (action.type) {
         case types.SHOW_INVENTORY:
             return {
@@ -27,21 +30,31 @@ const inventoryReducer = (state = initialState, action) => {
                 inventoryShow: false,
             };
         case types.LOAD_PERSONAL_INVENTORY:
-            let inventory = { ...state.inventoryData };
-
-            inventory.items = action.payload.items;
+            flattened = [];
+            inventory.items = action.payload.inventory.filter(
+                (items) => items.count > 0
+            );
+            inventory.items.map((item) => flattened.push(item));
             inventory.weapons = action.payload.weapons;
-            inventory.black_money = action.payload.black_money;
-
-            for (let key in inventory) {
-                inventory[key].forEach((item, i) => {
-                    inventory.flattenedInventory[i] = item;
-                });
-            }
-
+            inventory.weapons.map((item) => flattened.push(item));
+            flattened.push(action.payload.accounts[0]);
+            flattened.weight = action.payload.weight;
+            flattened.money = action.payload.money;
+            flattened.maxWeight = action.payload.maxWeight;
+            // maxWeight: 150
+            // money: 810
+            // weapons: []
+            // weight: 127
+            // for (let key in inventory) {
+            //     if(key === 'items' || key === 'weapons'){
+            //         for (let item of inventory[key]) {
+            //             flattened.push(item);
+            //         }
+            //     }
+            // }
             return {
                 ...state,
-                inventoryData: inventory,
+                flattened: flattened,
             };
         case types.SELECT_INVENTORY_ITEM:
             return {
@@ -49,51 +62,54 @@ const inventoryReducer = (state = initialState, action) => {
                 selectedItemIndex: action.payload,
             };
         case types.SWAP_POSTION_INVENTORY:
-            const inventorySwapper = { ...state.inventoryData };
             const selectedItem =
-                inventorySwapper.flattenedInventory[state.selectedItemIndex];
+                inventory.flattenedInventory[state.selectedItemIndex];
             //returns an array for some odd reason
-            let movedTo = inventorySwapper.flattenedInventory.splice(
+            let movedTo = inventory.flattenedInventory.splice(
                 action.payload,
                 1,
                 selectedItem
             );
-            inventorySwapper.flattenedInventory.splice(
+            inventory.flattenedInventory.splice(
                 state.selectedItemIndex,
                 1,
                 movedTo[0]
             );
+
+            // Api.reloadInventory(inventorySwapper);
             return {
                 ...state,
-                inventoryData: inventorySwapper,
+                inventoryData: inventory,
             };
         case types.USE_ITEM_SLOT_ONE:
-            const inventoryUseOne = { ...state.inventoryData }
-            let item = inventoryUseOne.flattenedInventory[action.payload]
-            console.log(item)
+            // inventory.flattenedInventory[action.payload].count -= 1;
             return {
                 ...state,
-                useItem: action.payload,
+                inventoryData: inventory,
             };
         case types.USE_ITEM_SLOT_TWO:
+            // inventory.flattenedInventory[action.payload].count -= 1;
             return {
                 ...state,
-                useItem: action.payload,
+                inventoryData: inventory,
             };
         case types.USE_ITEM_SLOT_THREE:
+            // inventory.flattenedInventory[action.payload].count -= 1;
             return {
                 ...state,
-                useItem: action.payload,
+                inventoryData: inventory,
             };
         case types.USE_ITEM_SLOT_FOUR:
+            // inventory.flattenedInventory[action.payload].count -= 1;
             return {
                 ...state,
-                useItem: action.payload,
+                inventoryData: inventory,
             };
         case types.USE_ITEM_SLOT_FIVE:
+            // inventory.flattenedInventory[action.payload].count -= 1;
             return {
                 ...state,
-                useItem: action.payload,
+                inventoryData: inventory,
             };
 
         default:

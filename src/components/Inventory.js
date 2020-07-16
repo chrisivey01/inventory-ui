@@ -28,12 +28,13 @@ const Inventory = (props) => {
     };
 
     const onDrop = (e, i) => {
+        e.preventDefault();
         dispatch(actions.swapPositionsInventory(i));
     };
 
     return (
         <Card>
-            <CardHeader title={"Personal Inventory"} />
+            <CardHeader title={props.inventoryTitle} />
             <CardContent className={classes.inventory}>
                 {props.inventory.flattenedInventory.map((item, i) => {
                     return (

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles, Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
         top: 0,
         height: "20%",
         userSelect: "none",
+        border: "none",
     },
     slotNumberGrid: {
         position: "absolute",
@@ -48,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
         width: "20%",
         height: "20%",
         userSelect: "none",
+        border: "none",
     },
     images: {
         height: "inherit",
@@ -77,7 +79,7 @@ const InventorySlots = (props) => {
                                         className={classes.countGrid}
                                         variant="outlined"
                                     >
-                                        {props.i}
+                                        {props.item.count}
                                     </Paper>
                                     <img
                                         className={classes.images}
@@ -89,11 +91,7 @@ const InventorySlots = (props) => {
                                             props.onDragOver(e, props.i)
                                         }
                                         onDrop={(e) => props.onDrop(e, props.i)}
-                                        src={
-                                            "src/assets/" +
-                                            props.item.name +
-                                            ".png"
-                                        }
+                                        src={"./assets/" + props.item.name + ".png"}
                                     />
                                 </Paper>
                             ) : (
@@ -122,6 +120,12 @@ const InventorySlots = (props) => {
                 } else if (props.item) {
                     return (
                         <Paper elevation={3} className={classes.slot}>
+                            <Paper
+                                className={classes.countGrid}
+                                variant="outlined"
+                            >
+                                {props.item.count}
+                            </Paper>
                             <img
                                 className={classes.images}
                                 draggable="true"
@@ -130,7 +134,7 @@ const InventorySlots = (props) => {
                                 }
                                 onDragOver={(e) => props.onDragOver(e, props.i)}
                                 onDrop={(e) => props.onDrop(e, props.i)}
-                                src={"src/assets/" + props.item.name + ".png"}
+                                src={"./assets/" + props.item.name + ".png"}
                             />
                         </Paper>
                     );

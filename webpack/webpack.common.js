@@ -3,8 +3,8 @@ module.exports = {
         rules: [
             {
                 test: /\.(js|jsx)$/,
-                exclude:/node_modules/,
-                loader:"babel-loader",
+                exclude: /node_modules/,
+                loader: "babel-loader",
                 options: {
                     presets: ["@babel/preset-env", "@babel/preset-react"],
                 },
@@ -13,18 +13,22 @@ module.exports = {
                 test: /\.html$/,
                 use: [
                     {
-                        loader:"html-loader"
-                    }
+                        loader: "html-loader",
+                    },
                 ],
             },
             {
-                test:/\.s[ac]ss$/i,
-                use:["style-loader", "css-loader", "sass-loader"]
+                test: /\.s[ac]ss$/i,
+                use: ["style-loader", "css-loader", "sass-loader"],
             },
-            {
-                test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-                loader: 'file-loader?name=assets/[name].[ext]'
-            },
+            { // config for images
+                test: /\.(png|svg|jpg|jpeg|gif)$/,
+                use: [
+                  {
+                    loader: 'file-loader',
+                  }
+                ],
+            }
         ],
     },
-}
+};

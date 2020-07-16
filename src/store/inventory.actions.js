@@ -34,25 +34,25 @@ export const swapPositionsInventory = (item) => ({
 
 export const useItemSlotOne = () => ({
     type: USE_ITEM_SLOT_ONE,
-    payload: 1
+    payload: 0
 })
 
 export const useItemSlotTwo = () => ({
     type: USE_ITEM_SLOT_TWO,
-    payload: 2
+    payload: 1
 })
 
 export const useItemSlotThree = () => ({
     type: USE_ITEM_SLOT_THREE,
-    payload: 3
+    payload: 2
 })
 
 export const useItemSlotFour = () => ({
     type: USE_ITEM_SLOT_FOUR,
-    payload: 4
+    payload: 3
 })
 
 export const useItemSlotFive = () => ({
     type: USE_ITEM_SLOT_FIVE,
-    payload: 5
+    payload: 4
 })

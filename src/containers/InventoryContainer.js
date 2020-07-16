@@ -20,17 +20,16 @@ const useStyles = makeStyles((theme) => ({
 const InventoryContainer = (props) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [keyPress, setKeyPress] = useState('')
     //need to put type of inventory here
-    useEffect(() => {
-        if (process.env.NODE_ENV === "development") {
-            dispatch(actions.loadPersonalInventory(data));
-        } else {
-            Apis.openPersonalInventory().then((data) =>
-                dispatch(actions.loadPersonalInventory(data.json()))
-            );
-        }
-    }, []);
+    // useEffect(() => {
+        // if (process.env.NODE_ENV === "development") {
+        //     dispatch(actions.loadPersonalInventory(data));
+        // } else {
+        //     Apis.openInventory().then((data) =>
+        //         dispatch(actions.loadPersonalInventory(data.json()))
+        //     );
+        // }
+    // }, []);
 
     useEffect(() => {
         window.addEventListener("keydown", keyHandler)
@@ -70,6 +69,7 @@ const InventoryContainer = (props) => {
         <div className={classes.inventoryDisplay}>
             <Inventory
                 inventory={props.inventoryData}
+                inventoryTitle={"Personal"}
                 inventoryType={"personal"}
             />
             <Menu />
