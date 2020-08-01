@@ -9,6 +9,9 @@ import App from './App';
 
 // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSIONS_COMPOSE__ || compose;
 const store = createStore(combineReducers, applyMiddleware(thunk));
+store.subscribe(() => {
+  console.log('Update inventory: ', store.getState().flattenedInventory);
+})
 
 ReactDOM.render(
   <Provider store={store}>

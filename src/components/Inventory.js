@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles, Card, CardHeader, CardContent } from "@material-ui/core";
-import InventorySlots from "./InventorySlots";
+import InventorySlots from "./inventory-slots";
 
 import { useDispatch } from "react-redux";
 import * as actions from "../store/inventory.actions";
@@ -19,36 +19,30 @@ const Inventory = (props) => {
     const dispatch = useDispatch();
     const classes = useStyles();
 
-    const onDragStart = (e, i) => {
+    const onStart = (e, i) => {
         dispatch(actions.selectInventoryItem(i));
     };
 
-    const onDragOver = (e, i) => {
-        e.preventDefault();
-    };
-
-    const onDrop = (e, i) => {
-        e.preventDefault();
-        dispatch(actions.swapPositionsInventory(i));
+    const onStop = (e, i) => {
+        dispatch(actions.moveInventoryItem(i));
     };
 
     return (
         <Card>
             <CardHeader title={props.inventoryTitle} />
             <CardContent className={classes.inventory}>
-                {props.inventory.flattenedInventory.map((item, i) => {
+                {props.inventory.length > 0 ? props.inventory.map((item, i) => {
                     return (
                         <InventorySlots
                             key={i}
-                            onDragStart={onDragStart}
-                            onDragOver={onDragOver}
-                            onDrop={onDrop}
+                            onStart={onStart}
+                            onStop={onStop}
                             i={i}
                             item={item}
                             inventoryType={props.inventoryType}
                         />
                     );
-                })}
+                }): null}
             </CardContent>
         </Card>
     );

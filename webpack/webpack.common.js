@@ -7,6 +7,7 @@ module.exports = {
                 loader: "babel-loader",
                 options: {
                     presets: ["@babel/preset-env", "@babel/preset-react"],
+                    plugins: ["@babel/plugin-transform-runtime"],
                 },
             },
             {
@@ -21,14 +22,15 @@ module.exports = {
                 test: /\.s[ac]ss$/i,
                 use: ["style-loader", "css-loader", "sass-loader"],
             },
-            { // config for images
+            {
+                // config for images
                 test: /\.(png|svg|jpg|jpeg|gif)$/,
                 use: [
-                  {
-                    loader: 'file-loader',
-                  }
+                    {
+                        loader: "file-loader",
+                    },
                 ],
-            }
+            },
         ],
     },
 };

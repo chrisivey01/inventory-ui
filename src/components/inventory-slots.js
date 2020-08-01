@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
     },
     img: {
         width: "100%",
-        userSelect: "none",
     },
     name: {
         bottom: 0,
@@ -31,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
         transform: "translate(-50%, 0%)",
         backgroundColor: "rgba(44,47,51,0.1)",
     },
-    paper: {
+    div: {
         backgroundColor: "rgba(44,47,51,0.1)",
     },
     countGrid: {
@@ -67,8 +66,13 @@ const InventorySlots = (props) => {
                 if (props.i < 5 && props.inventoryType === "personal") {
                     return (
                         <React.Fragment>
-                            {props.item ? (
-                                <Paper elevation={3} className={classes.slot}>
+                            {props.item !== '{}' ? (
+                                <Paper
+                                    elevation={3}
+                                    className={classes.slot}
+                                    onMouseDown={(e) => props.onStart(e, props.i)}
+                                    onMouseUp={(e) => props.onStop(e, props.i)}
+                                >
                                     <Paper
                                         className={classes.slotNumberGrid}
                                         variant="outlined"
@@ -82,30 +86,22 @@ const InventorySlots = (props) => {
                                         {props.item.count}
                                     </Paper>
                                     <img
+                                        draggable="false"
                                         className={classes.images}
-                                        draggable="true"
-                                        onDragStart={(e) =>
-                                            props.onDragStart(e, props.i)
+                                        src={
+                                            "./assets/" +
+                                            props.item.name +
+                                            ".png"
                                         }
-                                        onDragOver={(e) =>
-                                            props.onDragOver(e, props.i)
-                                        }
-                                        onDrop={(e) => props.onDrop(e, props.i)}
-                                        src={"./assets/" + props.item.name + ".png"}
                                     />
                                 </Paper>
                             ) : (
                                 <Paper
-                                    draggable="true"
-                                    onDragStart={(e) =>
-                                        props.onDragStart(e, props.i)
-                                    }
-                                    onDragOver={(e) =>
-                                        props.onDragOver(e, props.i)
-                                    }
-                                    onDrop={(e) => props.onDrop(e, props.i)}
                                     elevation={3}
                                     className={classes.slot}
+                                    onMouseDown={(e) => props.onStart(e, props.i)}
+                                    onMouseUp={(e) => props.onStop(e, props.i)}
+
                                 >
                                     <Paper
                                         className={classes.slotNumberGrid}
@@ -117,9 +113,14 @@ const InventorySlots = (props) => {
                             )}
                         </React.Fragment>
                     );
-                } else if (props.item) {
+                } else if (props.item !== "{}") {
                     return (
-                        <Paper elevation={3} className={classes.slot}>
+                        <Paper
+                            elevation={3}
+                            className={classes.slot}
+                            onMouseDown={(e) => props.onStart(e, props.i)}
+                            onMouseUp={(e) => props.onStop(e, props.i)}
+                        >
                             <Paper
                                 className={classes.countGrid}
                                 variant="outlined"
@@ -127,13 +128,8 @@ const InventorySlots = (props) => {
                                 {props.item.count}
                             </Paper>
                             <img
+                                draggable="false"
                                 className={classes.images}
-                                draggable="true"
-                                onDragStart={(e) =>
-                                    props.onDragStart(e, props.i)
-                                }
-                                onDragOver={(e) => props.onDragOver(e, props.i)}
-                                onDrop={(e) => props.onDrop(e, props.i)}
                                 src={"./assets/" + props.item.name + ".png"}
                             />
                         </Paper>
@@ -141,13 +137,11 @@ const InventorySlots = (props) => {
                 } else {
                     return (
                         <Paper
-                            draggable="true"
-                            onDragStart={(e) => props.onDragStart(e, props.i)}
-                            onDragOver={(e) => props.onDragOver(e, props.i)}
-                            onDrop={(e) => props.onDrop(e, props.i)}
                             elevation={3}
                             className={classes.slot}
-                        ></Paper>
+                            onMouseDown={(e) => props.onStart(e, props.i)}
+                            onMouseUp={(e) => props.onStop(e, props.i)}
+                        />
                     );
                 }
             })()}

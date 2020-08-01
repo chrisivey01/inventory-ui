@@ -22,5 +22,5 @@
         { "ammo": 30, "name": "WEAPON_PETROLCAN", "label": "Jerrycan" },
         { "ammo": 1, "name": "WEAPON_BALL", "label": "Ball" }
     ],
-    "black_money": [{ "amount": 0 }]
+    "accounts": [{ "amount": 0 }]
 }
