@@ -7,7 +7,6 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import * as actions from "../store/inventory.actions";
 import * as selectors from "../store/inventory.selectors";
-import Apis from "../apis/apis";
 import data from "../data/items.json";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +34,7 @@ const InventoryContainer = (props) => {
         };
     }, []);
 
+    //Press ESC to close the application
     const onKeyPress = (e) => {
         if (e.keyCode === 27) {
             setShowHideToggler(false);
@@ -42,6 +42,7 @@ const InventoryContainer = (props) => {
         }
     };
 
+    //message/action handler from the service/client of lua
     useEffect(() => {
         window.addEventListener("message", (e) => onMessage(e));
         return () => {
