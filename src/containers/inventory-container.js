@@ -3,10 +3,8 @@ import Inventory from "../components/inventory";
 import Menu from "../components/menu";
 import { makeStyles } from "@material-ui/core";
 //store
-import { connect, useDispatch, useSelector } from "react-redux";
-import { createStructuredSelector } from "reselect";
+import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/inventory.actions";
-import * as selectors from "../store/inventory.selectors";
 import data from "../data/items.json";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,11 +19,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const InventoryContainer = (props) => {
+function InventoryContainer() {
     const [showHideToggler, setShowHideToggler] = useState(false);
     const classes = useStyles();
     const dispatch = useDispatch();
-    const inventory = useSelector(state => state.flattenedInventory)
+    const inventory = useSelector((state) => state.inventory.inventory);
 
     useEffect(() => {
         document.addEventListener("keydown", (e) => onKeyPress(e));
@@ -53,23 +51,18 @@ const InventoryContainer = (props) => {
     const onMessage = (e) => {
         switch (e.data.useItem) {
             case "useItemOne": {
-                // Apis.useInventoryItem(inventory[0], 0);
-                // console.log('test')
                 dispatch(actions.useInventoryItem(0));
                 break;
             }
             case "useItemTwo": {
-                // Apis.useInventoryItem(inventory[1], 1);
                 dispatch(actions.useInventoryItem(1));
                 break;
             }
             case "useItemThree": {
-                // Apis.useInventoryItem(inventory[2], 2);
                 dispatch(actions.useInventoryItem(2));
                 break;
             }
             case "useItemFour": {
-                // Apis.useInventoryItem(inventory[3], 3);
                 dispatch(actions.useInventoryItem(3));
                 break;
             }
@@ -93,20 +86,10 @@ const InventoryContainer = (props) => {
                     if (process.env.NODE_ENV === "development") {
                         dispatch(actions.loadPersonalInventory(data));
                     } else {
-                        //if not been flattened, you need to flatten the inventory
-                        console.log(event.data)
-                        if (event.data.nonFlattenedInventory && event.data.flattenedInventory.length === 0){
+                        if (event.data.inventory) {
                             dispatch(
                                 actions.loadPersonalInventory(
-                                    event.data.nonFlattenedInventory
-                                )
-                            );
-                        } else {
-                        //if flattened, you need to update the inventory
-                            dispatch(
-                                actions.updateFlattenedPersonalInventory(
-                                    event.data.nonFlattenedInventory, 
-                                    event.data.flattenedInventory
+                                    event.data.inventory
                                 )
                             );
                         }
@@ -127,21 +110,14 @@ const InventoryContainer = (props) => {
             }
         >
             <Inventory
-                inventory={props.flattenedInventory}
                 inventoryTitle={"Personal"}
                 inventoryType={"personal"}
+                inventory={inventory}
             />
             <Menu />
-            <Inventory
-                inventoryType={"store"}
-                inventory={props.flattenedInventory}
-            />
+            <Inventory inventoryType={"store"} inventory={inventory} />
         </div>
     );
-};
+}
 
-const mapStateToProps = createStructuredSelector({
-    flattenedInventory: selectors.getFlattenedInventory,
-});
-
-export default connect(mapStateToProps)(InventoryContainer);
+export default InventoryContainer;

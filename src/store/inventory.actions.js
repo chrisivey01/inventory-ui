@@ -26,9 +26,9 @@ export const loadPersonalInventory = (inventory) => ({
     payload: inventory,
 });
 
-export const updateFlattenedPersonalInventory = (nonFlattened, flattened) => ({
+export const updateFlattenedPersonalInventory = (inventory) => ({
     type: UPDATE_FLATTENED_PERSONAL_INVENTORY,
-    payload: {nonFlattened, flattened}
+    payload: inventory
 });
 export const selectInventoryItem = (index) => ({
     type: SELECT_INVENTORY_ITEM,

@@ -1,21 +1,69 @@
 import Apis from "../apis/apis";
-
-export const loadPersonalInventory = (inventory) => {
+export const loadPersonalInventory = (inventory, currentInventory) => {
     let flatInventory = [];
-    let items = inventory.items.filter((items) => items.count > 0);
-    items.map((item) => flatInventory.push(item));
+    let items = inventory.items.filter((item) => item.count > 0);
     let weapons = inventory.weapons;
-    weapons.map((item) => flatInventory.push(item));
-    flatInventory.push(inventory.accounts[0]);
-    flatInventory.weight = inventory.weight;
-    flatInventory.money = inventory.money;
-    flatInventory.maxWeight = inventory.maxWeight;
+    if (currentInventory.length === 0) {
+        weapons.map((item) => flatInventory.push(item));
+        items.forEach((item) => flatInventory.push(item));
+        inventory.accounts.forEach((item) => {
+            if (
+                (item.name !== "bank" &&
+                    item.name === "money" &&
+                    item.money > 0) ||
+                (item.name === "black_money" && item.money > 0)
+            ) {
+                flatInventory.push(item);
+            }
+        });
+        flatInventory.weight = inventory.weight;
+        flatInventory.money = inventory.money;
+        flatInventory.maxWeight = inventory.maxWeight;
 
-    while (flatInventory.length < 25) {
-        flatInventory.push("{}");
+        while (flatInventory.length < 25) {
+            flatInventory.push("{}");
+        }
+    } else {
+        flatInventory = currentInventory.filter(
+            (item) =>
+                item.count > 0 || item === "{}" || item.money > 0 || item.ammo
+        );
+        let filteredInventory = inventory.items.filter(
+            (item) =>
+                item.count > 0 || item === "{}" || item.money > 0 || item.ammo
+        );
+
+        weapons.map((item) => filteredInventory.push(item));
+
+        for (let i = 0; i < flatInventory.length; i++) {
+            //if no service for item, set UI to blank space.
+            flatInventory[i] = "{}";
+            for (let j = 0; j < filteredInventory.length; j++) {
+                const flatIndex = flatInventory.findIndex(
+                    (item) => item.name === filteredInventory[j].name
+                );
+                //updates flatInventory[UI] with filteredInventory[API request]
+                if (
+                    flatInventory[i].name === filteredInventory[j].name &&
+                    flatIndex !== -1
+                ) {
+                    flatInventory[i] = filteredInventory[j];
+                    break;
+                }
+
+                if (flatInventory[i] === "{}" && flatIndex === -1) {
+                    flatInventory[i] = filteredInventory[j];
+                    break;
+                }
+            }
+        }
+
+        flatInventory.weight = inventory.weight;
+        flatInventory.money = inventory.money;
+        flatInventory.maxWeight = inventory.maxWeight;
+        console.log(flatInventory);
     }
-
-    return [...flatInventory];
+    return flatInventory;
 };
 
 export const moveInventoryItem = (
@@ -34,112 +82,113 @@ export const updateFlattenedPersonalInventory = (flattenedInventory) => {
     let flattenedList = flattenedInventory.flattened;
     let nonFlattenedList = flattenedInventory.nonFlattened.items;
     let itemList = nonFlattenedList.filter((item) => item.count > 0);
-    
+
     // this is here to make itemList have 25 places for inventory
-    while(itemList.length < 25){
-        itemList.push('{}')
+    while (itemList.length < 25) {
+        itemList.push("{}");
     }
 
-    itemList.map(item => {
-        let index = flattenedList.map(flatItem => flatItem.name).indexOf(item.name)
-        console.log(index)
-        return itemList[index] = item
-    })
-    // itemList.reduce((prev, cur, index, array) => {
-    //     if(prev === cur)
-    // })
+    itemList.map((item) => {
+        let index = flattenedList
+            .map((flatItem) => flatItem.name)
+            .indexOf(item.name);
+        console.log(index);
+        return (itemList[index] = item);
+    });
 
-    // itemList.map((nonFlatItem, notFlatIterator) => {
-    //     flattenedList.map((flatItem, flatItemIterator) => {
-    //         if(flatItem === nonFlatItem) {
-    //             // itemList[notFlatIterator] = '{}'
-    //             itemList[flatItemIterator] = nonFlatItem
-    //         }
-    //     })    
-    // })
-    
-    // flattenedList.map((flatItem, flatIterator) => {
-    //     if(nonFlatItem.name === flatItem.name && notFlatIterator === flatIterator){
-    //         itemList[flatIterator] = nonFlatItem;
-    //     } else { 
-    //         itemList.splice(notFlatIterator, 1);
-    //         itemList[flatIterator] = nonFlatItem;
-
-    //         itemList.splice(notFlatIterator, 1, '{}');
-    //     }
-    // })
-        
-        //     const index = itemList.map(nonFlat => nonFlat.name).indexOf(item.name);
-        //     if (index === -1) {
-        //         return flattenedList[i] = "{}";
-        //     } else {
-        //         return (flattenedList[i].count = item.count);
-        //     }
-        // });
-    // //updates count of each item in the flattenedArray
-    // itemList.map((item) => {
-    //     flattenedList.map((flatItem) => {
-    //         if (flatItem.name === item.name) {
-    //             return flatItem.count = item.count;
-    //         }
-    //     });
-    // });
-
-    // flattenedList.map((item) => {
-    //     if (item.count === 0) {
-    //         return "{}";
-    //     } else {
-    //         flattenedList[item.name] = item.count;
-    //     }
-    // });
-
-    // [0, 1, 2, 3, 4].reduce(function(accumulator, currentValue, currentIndex, array) {
-    //     return accumulator + currentValue
-    //   })
-
-    // itemList.reduce((accumulator, currentValue) => {
-
-    //     return accumulator + currentValue
-    // })
-
-    // itemList.map((item) => {
-    //     flattenedList.map(flatItem => {
-    //         flattenedList.filter(.)
-    //         if(flatItem.name === itemList.name){
-    //             flatItem.count = itemList.count
-    //         }
-    //     })
-    // })
-
-    // /flattenedList.filter()
-    // flattenedList.map((item, i) => {
-    //     if (item.count) {
-    //         const itemIndex = nonFlattenedList.items
-    //             .map((nonFlatItem) => nonFlatItem.name)
-    //             .indexOf(item.name);
-    //         if (nonFlattenedList.items[itemIndex].count > 0) {
-    //             flattenedList[i] = nonFlattenedList.items[itemIndex];
-    //             console.log(nonFlattenedList);
-    //             console.log(flattenedList);
-    //         } else {
-    //             flattenedList[i] = "{}";
-    //             console.log(nonFlattenedList);
-    //             console.log(flattenedList);
-    //         }
-    //     }
-    // });
-
-    return [...itemList];
+    return itemList;
 };
+// itemList.reduce((prev, cur, index, array) => {
+//     if(prev === cur)
+// })
 
-const useInventoryItem = (flattenedInventory, itemIndex) => {
+// itemList.map((nonFlatItem, notFlatIterator) => {
+//     flattenedList.map((flatItem, flatItemIterator) => {
+//         if(flatItem === nonFlatItem) {
+//             // itemList[notFlatIterator] = '{}'
+//             itemList[flatItemIterator] = nonFlatItem
+//         }
+//     })
+// })
+
+// flattenedList.map((flatItem, flatIterator) => {
+//     if(nonFlatItem.name === flatItem.name && notFlatIterator === flatIterator){
+//         itemList[flatIterator] = nonFlatItem;
+//     } else {
+//         itemList.splice(notFlatIterator, 1);
+//         itemList[flatIterator] = nonFlatItem;
+
+//         itemList.splice(notFlatIterator, 1, '{}');
+//     }
+// })
+
+//     const index = itemList.map(nonFlat => nonFlat.name).indexOf(item.name);
+//     if (index === -1) {
+//         return flattenedList[i] = "{}";
+//     } else {
+//         return (flattenedList[i].count = item.count);
+//     }
+// });
+// //updates count of each item in the flattenedArray
+// itemList.map((item) => {
+//     flattenedList.map((flatItem) => {
+//         if (flatItem.name === item.name) {
+//             return flatItem.count = item.count;
+//         }
+//     });
+// });
+
+// flattenedList.map((item) => {
+//     if (item.count === 0) {
+//         return "{}";
+//     } else {
+//         flattenedList[item.name] = item.count;
+//     }
+// });
+
+// [0, 1, 2, 3, 4].reduce(function(accumulator, currentValue, currentIndex, array) {
+//     return accumulator + currentValue
+//   })
+
+// itemList.reduce((accumulator, currentValue) => {
+
+//     return accumulator + currentValue
+// })
+
+// itemList.map((item) => {
+//     flattenedList.map(flatItem => {
+//         flattenedList.filter(.)
+//         if(flatItem.name === itemList.name){
+//             flatItem.count = itemList.count
+//         }
+//     })
+// })
+
+// /flattenedList.filter()
+// flattenedList.map((item, i) => {
+//     if (item.count) {
+//         const itemIndex = nonFlattenedList.items
+//             .map((nonFlatItem) => nonFlatItem.name)
+//             .indexOf(item.name);
+//         if (nonFlattenedList.items[itemIndex].count > 0) {
+//             flattenedList[i] = nonFlattenedList.items[itemIndex];
+//             console.log(nonFlattenedList);
+//             console.log(flattenedList);
+//         } else {
+//             flattenedList[i] = "{}";
+//             console.log(nonFlattenedList);
+//             console.log(flattenedList);
+//         }
+//     }
+// });
+// };
+
+export const useInventoryItem = (flattenedInventory, itemIndex) => {
     Apis.useInventoryItem(flattenedInventory[itemIndex], itemIndex);
     return [...flattenedInventory];
 };
 
-const closeInventory = (flattenedInventory) => {
+export const closeInventory = (flattenedInventory) => {
     Apis.closeInventory(flattenedInventory);
     return [...flattenedInventory];
 };
-
-export { useInventoryItem, closeInventory };

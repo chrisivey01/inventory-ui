@@ -1,8 +1,8 @@
-import { createSelector } from "reselect";
+// import { createSelector } from "reselect";
 
-const getInventory = (state) => state.flattenedInventory;
+// const getInventory = (state) => state.flattenedInventory;
 
-export const getFlattenedInventory = createSelector(
-    [getInventory],
-    (data) => data.flattenedInventory
-);
+// export const getFlattenedInventory = createSelector(
+//     [getInventory],
+//     (data) => data.flattenedInventory
+// );

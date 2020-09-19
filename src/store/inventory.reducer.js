@@ -4,8 +4,8 @@ import Apis from "../apis/apis";
 
 const initialState = {
     inventoryShow: false,
-    flattenedInventory: [],
-    otherInventory: new Array(50).fill(undefined),
+    inventory: [],
+    secondInventory: new Array(50).fill(undefined),
     selectedItemIndex: null,
     type: "personal",
     useItem: null,
@@ -24,21 +24,21 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 inventoryShow: false,
-                flattenedInventory: utils.closeInventory(
-                    state.flattenedInventory
-                ),
+                inventory: utils.closeInventory(state.inventory),
             };
         case types.LOAD_PERSONAL_INVENTORY:
             console.log("3");
             return {
                 ...state,
-                flattenedInventory: utils.loadPersonalInventory(action.payload),
+                inventory: utils.loadPersonalInventory(action.payload, state.inventory),
             };
         case types.UPDATE_FLATTENED_PERSONAL_INVENTORY:
             console.log("4");
             return {
                 ...state,
-                flattenedInventory: utils.updateFlattenedPersonalInventory(action.payload),
+                inventory: utils.updateFlattenedPersonalInventory(
+                    action.payload
+                ),
             };
         case types.SELECT_INVENTORY_ITEM:
             console.log("5");
@@ -50,8 +50,8 @@ const inventoryReducer = (state = initialState, action) => {
             console.log("6");
             return {
                 ...state,
-                flattenedInventory: utils.moveInventoryItem(
-                    state.flattenedInventory,
+                inventory: utils.moveInventoryItem(
+                    state.inventory,
                     state.selectedItemIndex,
                     action.payload
                 ),
@@ -60,12 +60,11 @@ const inventoryReducer = (state = initialState, action) => {
             console.log("7");
             return {
                 ...state,
-                flattenedInventory: utils.useInventoryItem(
-                    state.flattenedInventory,
+                inventory: utils.useInventoryItem(
+                    state.inventory,
                     action.payload
                 ),
             };
-
         default:
             return state;
     }
