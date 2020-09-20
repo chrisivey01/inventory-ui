@@ -21,10 +21,10 @@ const inventoryReducer = (state = initialState, action) => {
             };
         case types.CLOSE_INVENTORY:
             console.log("2");
+            utils.closeInventory(state.inventory)
             return {
                 ...state,
                 inventoryShow: false,
-                inventory: utils.closeInventory(state.inventory),
             };
         case types.LOAD_PERSONAL_INVENTORY:
             console.log("3");

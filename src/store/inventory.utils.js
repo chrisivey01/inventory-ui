@@ -1,11 +1,10 @@
 import Apis from "../apis/apis";
 export const loadPersonalInventory = (inventory, currentInventory) => {
-    let flatInventory = [];
     let items = inventory.items.filter((item) => item.count > 0);
     let weapons = inventory.weapons;
     if (currentInventory.length === 0) {
-        weapons.map((item) => flatInventory.push(item));
-        items.forEach((item) => flatInventory.push(item));
+        weapons.map((item) => currentInventory.push(item));
+        items.forEach((item) => currentInventory.push(item));
         inventory.accounts.forEach((item) => {
             if (
                 (item.name !== "bank" &&
@@ -13,57 +12,46 @@ export const loadPersonalInventory = (inventory, currentInventory) => {
                     item.money > 0) ||
                 (item.name === "black_money" && item.money > 0)
             ) {
-                flatInventory.push(item);
+                currentInventory.push(item);
             }
         });
-        flatInventory.weight = inventory.weight;
-        flatInventory.money = inventory.money;
-        flatInventory.maxWeight = inventory.maxWeight;
+        currentInventory.weight = inventory.weight;
+        currentInventory.money = inventory.money;
+        currentInventory.maxWeight = inventory.maxWeight;
 
-        while (flatInventory.length < 25) {
-            flatInventory.push("{}");
+        while (currentInventory.length < 25) {
+            currentInventory.push("{}");
         }
+        return [...currentInventory];
     } else {
-        flatInventory = currentInventory.filter(
-            (item) =>
-                item.count > 0 || item === "{}" || item.money > 0 || item.ammo
-        );
-        let filteredInventory = inventory.items.filter(
-            (item) =>
-                item.count > 0 || item === "{}" || item.money > 0 || item.ammo
-        );
+        let array = [];
+        weapons.forEach((item) => array.push(item));
+        items.forEach((item) => array.push(item));
+        array.map((item) => {
+            const invIndex = currentInventory.findIndex(
+                (inventory) => inventory.name === item.name
+            );
+            const space = currentInventory.findIndex((item) => item === "{}");
 
-        weapons.map((item) => filteredInventory.push(item));
-
-        for (let i = 0; i < flatInventory.length; i++) {
-            //if no service for item, set UI to blank space.
-            flatInventory[i] = "{}";
-            for (let j = 0; j < filteredInventory.length; j++) {
-                const flatIndex = flatInventory.findIndex(
-                    (item) => item.name === filteredInventory[j].name
-                );
-                //updates flatInventory[UI] with filteredInventory[API request]
-                if (
-                    flatInventory[i].name === filteredInventory[j].name &&
-                    flatIndex !== -1
-                ) {
-                    flatInventory[i] = filteredInventory[j];
-                    break;
-                }
-
-                if (flatInventory[i] === "{}" && flatIndex === -1) {
-                    flatInventory[i] = filteredInventory[j];
-                    break;
-                }
+            if (invIndex > -1) {
+                currentInventory[invIndex] = item;
+            } else {
+                currentInventory[space] = item;
             }
-        }
+        });
 
-        flatInventory.weight = inventory.weight;
-        flatInventory.money = inventory.money;
-        flatInventory.maxWeight = inventory.maxWeight;
-        console.log(flatInventory);
+        currentInventory.map((newItem, index) => {
+            // let inInventory = false
+            const inInventory = array.findIndex(
+                (inventory) => inventory.name === newItem.name
+            );
+            if (inInventory === -1) {
+                currentInventory[index] = "{}";
+            }
+        });
+
+        return [...currentInventory];
     }
-    return flatInventory;
 };
 
 export const moveInventoryItem = (
@@ -190,5 +178,4 @@ export const useInventoryItem = (flattenedInventory, itemIndex) => {
 
 export const closeInventory = (flattenedInventory) => {
     Apis.closeInventory(flattenedInventory);
-    return [...flattenedInventory];
 };
