@@ -4,8 +4,9 @@ import Menu from "../components/menu";
 import { makeStyles } from "@material-ui/core";
 //store
 import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../store/inventory.actions";
+import * as actions from "../store/inventory/inventory.actions";
 import data from "../data/items.json";
+import SelectedItem from "../components/selected-item";
 
 const useStyles = makeStyles((theme) => ({
     inventoryDisplay: {
@@ -109,6 +110,7 @@ function InventoryContainer() {
                     : classes.inventoryHide
             }
         >
+            <SelectedItem/>
             <Inventory
                 inventoryTitle={"Personal"}
                 inventoryType={"personal"}

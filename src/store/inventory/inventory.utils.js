@@ -1,4 +1,4 @@
-import Apis from "../apis/apis";
+import Apis from "../../apis/apis";
 export const loadPersonalInventory = (inventory, currentInventory) => {
     let items = inventory.items.filter((item) => item.count > 0);
     let weapons = inventory.weapons;

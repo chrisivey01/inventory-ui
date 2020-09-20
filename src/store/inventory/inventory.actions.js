@@ -5,6 +5,7 @@ export const UPDATE_FLATTENED_PERSONAL_INVENTORY =
     "UPDATE_FLATTENED_PERSONAL_INVENTORY";
 export const SWAP_POSTION_INVENTORY = "SWAP_POSTION_INVENTORY";
 export const SELECT_INVENTORY_ITEM = "SELECT_INVENTORY_ITEM";
+export const SELECT_INVENTORY_ITEM_INDEX = "SELECT_INVENTORY_ITEM_INDEX";
 export const MOVE_INVENTORY_ITEM = "MOVE_INVENTORY_ITEM";
 
 export const USE_INVENTORY_ITEM = "USE_INVENTORY_ITEM";
@@ -30,8 +31,14 @@ export const updateFlattenedPersonalInventory = (inventory) => ({
     type: UPDATE_FLATTENED_PERSONAL_INVENTORY,
     payload: inventory
 });
-export const selectInventoryItem = (index) => ({
+
+export const selectInventoryItem = (item, index) => ({
     type: SELECT_INVENTORY_ITEM,
+    payload: {item, index},
+});
+
+export const selectInventoryItemIndex = (index) => ({
+    type: SELECT_INVENTORY_ITEM_INDEX,
     payload: index,
 });
 
@@ -50,22 +57,3 @@ export const useInventoryItem = (itemIndex) => ({
     payload: itemIndex,
 });
 
-// export const useItemSlotTwo = () => ({
-//     type: USE_ITEM_SLOT_TWO,
-//     payload: 1
-// })
-
-// export const useItemSlotThree = () => ({
-//     type: USE_ITEM_SLOT_THREE,
-//     payload: 2
-// })
-
-// export const useItemSlotFour = () => ({
-//     type: USE_ITEM_SLOT_FOUR,
-//     payload: 3
-// })
-
-// export const useItemSlotFive = () => ({
-//     type: USE_ITEM_SLOT_FIVE,
-//     payload: 4
-// })
