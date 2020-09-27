@@ -1,32 +1,27 @@
-import React, { Fragment, useEffect } from "react";
-import { makeStyles, Paper } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { makeStyles, Paper, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
-
-import Img from "react-image";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Typography from "@material-ui/core/Typography";
+import React, { Fragment, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     hover: {
         position: "absolute",
-        top: 0,
-        left: 0,
         width: "6vw",
         pointerEvents: "none",
     },
     slot: {
-        width: "100%",
+        width: 116,
         height: 120,
-        padding: theme.spacing(1),
-        position: "relative",
         textAlign: "center",
         userSelect: "none",
         backgroundColor: "rgba(44,47,51,0.8)",
+        color: "#F2F2F2",
     },
     img: {
-        width: "100%",
         userSelect: "none",
+        width: "inherit",
+        height: "inherit",
+        objectFit: "contain",
     },
     countGrid: {
         position: "absolute",
@@ -34,9 +29,8 @@ const useStyles = makeStyles((theme) => ({
         top: 0,
         height: "20%",
         userSelect: "none",
-    },
-    paper: {
-        backgroundColor: "rgba(44,47,51,0.1)",
+        width: 25,
+        overflow: "hidden",
     },
     slotNumberGrid: {
         position: "absolute",
@@ -49,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     name: {
         bottom: 0,
         left: "50%",
-        height: "20%",
         width: "100%",
         position: "absolute",
         transform: "translate(-50%, 0%)",
@@ -89,7 +82,7 @@ const selectedItem = (props) => {
 
     if (item.name) {
         return (
-            <Grid
+            <Paper
                 container
                 className={classes.hover}
                 style={
@@ -97,24 +90,29 @@ const selectedItem = (props) => {
                         ? {
                               top: state.mouseY,
                               left: state.mouseX,
-                              transform: "translate(-5vw, -10vh)",
+                              transform: "translate(-3vw, -15vh)",
                           }
                         : undefined
                 }
             >
-                <Paper className={classes.slot}>
+                <Grid className={classes.slot}>
                     <img
                         draggable="false"
                         className={classes.img}
                         src={"./assets/" + item.name + ".png"}
                     />
-                    <Paper className={classes.countGrid} variant="outlined">
+                    <Typography
+                        className={classes.countGrid}
+                        variant="outlined"
+                    >
                         {item.count}
-                    </Paper>
+                    </Typography>
 
-                    <Paper className={classes.name}>{item.name}</Paper>
-                </Paper>
-            </Grid>
+                    <Typography className={classes.name}>
+                        {item.label}
+                    </Typography>
+                </Grid>
+            </Paper>
         );
     } else {
         return <Fragment />;

@@ -9,6 +9,7 @@ export const SELECT_INVENTORY_ITEM_INDEX = "SELECT_INVENTORY_ITEM_INDEX";
 export const MOVE_INVENTORY_ITEM = "MOVE_INVENTORY_ITEM";
 
 export const USE_INVENTORY_ITEM = "USE_INVENTORY_ITEM";
+export const HIDE_USE_INVENTORY_ITEM = "HIDE_USE_INVENTORY_ITEM";
 export const USE_ITEM_SLOT_TWO = "USE_ITEM_SLOT_TWO";
 export const USE_ITEM_SLOT_THREE = "USE_ITEM_SLOT_THREE";
 export const USE_ITEM_SLOT_FOUR = "USE_ITEM_SLOT_FOUR";
@@ -22,19 +23,19 @@ export const closeInventory = () => ({
     type: CLOSE_INVENTORY,
 });
 
-export const loadPersonalInventory = (inventory) => ({
+export const loadPersonalInventory = (payload) => ({
     type: LOAD_PERSONAL_INVENTORY,
-    payload: inventory,
+    payload: payload,
 });
 
 export const updateFlattenedPersonalInventory = (inventory) => ({
     type: UPDATE_FLATTENED_PERSONAL_INVENTORY,
-    payload: inventory
+    payload: inventory,
 });
 
 export const selectInventoryItem = (item, index) => ({
     type: SELECT_INVENTORY_ITEM,
-    payload: {item, index},
+    payload: { item, index },
 });
 
 export const selectInventoryItemIndex = (index) => ({
@@ -57,3 +58,7 @@ export const useInventoryItem = (itemIndex) => ({
     payload: itemIndex,
 });
 
+export const hideUseInventoryItem = (item) => ({
+    type: HIDE_USE_INVENTORY_ITEM,
+    payload:item
+});

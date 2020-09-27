@@ -1,19 +1,33 @@
-import React, { useState, useEffect } from "react";
-import Inventory from "../components/inventory";
-import Menu from "../components/menu";
 import { makeStyles } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 //store
 import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../store/inventory/inventory.actions";
+import Inventory from "../components/Inventory";
+import Menu from "../components/Menu";
+import SelectedItem from "../components/SelectedItem";
 import data from "../data/items.json";
-import SelectedItem from "../components/selected-item";
+import * as actions from "../store/inventory/inventory.actions";
 
 const useStyles = makeStyles((theme) => ({
+    '@global': {
+        '*::-webkit-scrollbar': {
+          width: '0.4em'
+        },
+        '*::-webkit-scrollbar-track': {
+          '-webkit-box-shadow': 'inset 0 0 6px rgba(0,0,0,0.00)'
+        },
+        '*::-webkit-scrollbar-thumb': {
+          backgroundColor: 'rgba(44, 62, 80, 1)',
+          outline: '1px solid slategrey'
+        },
+    },
     inventoryDisplay: {
         display: "flex",
         height: "auto",
         padding: theme.spacing(2),
         position: "relative",
+        justifyContent: "center",
+        top: "90px",
     },
     inventoryHide: {
         display: "none",
@@ -25,6 +39,9 @@ function InventoryContainer() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const inventory = useSelector((state) => state.inventory.inventory);
+    const inventoryType = useSelector((state) => state.inventory.inventoryType);
+
+    const item = useSelector((state) => state.inventory.item);
 
     useEffect(() => {
         document.addEventListener("keydown", (e) => onKeyPress(e));
@@ -83,16 +100,16 @@ function InventoryContainer() {
             }
 
             switch (event.data.inventoryType) {
-                case "personal": {
+                case "Personal": {
                     if (process.env.NODE_ENV === "development") {
                         dispatch(actions.loadPersonalInventory(data));
                     } else {
                         if (event.data.inventory) {
-                            dispatch(
-                                actions.loadPersonalInventory(
-                                    event.data.inventory
-                                )
-                            );
+                            const payload = {
+                                inventory: event.data.inventory,
+                                inventoryType: event.data.inventoryType,
+                            };
+                            dispatch(actions.loadPersonalInventory(payload));
                         }
                     }
                 }
@@ -110,14 +127,14 @@ function InventoryContainer() {
                     : classes.inventoryHide
             }
         >
-            <SelectedItem/>
+            <SelectedItem />
             <Inventory
-                inventoryTitle={"Personal"}
-                inventoryType={"personal"}
+                inventoryTitle={inventoryType}
+                inventoryType={inventoryType}
                 inventory={inventory}
             />
             <Menu />
-            <Inventory inventoryType={"store"} inventory={inventory} />
+            <Inventory />
         </div>
     );
 }

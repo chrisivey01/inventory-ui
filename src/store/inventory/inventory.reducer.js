@@ -2,13 +2,15 @@ import * as types from "./inventory.actions";
 import * as utils from "./inventory.utils";
 
 const initialState = {
-    inventoryShow: false,
-    inventory: [],
     secondInventory: new Array(50).fill(undefined),
     selectedItem: {},
     selectedItemIndex: null,
-    type: "personal",
-    useItem: null,
+    usedItem: null,
+
+    inventoryShow: false,
+    inventoryType: "",
+    inventory: [],
+
 };
 
 const inventoryReducer = (state = initialState, action) => {
@@ -16,21 +18,24 @@ const inventoryReducer = (state = initialState, action) => {
         case types.SHOW_INVENTORY:
             return {
                 ...state,
-                inventoryShow: true,
+                show: true,
+                type: "Personal"
             };
         case types.CLOSE_INVENTORY:
             utils.closeInventory(state.inventory);
             return {
                 ...state,
-                inventoryShow: false,
+                show: false,
+                type: ""
             };
         case types.LOAD_PERSONAL_INVENTORY:
             return {
                 ...state,
                 inventory: utils.loadPersonalInventory(
-                    action.payload,
+                    action.payload.inventory,
                     state.inventory
                 ),
+                inventoryType: action.payload.inventoryType
             };
         case types.UPDATE_FLATTENED_PERSONAL_INVENTORY:
             return {
@@ -61,10 +66,17 @@ const inventoryReducer = (state = initialState, action) => {
         case types.USE_INVENTORY_ITEM:
             return {
                 ...state,
-                inventory: utils.useInventoryItem(
+                usedItem: utils.useInventoryItem(
                     state.inventory,
                     action.payload
                 ),
+                show: !state.show,
+            };
+        case types.HIDE_USE_INVENTORY_ITEM:
+            return {
+                ...state,
+                usedItem: null,
+                show: false,
             };
         default:
             return state;

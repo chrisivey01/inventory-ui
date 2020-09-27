@@ -1,11 +1,15 @@
-import React from "react";
-import { makeStyles, Card, CardHeader, CardContent } from "@material-ui/core";
-import InventorySlots from "./inventory-slots";
-import { useDispatch, useSelector } from "react-redux";
+import { Card, CardContent, CardHeader, makeStyles } from "@material-ui/core";
+import React, { Fragment } from "react";
+import { useDispatch } from "react-redux";
 import * as inventoryActions from "../store/inventory/inventory.actions";
 import * as itemActions from "../store/item/item.actions";
+import InventorySlots from "./InventorySlots";
 
 const useStyles = makeStyles((theme) => ({
+    container: {
+        color: "#F2F2F2",
+        backgroundColor: "rgba(0,0,0,0.4)",
+    },
     inventory: {
         display: "flex",
         maxHeight: "565px",
@@ -32,23 +36,25 @@ const Inventory = (props) => {
     };
 
     return (
-        <Card>
+        <Card className={classes.container}>
             <CardHeader title={props.inventoryTitle} />
             <CardContent className={classes.inventory}>
-                {props.inventory.length > 0
-                    ? props.inventory.map((item, i) => {
-                          return (
-                              <InventorySlots
-                                  key={i}
-                                  onStart={onStart}
-                                  onStop={onStop}
-                                  i={i}
-                                  item={item}
-                                  inventoryType={props.inventoryType}
-                              />
-                          );
-                      })
-                    : null}
+                {props.inventory ? (
+                    props.inventory.map((item, i) => {
+                        return (
+                            <InventorySlots
+                                key={i}
+                                onStart={onStart}
+                                onStop={onStop}
+                                i={i}
+                                item={item}
+                                inventoryType={props.inventoryType}
+                            />
+                        );
+                    })
+                ) : (
+                    <Fragment />
+                )}
             </CardContent>
         </Card>
     );

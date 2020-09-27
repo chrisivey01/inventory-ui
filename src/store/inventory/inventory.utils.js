@@ -6,12 +6,7 @@ export const loadPersonalInventory = (inventory, currentInventory) => {
         weapons.map((item) => currentInventory.push(item));
         items.forEach((item) => currentInventory.push(item));
         inventory.accounts.forEach((item) => {
-            if (
-                (item.name !== "bank" &&
-                    item.name === "money" &&
-                    item.money > 0) ||
-                (item.name === "black_money" && item.money > 0)
-            ) {
+            if ((item.name === "money" && item.money > 0) || (item.name === "black_money" && item.money > 0)) {
                 currentInventory.push(item);
             }
         });
@@ -19,7 +14,7 @@ export const loadPersonalInventory = (inventory, currentInventory) => {
         currentInventory.money = inventory.money;
         currentInventory.maxWeight = inventory.maxWeight;
 
-        while (currentInventory.length < 25) {
+        while (currentInventory.length < 50) {
             currentInventory.push("{}");
         }
         return [...currentInventory];
@@ -27,6 +22,11 @@ export const loadPersonalInventory = (inventory, currentInventory) => {
         let array = [];
         weapons.forEach((item) => array.push(item));
         items.forEach((item) => array.push(item));
+        inventory.accounts.forEach((item) => {
+            if ((item.name === "money" && item.money > 0) || (item.name === "black_money" && item.money > 0)) {
+                array.push(item);
+            }
+        });
         array.map((item) => {
             const invIndex = currentInventory.findIndex(
                 (inventory) => inventory.name === item.name
@@ -72,7 +72,7 @@ export const updateFlattenedPersonalInventory = (flattenedInventory) => {
     let itemList = nonFlattenedList.filter((item) => item.count > 0);
 
     // this is here to make itemList have 25 places for inventory
-    while (itemList.length < 25) {
+    while (itemList.length < 50) {
         itemList.push("{}");
     }
 
@@ -86,94 +86,11 @@ export const updateFlattenedPersonalInventory = (flattenedInventory) => {
 
     return itemList;
 };
-// itemList.reduce((prev, cur, index, array) => {
-//     if(prev === cur)
-// })
-
-// itemList.map((nonFlatItem, notFlatIterator) => {
-//     flattenedList.map((flatItem, flatItemIterator) => {
-//         if(flatItem === nonFlatItem) {
-//             // itemList[notFlatIterator] = '{}'
-//             itemList[flatItemIterator] = nonFlatItem
-//         }
-//     })
-// })
-
-// flattenedList.map((flatItem, flatIterator) => {
-//     if(nonFlatItem.name === flatItem.name && notFlatIterator === flatIterator){
-//         itemList[flatIterator] = nonFlatItem;
-//     } else {
-//         itemList.splice(notFlatIterator, 1);
-//         itemList[flatIterator] = nonFlatItem;
-
-//         itemList.splice(notFlatIterator, 1, '{}');
-//     }
-// })
-
-//     const index = itemList.map(nonFlat => nonFlat.name).indexOf(item.name);
-//     if (index === -1) {
-//         return flattenedList[i] = "{}";
-//     } else {
-//         return (flattenedList[i].count = item.count);
-//     }
-// });
-// //updates count of each item in the flattenedArray
-// itemList.map((item) => {
-//     flattenedList.map((flatItem) => {
-//         if (flatItem.name === item.name) {
-//             return flatItem.count = item.count;
-//         }
-//     });
-// });
-
-// flattenedList.map((item) => {
-//     if (item.count === 0) {
-//         return "{}";
-//     } else {
-//         flattenedList[item.name] = item.count;
-//     }
-// });
-
-// [0, 1, 2, 3, 4].reduce(function(accumulator, currentValue, currentIndex, array) {
-//     return accumulator + currentValue
-//   })
-
-// itemList.reduce((accumulator, currentValue) => {
-
-//     return accumulator + currentValue
-// })
-
-// itemList.map((item) => {
-//     flattenedList.map(flatItem => {
-//         flattenedList.filter(.)
-//         if(flatItem.name === itemList.name){
-//             flatItem.count = itemList.count
-//         }
-//     })
-// })
-
-// /flattenedList.filter()
-// flattenedList.map((item, i) => {
-//     if (item.count) {
-//         const itemIndex = nonFlattenedList.items
-//             .map((nonFlatItem) => nonFlatItem.name)
-//             .indexOf(item.name);
-//         if (nonFlattenedList.items[itemIndex].count > 0) {
-//             flattenedList[i] = nonFlattenedList.items[itemIndex];
-//             console.log(nonFlattenedList);
-//             console.log(flattenedList);
-//         } else {
-//             flattenedList[i] = "{}";
-//             console.log(nonFlattenedList);
-//             console.log(flattenedList);
-//         }
-//     }
-// });
-// };
 
 export const useInventoryItem = (flattenedInventory, itemIndex) => {
     Apis.useInventoryItem(flattenedInventory[itemIndex], itemIndex);
-    return [...flattenedInventory];
+
+    return flattenedInventory[itemIndex];
 };
 
 export const closeInventory = (flattenedInventory) => {

@@ -1,5 +1,5 @@
-import React from "react";
-import { makeStyles, Paper } from "@material-ui/core";
+import { makeStyles, Paper, Typography } from "@material-ui/core";
+import React, { Fragment } from "react";
 
 const useStyles = makeStyles((theme) => ({
     slot: {
@@ -9,10 +9,11 @@ const useStyles = makeStyles((theme) => ({
         position: "relative",
         textAlign: "center",
         userSelect: "none",
-        backgroundColor: "rgba(44,47,51,0.8)",
+        backgroundColor: "rgba(0,0,0,0.4)",
         "&:hover": {
             transform: ["scale(1.1)"],
         },
+        color: "#F2F2F2",
     },
     menu: {
         padding: theme.spacing(2),
@@ -28,10 +29,12 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         position: "absolute",
         transform: "translate(-50%, 0%)",
-        backgroundColor: "rgba(44,47,51,0.1)",
+        backgroundColor: "rgba(0,0,0,0.4)",
+        fontSize: 12,
+        padding: "0px 5px 0px 0px"
     },
     div: {
-        backgroundColor: "rgba(44,47,51,0.1)",
+        backgroundColor: "rgba(0,0,0,0.4)",
     },
     countGrid: {
         position: "absolute",
@@ -49,6 +52,8 @@ const useStyles = makeStyles((theme) => ({
         height: "20%",
         userSelect: "none",
         border: "none",
+        backgroundColor: "rgba(34, 49, 63, 1)",
+        borderRadius: 3
     },
     images: {
         height: "inherit",
@@ -63,28 +68,47 @@ const InventorySlots = (props) => {
     return (
         <div>
             {(() => {
-                if (props.i < 5 && props.inventoryType === "personal") {
+                if (props.i < 5 && props.inventoryType === "Personal") {
                     return (
                         <React.Fragment>
-                            {props.item !== '{}' ? (
+                            {props.item !== "{}" ? (
                                 <Paper
                                     elevation={3}
                                     className={classes.slot}
-                                    onMouseDown={(e) => props.onStart(e, props.i)}
+                                    onMouseDown={(e) =>
+                                        props.onStart(e, props.i)
+                                    }
                                     onMouseUp={(e) => props.onStop(e, props.i)}
                                 >
-                                    <Paper
+                                    <Typography
                                         className={classes.slotNumberGrid}
                                         variant="outlined"
                                     >
                                         {props.i + 1}
-                                    </Paper>
-                                    <Paper
+                                    </Typography>
+                                    <Typography
                                         className={classes.countGrid}
                                         variant="outlined"
                                     >
-                                        {props.item.count}
-                                    </Paper>
+                                        {props.item.count ? (
+                                            props.item.count
+                                        ) : (
+                                            <Fragment />
+                                        )}
+                                        {props.item.money ? (
+                                            <span style={{ color: "green" }}>
+                                                $
+                                                {props.item.money
+                                                    .toString()
+                                                    .replace(
+                                                        /\B(?=(\d{3})+(?!\d))/g,
+                                                        ","
+                                                    )}
+                                            </span>
+                                        ) : (
+                                            <Fragment />
+                                        )}
+                                    </Typography>
                                     <img
                                         draggable="false"
                                         className={classes.images}
@@ -94,21 +118,25 @@ const InventorySlots = (props) => {
                                             ".png"
                                         }
                                     />
+                                    <Typography className={classes.name}>
+                                        {props.item.label}
+                                    </Typography>
                                 </Paper>
                             ) : (
                                 <Paper
                                     elevation={3}
                                     className={classes.slot}
-                                    onMouseDown={(e) => props.onStart(e, props.i)}
+                                    onMouseDown={(e) =>
+                                        props.onStart(e, props.i)
+                                    }
                                     onMouseUp={(e) => props.onStop(e, props.i)}
-
                                 >
-                                    <Paper
+                                    <Typography
                                         className={classes.slotNumberGrid}
                                         variant="outlined"
                                     >
                                         {props.i + 1}
-                                    </Paper>
+                                    </Typography>
                                 </Paper>
                             )}
                         </React.Fragment>
@@ -121,17 +149,38 @@ const InventorySlots = (props) => {
                             onMouseDown={(e) => props.onStart(e, props.i)}
                             onMouseUp={(e) => props.onStop(e, props.i)}
                         >
-                            <Paper
+                            <Typography
                                 className={classes.countGrid}
                                 variant="outlined"
                             >
-                                {props.item.count}
-                            </Paper>
+                                {props.item.count ? (
+                                    props.item.count
+                                ) : (
+                                    <Fragment />
+                                )}
+                                {props.item.money ? (
+                                    <span style={{ color: "green" }}>
+                                        {" "}
+                                        $
+                                        {props.item.money
+                                            .toString()
+                                            .replace(
+                                                /\B(?=(\d{3})+(?!\d))/g,
+                                                ","
+                                            )}
+                                    </span>
+                                ) : (
+                                    <Fragment />
+                                )}
+                            </Typography>
                             <img
                                 draggable="false"
                                 className={classes.images}
                                 src={"./assets/" + props.item.name + ".png"}
                             />
+                            <Typography className={classes.name}>
+                                {props.item.label}
+                            </Typography>
                         </Paper>
                     );
                 } else {

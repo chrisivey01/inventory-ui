@@ -1,11 +1,12 @@
 import React from "react";
-import InventoryContainer from "./containers/inventory-container";
-
+import UsedItem from "./components/UsedItem";
+import InventoryContainer from "./containers/InventoryContainer";
 
 const App = () => {
     return (
         <div>
             <InventoryContainer />
+            <UsedItem />
         </div>
     );
 };
