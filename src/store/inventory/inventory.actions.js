@@ -1,6 +1,10 @@
 export const SHOW_INVENTORY = "SHOW_INVENTORY";
 export const CLOSE_INVENTORY = "CLOSE_INVENTORY";
 export const LOAD_PERSONAL_INVENTORY = "LOAD_PERSONAL_INVENTORY";
+
+export const LOAD_HOTBAR = "LOAD_HOTBAR";
+export const CLOSE_HOTBAR = "CLOSE_HOTBAR";
+
 export const UPDATE_FLATTENED_PERSONAL_INVENTORY =
     "UPDATE_FLATTENED_PERSONAL_INVENTORY";
 export const SWAP_POSTION_INVENTORY = "SWAP_POSTION_INVENTORY";
@@ -25,6 +29,15 @@ export const closeInventory = () => ({
 
 export const loadPersonalInventory = (payload) => ({
     type: LOAD_PERSONAL_INVENTORY,
+    payload: payload,
+});
+
+export const closeHotbar = (payload) => ({
+    type: CLOSE_HOTBAR,
+});
+
+export const loadHotbar = (payload) => ({
+    type: LOAD_HOTBAR,
     payload: payload,
 });
 
@@ -60,5 +73,5 @@ export const useInventoryItem = (itemIndex) => ({
 
 export const hideUseInventoryItem = (item) => ({
     type: HIDE_USE_INVENTORY_ITEM,
-    payload:item
+    payload: item,
 });

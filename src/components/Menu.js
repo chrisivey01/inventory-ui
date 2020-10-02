@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Menu = () => {
+function Menu(){
     const classes = useStyles();
 
     return (

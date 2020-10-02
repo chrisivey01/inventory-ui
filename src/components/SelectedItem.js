@@ -55,7 +55,7 @@ const initialState = {
     mouseY: null,
 };
 
-const selectedItem = (props) => {
+function SelectedItem(props){
     const classes = useStyles();
     const [state, setState] = React.useState(initialState);
     const item = useSelector((state) => state.item.itemInfo);
@@ -119,4 +119,4 @@ const selectedItem = (props) => {
     }
 };
 
-export default selectedItem;
+export default SelectedItem;

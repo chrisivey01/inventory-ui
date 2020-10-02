@@ -5,12 +5,14 @@ const initialState = {
     secondInventory: new Array(50).fill(undefined),
     selectedItem: {},
     selectedItemIndex: null,
-    usedItem: null,
 
+    usedItem: {},
     inventoryShow: false,
     inventoryType: "",
     inventory: [],
 
+    hotbar: [],
+    showHotbar: false,
 };
 
 const inventoryReducer = (state = initialState, action) => {
@@ -19,14 +21,14 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 show: true,
-                type: "Personal"
+                type: "Personal",
             };
         case types.CLOSE_INVENTORY:
             utils.closeInventory(state.inventory);
             return {
                 ...state,
                 show: false,
-                type: ""
+                type: "",
             };
         case types.LOAD_PERSONAL_INVENTORY:
             return {
@@ -35,7 +37,22 @@ const inventoryReducer = (state = initialState, action) => {
                     action.payload.inventory,
                     state.inventory
                 ),
-                inventoryType: action.payload.inventoryType
+                inventoryType: action.payload.inventoryType,
+            };
+        case types.LOAD_HOTBAR:
+            return {
+                ...state,
+                inventory: utils.loadPersonalInventory(
+                    action.payload.inventory,
+                    state.inventory
+                ),
+                hotbar: utils.loadHotbar(state.inventory),
+                showHotbar: true,
+            };
+        case types.CLOSE_HOTBAR:
+            return {
+                ...state,
+                showHotbar: false,
             };
         case types.UPDATE_FLATTENED_PERSONAL_INVENTORY:
             return {
@@ -68,14 +85,14 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 usedItem: utils.useInventoryItem(
                     state.inventory,
-                    action.payload
+                    action.payload,
+                    state.usedItem
                 ),
                 show: !state.show,
             };
         case types.HIDE_USE_INVENTORY_ITEM:
             return {
                 ...state,
-                usedItem: null,
                 show: false,
             };
         default:

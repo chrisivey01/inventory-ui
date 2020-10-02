@@ -6,7 +6,10 @@ export const loadPersonalInventory = (inventory, currentInventory) => {
         weapons.map((item) => currentInventory.push(item));
         items.forEach((item) => currentInventory.push(item));
         inventory.accounts.forEach((item) => {
-            if ((item.name === "money" && item.money > 0) || (item.name === "black_money" && item.money > 0)) {
+            if (
+                (item.name === "money" && item.money > 0) ||
+                (item.name === "black_money" && item.money > 0)
+            ) {
                 currentInventory.push(item);
             }
         });
@@ -23,7 +26,10 @@ export const loadPersonalInventory = (inventory, currentInventory) => {
         weapons.forEach((item) => array.push(item));
         items.forEach((item) => array.push(item));
         inventory.accounts.forEach((item) => {
-            if ((item.name === "money" && item.money > 0) || (item.name === "black_money" && item.money > 0)) {
+            if (
+                (item.name === "money" && item.money > 0) ||
+                (item.name === "black_money" && item.money > 0)
+            ) {
                 array.push(item);
             }
         });
@@ -87,12 +93,59 @@ export const updateFlattenedPersonalInventory = (flattenedInventory) => {
     return itemList;
 };
 
-export const useInventoryItem = (flattenedInventory, itemIndex) => {
+export const useInventoryItem = (flattenedInventory, itemIndex, item) => {
     Apis.useInventoryItem(flattenedInventory[itemIndex], itemIndex);
-
-    return flattenedInventory[itemIndex];
+    if (flattenedInventory[itemIndex].ammo !== undefined) {
+        if (
+            flattenedInventory[itemIndex].name === item.name &&
+            item.unequip === true
+        ) {
+            return { ...flattenedInventory[itemIndex], unequip: false };
+        } else if (
+            flattenedInventory[itemIndex].name !== item.name &&
+            item.unequip === true
+        ) {
+            return { ...flattenedInventory[itemIndex], unequip: false };
+        } else if (
+            flattenedInventory[itemIndex].name !== item.name &&
+            item.unequip === false &&
+            item.ammo
+        ) {
+            return { ...flattenedInventory[itemIndex], unequip: false };
+        } else if (
+            flattenedInventory[itemIndex].name !== item.name &&
+            item.unequip === false &&
+            item.count
+        ) {
+            return { ...flattenedInventory[itemIndex], unequip: true };
+        } else if (
+            flattenedInventory[itemIndex].name === item.name &&
+            item.unequip === false
+        ) {
+            return { ...flattenedInventory[itemIndex], unequip: true };
+        } else if (
+            flattenedInventory[itemIndex].name === item.name &&
+            item.unequip === true
+        ) {
+            return { ...flattenedInventory[itemIndex], unequip: true };
+        } else if (
+            flattenedInventory[itemIndex].name !== item.name &&
+            item.unequip === true
+        ) {
+            return { ...flattenedInventory[itemIndex], unequip: false };
+        } else if (item === undefined) {
+            return { ...flattenedInventory[itemIndex], unequip: true };
+        }
+    }
+    return { ...flattenedInventory[itemIndex], unequip: false };
 };
 
 export const closeInventory = (flattenedInventory) => {
     Apis.closeInventory(flattenedInventory);
+};
+
+export const loadHotbar = (inventory) => {
+    let inventoryClone = [...inventory]
+    let hotbar = inventoryClone.splice(0,5)
+    return [...hotbar];
 };

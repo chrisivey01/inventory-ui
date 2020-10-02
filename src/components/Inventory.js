@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Inventory = (props) => {
+function Inventory(props){
     const dispatch = useDispatch();
     const classes = useStyles();
 

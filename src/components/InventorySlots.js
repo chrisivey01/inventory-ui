@@ -25,13 +25,12 @@ const useStyles = makeStyles((theme) => ({
     name: {
         bottom: 0,
         left: "50%",
-        height: "20%",
-        width: "100%",
+        width: "inherit",
         position: "absolute",
         transform: "translate(-50%, 0%)",
         backgroundColor: "rgba(0,0,0,0.4)",
         fontSize: 12,
-        padding: "0px 5px 0px 0px"
+        padding: "0px 5px 0px 0px",
     },
     div: {
         backgroundColor: "rgba(0,0,0,0.4)",
@@ -53,7 +52,8 @@ const useStyles = makeStyles((theme) => ({
         userSelect: "none",
         border: "none",
         backgroundColor: "rgba(34, 49, 63, 1)",
-        borderRadius: 3
+        borderRadius: 3,
+        border: "inset",
     },
     images: {
         height: "inherit",
@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const InventorySlots = (props) => {
+function InventorySlots(props) {
     const classes = useStyles();
 
     return (
@@ -90,6 +90,11 @@ const InventorySlots = (props) => {
                                         className={classes.countGrid}
                                         variant="outlined"
                                     >
+                                        {props.item.ammo ? (
+                                            props.item.ammo
+                                        ) : (
+                                            <Fragment />
+                                        )}
                                         {props.item.count ? (
                                             props.item.count
                                         ) : (
@@ -153,6 +158,11 @@ const InventorySlots = (props) => {
                                 className={classes.countGrid}
                                 variant="outlined"
                             >
+                                {props.item.ammo ? (
+                                    props.item.ammo
+                                ) : (
+                                    <Fragment />
+                                )}
                                 {props.item.count ? (
                                     props.item.count
                                 ) : (
@@ -196,6 +206,6 @@ const InventorySlots = (props) => {
             })()}
         </div>
     );
-};
+}
 
 export default InventorySlots;
