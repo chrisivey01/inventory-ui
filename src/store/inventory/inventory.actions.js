@@ -1,6 +1,7 @@
 export const SHOW_INVENTORY = "SHOW_INVENTORY";
 export const CLOSE_INVENTORY = "CLOSE_INVENTORY";
-export const LOAD_PERSONAL_INVENTORY = "LOAD_PERSONAL_INVENTORY";
+export const LOAD_SORTED_INVENTORY = "LOAD_SORTED_INVENTORY";
+export const LOAD_UNSORTED_INVENTORY = "LOAD_UNSORTED_INVENTORY";
 
 export const LOAD_HOTBAR = "LOAD_HOTBAR";
 export const CLOSE_HOTBAR = "CLOSE_HOTBAR";
@@ -19,16 +20,21 @@ export const USE_ITEM_SLOT_THREE = "USE_ITEM_SLOT_THREE";
 export const USE_ITEM_SLOT_FOUR = "USE_ITEM_SLOT_FOUR";
 export const USE_ITEM_SLOT_FIVE = "USE_ITEM_SLOT_FIVE";
 
-export const showInventory = () => ({
-    type: SHOW_INVENTORY,
-});
+// export const showInventory = () => ({
+//     type: SHOW_INVENTORY,
+// });
 
 export const closeInventory = () => ({
     type: CLOSE_INVENTORY,
 });
 
-export const loadPersonalInventory = (payload) => ({
-    type: LOAD_PERSONAL_INVENTORY,
+export const loadSortedInventory = (payload) => ({
+    type: LOAD_SORTED_INVENTORY,
+    payload: payload,
+});
+
+export const loadUnsortedInventory = (payload) => ({
+    type: LOAD_UNSORTED_INVENTORY,
     payload: payload,
 });
 
@@ -41,10 +47,10 @@ export const loadHotbar = (payload) => ({
     payload: payload,
 });
 
-export const updateFlattenedPersonalInventory = (inventory) => ({
-    type: UPDATE_FLATTENED_PERSONAL_INVENTORY,
-    payload: inventory,
-});
+// export const updateFlattenedPersonalInventory = (inventory) => ({
+//     type: UPDATE_FLATTENED_PERSONAL_INVENTORY,
+//     payload: inventory,
+// });
 
 export const selectInventoryItem = (item, index) => ({
     type: SELECT_INVENTORY_ITEM,
@@ -61,10 +67,10 @@ export const moveInventoryItem = (index) => ({
     payload: index,
 });
 
-export const swapPositionsInventory = (item) => ({
-    type: SWAP_POSTION_INVENTORY,
-    payload: item,
-});
+// export const swapPositionsInventory = (item) => ({
+//     type: SWAP_POSTION_INVENTORY,
+//     payload: item,
+// });
 
 export const useInventoryItem = (itemIndex) => ({
     type: USE_INVENTORY_ITEM,

@@ -39,7 +39,7 @@ function InventoryContainer() {
     const [showHideToggler, setShowHideToggler] = useState(false);
     const classes = useStyles();
     const dispatch = useDispatch();
-    const inventory = useSelector((state) => state.inventory.inventory);
+    const sortedInventory = useSelector((state) => state.inventory.sortedInventory);
     const inventoryType = useSelector((state) => state.inventory.inventoryType);
 
     const hotbar = useSelector((state) => state.inventory.hotbar);
@@ -108,11 +108,20 @@ function InventoryContainer() {
                         dispatch(actions.loadPersonalInventory(data));
                     } else {
                         if (event.data.inventory) {
+                            const sortedPayload = {
+                                inventory: event.data.inventory,
+                                inventoryType: event.data.inventoryType,
+                                sortedInventory: event.data.sortedInventory
+                            };
                             const payload = {
                                 inventory: event.data.inventory,
                                 inventoryType: event.data.inventoryType,
-                            };
-                            dispatch(actions.loadPersonalInventory(payload));
+                            }
+                            if(event.data.sortedInventory.length > 0){
+                                dispatch(actions.loadSortedInventory(sortedPayload));
+                            } else {
+                                dispatch(actions.loadUnsortedInventory(payload));
+                            }
                         }
                     }
                     break;
@@ -142,7 +151,7 @@ function InventoryContainer() {
                 <Inventory
                     inventoryTitle={inventoryType}
                     inventoryType={inventoryType}
-                    inventory={inventory}
+                    inventory={sortedInventory}
                 />
                 <Menu />
                 <Inventory />
