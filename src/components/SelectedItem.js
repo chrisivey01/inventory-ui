@@ -1,5 +1,4 @@
-import { makeStyles, Paper, Typography } from "@material-ui/core";
-import Grid from "@material-ui/core/Grid";
+import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import React, { Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
 
@@ -55,17 +54,11 @@ const initialState = {
     mouseY: null,
 };
 
-function SelectedItem(props){
+function SelectedItem(props) {
     const classes = useStyles();
     const [state, setState] = React.useState(initialState);
     const item = useSelector((state) => state.item.itemInfo);
 
-    // const hover = useSelector((state) => state.inventory.hoverItem);
-    // const iD = useSelector((state) => state.itemData.info);
-
-    // const itemData = () => {
-    //     return iD[hover.data.item.Id] ? iD[hover.data.item.Id] : {};
-    // };
     useEffect(() => {
         document.addEventListener(
             "mousemove",
@@ -90,7 +83,7 @@ function SelectedItem(props){
                         ? {
                               top: state.mouseY,
                               left: state.mouseX,
-                              transform: "translate(-3vw, -15vh)",
+                              transform: "translate(-8vw, -15vh)",
                           }
                         : undefined
                 }
@@ -117,6 +110,6 @@ function SelectedItem(props){
     } else {
         return <Fragment />;
     }
-};
+}
 
 export default SelectedItem;

@@ -1,18 +1,26 @@
 import Apis from "../../apis/apis";
+
+let pastWeaponForSwaps;
+
 export const loadUnsortedInventory = (inventory, currentInventory) => {
     let items = inventory.items.filter((item) => item.count > 0);
-    let weapons = inventory.weapons;
-    // if (currentInventory.length === 0) {
-    weapons.map((item) => currentInventory.push(item));
+
+    let weapons;
+    if(inventory.weapons){
+        weapons = inventory.weapons;
+        weapons.map((item) => currentInventory.push(item));
+    }
     items.forEach((item) => currentInventory.push(item));
-    inventory.accounts.forEach((item) => {
-        if (
-            (item.name === "money" && item.money > 0) ||
-            (item.name === "black_money" && item.money > 0)
-        ) {
-            currentInventory.push(item);
-        }
-    });
+    if(inventory.accounts){
+        inventory.accounts.forEach((item) => {
+            if (
+                (item.name === "money" && item.money > 0) ||
+                (item.name === "black_money" && item.money > 0)
+            ) {
+                currentInventory.push(item);
+            }
+        });
+    }
     currentInventory.weight = inventory.weight;
     currentInventory.money = inventory.money;
     currentInventory.maxWeight = inventory.maxWeight;
@@ -21,7 +29,6 @@ export const loadUnsortedInventory = (inventory, currentInventory) => {
         currentInventory.push("{}");
     }
     return [...currentInventory];
-    // } else {
 };
 
 export const loadSortedInventory = (inventory, currentInventory) => {
@@ -62,10 +69,10 @@ export const loadSortedInventory = (inventory, currentInventory) => {
 
     return [...currentInventory];
 };
-// };
 
 export const moveInventoryItem = (
     flattenedInventory,
+    secondInventory,
     firstItemIndex,
     secondItemIndex
 ) => {
@@ -76,72 +83,55 @@ export const moveInventoryItem = (
     return [...flattenedInventory];
 };
 
-// export const updateFlattenedPersonalInventory = (flattenedInventory) => {
-//     let flattenedList = flattenedInventory.flattened;
-//     let nonFlattenedList = flattenedInventory.nonFlattened.items;
-//     let itemList = nonFlattenedList.filter((item) => item.count > 0);
-
-//     // this is here to make itemList have 25 places for inventory
-//     while (itemList.length < 50) {
-//         itemList.push("{}");
-//     }
-
-//     itemList.map((item) => {
-//         let index = flattenedList
-//             .map((flatItem) => flatItem.name)
-//             .indexOf(item.name);
-//         console.log(index);
-//         return (itemList[index] = item);
-//     });
-
-//     return itemList;
-// };
-
 export const useInventoryItem = (flattenedInventory, itemIndex, item) => {
     Apis.useInventoryItem(flattenedInventory[itemIndex], itemIndex);
-    if (flattenedInventory[itemIndex].ammo !== undefined) {
-        if (
-            flattenedInventory[itemIndex].name === item.name &&
-            item.unequip === true
-        ) {
+    if (flattenedInventory[itemIndex] !== undefined) {
+        if (flattenedInventory[itemIndex].ammo !== undefined) {
+            if (
+                flattenedInventory[itemIndex].name === item.name &&
+                item.unequip === true
+            ) {
+                return { ...flattenedInventory[itemIndex], unequip: false };
+            } else if (
+                flattenedInventory[itemIndex].name === item.name &&
+                item.unequip === false
+            ) {
+                return { ...flattenedInventory[itemIndex], unequip: true };
+            } else if (
+                flattenedInventory[itemIndex].name !== item.name &&
+                item.unequip === true &&
+                item.count === undefined
+            ) {
+                pastWeaponForSwaps = flattenedInventory[itemIndex];
+                return { ...flattenedInventory[itemIndex], unequip: false };
+            } else if (
+                pastWeaponForSwaps &&
+                flattenedInventory[itemIndex].name !== pastWeaponForSwaps.name
+            ) {
+                return { ...flattenedInventory[itemIndex], unequip: false };
+            } else if (
+                flattenedInventory[itemIndex].name !== item.name &&
+                item.unequip === true &&
+                item.count
+            ) {
+                return { ...flattenedInventory[itemIndex], unequip: true };
+            } else if (
+                flattenedInventory[itemIndex].name !== item.name &&
+                item.unequip === false
+            ) {
+                return { ...flattenedInventory[itemIndex], unequip: false };
+            } else if (item === undefined) {
+                return { ...flattenedInventory[itemIndex], unequip: true };
+            } else if (item[0] === "{" && item[1] === "}") {
+                return { ...flattenedInventory[itemIndex], unequip: true };
+            }
             return { ...flattenedInventory[itemIndex], unequip: false };
-        } else if (
-            flattenedInventory[itemIndex].name !== item.name &&
-            item.unequip === true
-        ) {
-            return { ...flattenedInventory[itemIndex], unequip: false };
-        } else if (
-            flattenedInventory[itemIndex].name !== item.name &&
-            item.unequip === false &&
-            item.ammo
-        ) {
-            return { ...flattenedInventory[itemIndex], unequip: false };
-        } else if (
-            flattenedInventory[itemIndex].name !== item.name &&
-            item.unequip === false &&
-            item.count
-        ) {
-            return { ...flattenedInventory[itemIndex], unequip: true };
-        } else if (
-            flattenedInventory[itemIndex].name === item.name &&
-            item.unequip === false
-        ) {
-            return { ...flattenedInventory[itemIndex], unequip: true };
-        } else if (
-            flattenedInventory[itemIndex].name === item.name &&
-            item.unequip === true
-        ) {
-            return { ...flattenedInventory[itemIndex], unequip: true };
-        } else if (
-            flattenedInventory[itemIndex].name !== item.name &&
-            item.unequip === true
-        ) {
-            return { ...flattenedInventory[itemIndex], unequip: false };
-        } else if (item === undefined) {
-            return { ...flattenedInventory[itemIndex], unequip: true };
         }
+        if (item.ammo) {
+            pastWeaponForSwaps = item;
+        }
+        return { ...flattenedInventory[itemIndex], unequip: true };
     }
-    return { ...flattenedInventory[itemIndex], unequip: false };
 };
 
 export const closeInventory = (flattenedInventory) => {

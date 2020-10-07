@@ -2,7 +2,6 @@ import * as types from "./inventory.actions";
 import * as utils from "./inventory.utils";
 
 const initialState = {
-    secondInventory: new Array(50).fill(undefined),
     selectedItem: {},
     selectedItemIndex: null,
 
@@ -11,9 +10,9 @@ const initialState = {
     inventoryType: "",
     inventory: [],
     sortedInventory: [],
-
-    hotbar: [],
-    showHotbar: false,
+    secondInventory: [],
+    secondInventoryType: null,
+    data: {},
 };
 
 const inventoryReducer = (state = initialState, action) => {
@@ -38,40 +37,22 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 sortedInventory: utils.loadSortedInventory(
                     action.payload.inventory,
-                    action.payload.sortedInventory,
+                    action.payload.sortedInventory
                 ),
                 inventoryType: action.payload.inventoryType,
-            };
-        case types.LOAD_HOTBAR:
-            return {
-                ...state,
-                sortedInventory: utils.loadPersonalInventory(
-                    action.payload.inventory,
-                    state.sortedInventory
-                ),
-                hotbar: utils.loadHotbar(state.sortedInventory),
-                showHotbar: true,
-            };
-        case types.CLOSE_HOTBAR:
-            return {
-                ...state,
-                showHotbar: false,
             };
         case types.SELECT_INVENTORY_ITEM:
             return {
                 ...state,
-                selectedItem: state.sortedInventory[action.payload],
-            };
-        case types.SELECT_INVENTORY_ITEM_INDEX:
-            return {
-                ...state,
-                selectedItemIndex: action.payload,
+                selectedItem: action.payload.item,
+                selectedItemIndex: action.payload.index
             };
         case types.MOVE_INVENTORY_ITEM:
             return {
                 ...state,
                 sortedInventory: utils.moveInventoryItem(
                     state.sortedInventory,
+                    state.secondInventory,
                     state.selectedItemIndex,
                     action.payload
                 ),
@@ -90,6 +71,16 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 show: false,
+            };
+        case types.LOAD_TRUNK_INVENTORY:
+            return {
+                ...state,
+                secondInventory: utils.loadUnsortedInventory(
+                    action.payload.inventory,
+                    action.payload.sortedInventory
+                ),
+                secondInventoryType: action.payload.inventoryType,
+                data: action.payload.carData,
             };
         default:
             return state;

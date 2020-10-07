@@ -9,12 +9,12 @@ const itemReducer = (state = initialState, action) => {
         case types.SET_INFO:
             return {
                 ...state,
-                itemInfo: action.payload,
+                itemInfo: action.payload.item,
             };
         case types.CLEAR_INFO:
             return {
                 ...state,
-                itemInfo: {}
+                itemInfo: {},
             };
         default:
             return state;

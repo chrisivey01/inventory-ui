@@ -8,9 +8,11 @@ const useItemThreeUrl = "http://pma-inventory/UseItemThree";
 const useItemFourUrl = "http://pma-inventory/UseItemFour";
 const useItemFiveUrl = "http://pma-inventory/UseItemFive";
 
+const openTrunkUrl = "http://pma-inventory/OpenTrunk";
+
 const Apis = {
-    openInventory(inventoryType) {
-        return axios.post(openInventoryUrl, items);
+    openInventory() {
+        return axios.post(openInventoryUrl);
     },
 
     closeInventory(items) {
@@ -18,7 +20,7 @@ const Apis = {
     },
 
     useInventoryItem(item, itemSlot) {
-        if(item){
+        if (item) {
             if (itemSlot === 0) {
                 return axios.post(useItemOneUrl, item);
             } else if (itemSlot === 1) {
@@ -31,6 +33,10 @@ const Apis = {
                 return axios.post(useItemFiveUrl, item);
             }
         }
+    },
+
+    openTrunk() {
+        return axios.post(openTrunkUrl);
     },
 };
 

@@ -1,6 +1,6 @@
-import { Fade, Grid, makeStyles, Paper, Typography } from "@material-ui/core";
-import React, { Fragment, useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { Fade, makeStyles, Paper, Typography } from "@material-ui/core";
+import React, { Fragment, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../store/inventory/inventory.actions";
 const useStyles = makeStyles((theme) => ({
     grid: {
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
         left: 0,
         top: 0,
         zIndex: 1,
-        fontSize: 12, 
+        fontSize: 12,
         height: "20%",
         userSelect: "none",
         border: "none",

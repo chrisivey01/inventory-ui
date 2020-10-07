@@ -1,12 +1,13 @@
 import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import React, { Fragment } from "react";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     hotkeyBar: {
         position: "absolute",
         bottom: 0,
-        justifyContent:"center",
-        width:"99%"
+        justifyContent: "center",
+        width: "99%",
     },
     slot: {
         width: "96px",
@@ -56,22 +57,18 @@ const useStyles = makeStyles((theme) => ({
         width: "inherit",
         objectFit: "contain",
     },
-
 }));
 
-function Hotbar(props) {
+function HotbarContainer() {
     const classes = useStyles();
-    const { hotbar } = props;
+    const itemSlots = useSelector((state) => state.inventory.sortedInventory);
 
     return (
         <Grid container className={classes.hotkeyBar}>
-            {hotbar.map((item, i) => {
+            {itemSlots.map((item, i) => {
                 if (i < 5) {
                     return (
-                        <Paper
-                            elevation={3}
-                            className={classes.slot}
-                        >
+                        <Paper elevation={3} className={classes.slot}>
                             <Typography
                                 className={classes.slotNumberGrid}
                                 variant="outlined"
@@ -82,16 +79,8 @@ function Hotbar(props) {
                                 className={classes.countGrid}
                                 variant="outlined"
                             >
-                                {item.ammo ? (
-                                    item.ammo
-                                ) : (
-                                    <Fragment />
-                                )}
-                                {item.count ? (
-                                    item.count
-                                ) : (
-                                    <Fragment />
-                                )}
+                                {item.ammo ? item.ammo : <Fragment />}
+                                {item.count ? item.count : <Fragment />}
                                 {item.money ? (
                                     <span style={{ color: "green" }}>
                                         $
@@ -122,4 +111,4 @@ function Hotbar(props) {
     );
 }
 
-export default Hotbar;
+export default HotbarContainer;

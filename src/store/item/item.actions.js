@@ -2,9 +2,9 @@ export const SET_INFO = "SET_INFO"
 export const CLEAR_INFO = "CLEAR_INFO"
 
 
-export const setInfo = (itemInfo) => ({
+export const setInfo = (payload) => ({
     type: SET_INFO,
-    payload: itemInfo
+    payload: payload
 })
 
 export const clearInfo = () => ({
