@@ -1,3 +1,4 @@
+import Apis from "../../apis/apis";
 export const SHOW_INVENTORY = "SHOW_INVENTORY";
 export const CLOSE_INVENTORY = "CLOSE_INVENTORY";
 export const LOAD_SORTED_INVENTORY = "LOAD_SORTED_INVENTORY";
@@ -14,11 +15,15 @@ export const USE_ITEM_SLOT_THREE = "USE_ITEM_SLOT_THREE";
 export const USE_ITEM_SLOT_FOUR = "USE_ITEM_SLOT_FOUR";
 export const USE_ITEM_SLOT_FIVE = "USE_ITEM_SLOT_FIVE";
 
-export const LOAD_TRUNK_INVENTORY = "LOAD_TRUNK_INVENTORY";
+export const LOAD_SECOND_INVENTORY = "LOAD_SECOND_INVENTORY";
 
-export const closeInventory = () => ({
-    type: CLOSE_INVENTORY,
-});
+export const closeInventory = (sortedInventory, secondInventory) => {
+    return (dispatch) => {
+
+        Apis.closeInventory(sortedInventory, secondInventory);
+        dispatch({ type: CLOSE_INVENTORY });
+    };
+};
 
 export const loadSortedInventory = (payload) => ({
     type: LOAD_SORTED_INVENTORY,
@@ -50,7 +55,7 @@ export const hideUseInventoryItem = (item) => ({
     payload: item,
 });
 
-export const loadTrunkInventory = (payload) => ({
-    type: LOAD_TRUNK_INVENTORY,
-    payload:payload
-})
+export const loadSecondInventory = (payload) => ({
+    type: LOAD_SECOND_INVENTORY,
+    payload: payload,
+});

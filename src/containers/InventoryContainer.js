@@ -1,10 +1,12 @@
 import { Grid, makeStyles } from "@material-ui/core";
-import React, { Fragment } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Inventory from "../components/Inventory";
 import PlayerMenu from "../components/PlayerMenu";
 import SelectedItem from "../components/SelectedItem";
 import * as inventoryActions from "../store/inventory/inventory.actions";
+import * as hotbarActions from "../store/hotbar/hotbar.actions";
+
 import * as itemActions from "../store/item/item.actions";
 
 const useStyles = makeStyles((theme) => ({
@@ -55,20 +57,37 @@ function InventoryContainer(props) {
 
     //message/action handler from the service/client of lua
 
-    const onStart = (e, i) => {
+    const onStart = (e, i, type) => {
         const payload = {
             item: sortedInventory[i],
-            index: i
-        }
+            index: i,
+        };
+        console.log(type);
         dispatch(inventoryActions.selectInventoryItem(payload));
         dispatch(itemActions.setInfo(payload));
     };
 
-    const onStop = (e, i) => {
+    const onStop = (e, i, type) => {
+        console.log(type);
         dispatch(itemActions.clearInfo());
         dispatch(inventoryActions.moveInventoryItem(i));
-        // dispatch(inventoryActions.selectInventoryItem());
     };
+
+    const closeFunction = (event) => {
+        if (event.which === 27 || event.which === 113) {
+            dispatch(
+                inventoryActions.closeInventory(
+                    sortedInventory,
+                    secondInventory
+                )
+            );
+            dispatch(hotbarActions.closeHotbar());
+        }
+    };
+    useEffect(() => {
+        window.addEventListener("keydown", closeFunction);
+        return () => window.removeEventListener("keydown", closeFunction);
+    }, []);
 
     return (
         <Grid className={classes.inventoryDisplay} container>

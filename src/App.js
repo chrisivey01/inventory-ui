@@ -8,24 +8,8 @@ import HotbarContainer from "./containers/HotbarContainer";
 
 const App = () => {
     const dispatch = useDispatch();
-    const [showHide, setShowHide] = useState(false);
+    const showHide = useSelector((state) => state.inventory.showHide);
     const showHotbar = useSelector((state) => state.hotbar.showHotbar);
-
-    useEffect(() => {
-        document.addEventListener("keydown", (e) => onKeyPress(e));
-        return () => {
-            document.removeEventListener("keydown", (e) => onKeyPress(e));
-        };
-    }, []);
-
-    //Press ESC to close the application
-    const onKeyPress = (e) => {
-        if (e.keyCode === 27) {
-            setShowHide(false);
-            dispatch(inventoryActions.closeInventory());
-            dispatch(hotbarActions.closeHotbar());
-        }
-    };
 
     const onMessage = (e) => {
         switch (e.data.useItem) {
@@ -63,9 +47,9 @@ const App = () => {
 
     useEffect(() => {
         window.addEventListener("message", (event) => {
-            if (event.data.openInventory) {
-                setShowHide(true);
-            }
+            // if (event.data.openInventory) {
+            //     dispatch(actions.loadPersonalInventory)
+            // }
 
             switch (event.data.inventoryType) {
                 case "Personal": {
@@ -113,7 +97,7 @@ const App = () => {
                         sortedInventory: [],
                     };
 
-                    dispatch(inventoryActions.loadTrunkInventory(payload));
+                    dispatch(inventoryActions.loadSecondInventory(payload));
                 }
 
                 default:

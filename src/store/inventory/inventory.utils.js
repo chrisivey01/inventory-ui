@@ -134,11 +134,10 @@ export const useInventoryItem = (flattenedInventory, itemIndex, item) => {
     }
 };
 
-export const closeInventory = (flattenedInventory) => {
-    Apis.closeInventory(flattenedInventory);
+// export const closeInventory = (flattenedInventory) => {
 
-    return false;
-};
+//     return false;
+// };
 
 export const loadHotbar = (inventory) => {
     let inventoryClone = [...inventory];

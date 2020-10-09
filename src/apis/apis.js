@@ -15,8 +15,12 @@ const Apis = {
         return axios.post(openInventoryUrl);
     },
 
-    closeInventory(items) {
-        return axios.post(closeInventoryUrl, items);
+    closeInventory(sortedInventory, secondInventory) {
+        let data = {
+            sortedInventory: sortedInventory,
+            secondInventory: secondInventory,
+        };
+        return axios.post(closeInventoryUrl, data);
     },
 
     useInventoryItem(item, itemSlot) {

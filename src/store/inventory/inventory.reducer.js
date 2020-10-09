@@ -13,6 +13,8 @@ const initialState = {
     secondInventory: [],
     secondInventoryType: null,
     data: {},
+    showHide: false,
+    show: false,
 };
 
 const inventoryReducer = (state = initialState, action) => {
@@ -20,8 +22,10 @@ const inventoryReducer = (state = initialState, action) => {
         case types.CLOSE_INVENTORY:
             return {
                 ...state,
-                show: utils.closeInventory(state.sortedInventory),
+                showHide: false,
                 type: "",
+                secondInventory: [],
+                secondInventoryType: null,
             };
         case types.LOAD_UNSORTED_INVENTORY:
             return {
@@ -31,6 +35,7 @@ const inventoryReducer = (state = initialState, action) => {
                     state.inventory
                 ),
                 inventoryType: action.payload.inventoryType,
+                showHide: true,
             };
         case types.LOAD_SORTED_INVENTORY:
             return {
@@ -40,12 +45,13 @@ const inventoryReducer = (state = initialState, action) => {
                     action.payload.sortedInventory
                 ),
                 inventoryType: action.payload.inventoryType,
+                showHide: true,
             };
         case types.SELECT_INVENTORY_ITEM:
             return {
                 ...state,
                 selectedItem: action.payload.item,
-                selectedItemIndex: action.payload.index
+                selectedItemIndex: action.payload.index,
             };
         case types.MOVE_INVENTORY_ITEM:
             return {
@@ -72,7 +78,7 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 show: false,
             };
-        case types.LOAD_TRUNK_INVENTORY:
+        case types.LOAD_SECOND_INVENTORY:
             return {
                 ...state,
                 secondInventory: utils.loadUnsortedInventory(
@@ -81,6 +87,8 @@ const inventoryReducer = (state = initialState, action) => {
                 ),
                 secondInventoryType: action.payload.inventoryType,
                 data: action.payload.carData,
+                showHide: true,
+
             };
         default:
             return state;
