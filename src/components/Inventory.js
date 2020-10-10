@@ -1,6 +1,5 @@
 import { Grid, makeStyles, Typography } from "@material-ui/core";
 import React, { Fragment } from "react";
-import { useDispatch } from "react-redux";
 import InventorySlots from "./InventorySlots";
 
 const useStyles = makeStyles((theme) => ({

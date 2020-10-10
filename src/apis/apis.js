@@ -20,7 +20,7 @@ const Apis = {
             sortedInventory: sortedInventory,
             secondInventory: secondInventory,
         };
-        return axios.post(closeInventoryUrl, data);
+        axios.post(closeInventoryUrl, data);
     },
 
     useInventoryItem(item, itemSlot) {

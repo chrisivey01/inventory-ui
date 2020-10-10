@@ -19,9 +19,15 @@ export const LOAD_SECOND_INVENTORY = "LOAD_SECOND_INVENTORY";
 
 export const closeInventory = (sortedInventory, secondInventory) => {
     return (dispatch) => {
-
-        Apis.closeInventory(sortedInventory, secondInventory);
-        dispatch({ type: CLOSE_INVENTORY });
+        const payload = {
+            sortedInventory: sortedInventory,
+            secondInventory: secondInventory,
+        };
+        dispatch({
+            type: CLOSE_INVENTORY,
+            payload: payload,
+        });
+        Apis.closeInventory(sortedInventory)
     };
 };
 

@@ -34,6 +34,8 @@ const inventoryReducer = (state = initialState, action) => {
                     action.payload.inventory,
                     state.inventory
                 ),
+                currentWeight: action.payload.inventory.weight,
+                maxWeight: action.payload.inventory.maxWeight,
                 inventoryType: action.payload.inventoryType,
                 showHide: true,
             };

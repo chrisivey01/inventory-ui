@@ -2,33 +2,34 @@ import Apis from "../../apis/apis";
 
 let pastWeaponForSwaps;
 
-export const loadUnsortedInventory = (inventory, currentInventory) => {
-    let items = inventory.items.filter((item) => item.count > 0);
+export const loadUnsortedInventory = (currentInventory) => {
+    let inventory = {};
+    inventory.items = currentInventory.items.filter((item) => item.count > 0);
 
     let weapons;
-    if(inventory.weapons){
-        weapons = inventory.weapons;
-        weapons.map((item) => currentInventory.push(item));
+    if (currentInventory.weapons) {
+        weapons = currentInventory.weapons;
+        weapons.map((item) => inventory.items.push(item));
     }
-    items.forEach((item) => currentInventory.push(item));
-    if(inventory.accounts){
-        inventory.accounts.forEach((item) => {
+    // currentInventory.items.forEach((item) => inventory.items.push(item));
+    if (currentInventory.accounts) {
+        currentInventory.accounts.forEach((item) => {
             if (
                 (item.name === "money" && item.money > 0) ||
                 (item.name === "black_money" && item.money > 0)
             ) {
-                currentInventory.push(item);
+                inventory.items.push(item);
             }
         });
     }
-    currentInventory.weight = inventory.weight;
-    currentInventory.money = inventory.money;
-    currentInventory.maxWeight = inventory.maxWeight;
+    inventory.weight = currentInventory.weight;
+    inventory.money = currentInventory.money;
+    inventory.maxWeight = currentInventory.maxWeight;
 
-    while (currentInventory.length < 50) {
-        currentInventory.push("{}");
+    while (inventory.items.length < 50) {
+        inventory.items.push("{}");
     }
-    return [...currentInventory];
+    return inventory.items;
 };
 
 export const loadSortedInventory = (inventory, currentInventory) => {
@@ -67,20 +68,20 @@ export const loadSortedInventory = (inventory, currentInventory) => {
         }
     });
 
-    return [...currentInventory];
+    return currentInventory;
 };
 
 export const moveInventoryItem = (
-    flattenedInventory,
+    origInventory,
     secondInventory,
     firstItemIndex,
     secondItemIndex
 ) => {
-    const selectedItem = flattenedInventory[firstItemIndex];
-    //returns an array for some odd reason
-    let movedTo = flattenedInventory.splice(secondItemIndex, 1, selectedItem);
-    flattenedInventory.splice(firstItemIndex, 1, movedTo[0]);
-    return [...flattenedInventory];
+    let inventory = [...origInventory]
+    const selectedItem = inventory[firstItemIndex];
+    let movedTo = inventory.splice(secondItemIndex, 1, selectedItem);
+    inventory.splice(firstItemIndex, 1, movedTo[0]);
+    return inventory;
 };
 
 export const useInventoryItem = (flattenedInventory, itemIndex, item) => {
@@ -133,11 +134,6 @@ export const useInventoryItem = (flattenedInventory, itemIndex, item) => {
         return { ...flattenedInventory[itemIndex], unequip: true };
     }
 };
-
-// export const closeInventory = (flattenedInventory) => {
-
-//     return false;
-// };
 
 export const loadHotbar = (inventory) => {
     let inventoryClone = [...inventory];
