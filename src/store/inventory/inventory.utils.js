@@ -7,13 +7,21 @@ export const loadUnsortedInventory = (currentInventory) => {
     inventory.items = currentInventory.items.filter((item) => item.count > 0);
 
     let weapons;
+    inventory.items.forEach((item) => {
+        item.type = "item_standard";
+    });
     if (currentInventory.weapons) {
         weapons = currentInventory.weapons;
-        weapons.map((item) => inventory.items.push(item));
+        weapons.map((item) => {
+            item.type = "item_weapon";
+            inventory.items.push(item);
+        });
     }
     // currentInventory.items.forEach((item) => inventory.items.push(item));
     if (currentInventory.accounts) {
         currentInventory.accounts.forEach((item) => {
+            item.type = "item_account";
+
             if (
                 (item.name === "money" && item.money > 0) ||
                 (item.name === "black_money" && item.money > 0)
@@ -36,13 +44,20 @@ export const loadSortedInventory = (inventory, currentInventory) => {
     let items = inventory.items.filter((item) => item.count > 0);
     let weapons = inventory.weapons;
     let array = [];
-    weapons.forEach((item) => array.push(item));
-    items.forEach((item) => array.push(item));
+    weapons.forEach((item) => {
+        item.type = "item_weapon";
+        array.push(item);
+    });
+    items.forEach((item) => {
+        item.type = "item_standard";
+        array.push(item);
+    });
     inventory.accounts.forEach((item) => {
         if (
             (item.name === "money" && item.money > 0) ||
             (item.name === "black_money" && item.money > 0)
         ) {
+            item.type = "item_account";
             array.push(item);
         }
     });
@@ -79,8 +94,6 @@ export const loadSortedInventory = (inventory, currentInventory) => {
 // state.secondInventory,
 // state.selectedItemIndex,
 // state.selectedItemType,
-
-
 export const useInventoryItem = (flattenedInventory, itemIndex, item) => {
     Apis.useInventoryItem(flattenedInventory[itemIndex], itemIndex);
     if (flattenedInventory[itemIndex] !== undefined) {

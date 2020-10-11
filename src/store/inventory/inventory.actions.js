@@ -16,7 +16,7 @@ export const USE_ITEM_SLOT_FOUR = "USE_ITEM_SLOT_FOUR";
 export const USE_ITEM_SLOT_FIVE = "USE_ITEM_SLOT_FIVE";
 
 export const LOAD_SECOND_INVENTORY = "LOAD_SECOND_INVENTORY";
-
+export const LOAD_SECOND_INVENTORY_SORTED = "LOAD_SECOND_INVENTORY_SORTED";
 export const closeInventory = (sortedInventory, secondInventory, carData) => {
     return (dispatch) => {
         const payload = {
@@ -46,10 +46,16 @@ export const selectInventoryItem = (payload) => ({
     payload: payload,
 });
 
-export const moveInventoryItem = (index) => ({
-    type: MOVE_INVENTORY_ITEM,
-    payload: index,
-});
+export const moveInventoryItem = (payload, selectedItem) => {
+    return (dispatch) => {
+        dispatch({ type: MOVE_INVENTORY_ITEM, payload: payload });
+        const data = {
+            selectedItem: selectedItem,
+            type: payload.type
+        }
+        Apis.updateInventory(data);
+    };
+};
 
 export const useInventoryItem = (itemIndex) => ({
     type: USE_INVENTORY_ITEM,
@@ -63,5 +69,10 @@ export const hideUseInventoryItem = (item) => ({
 
 export const loadSecondInventory = (payload) => ({
     type: LOAD_SECOND_INVENTORY,
+    payload: payload,
+});
+
+export const loadSecondInventorySorted = (payload) => ({
+    type: LOAD_SECOND_INVENTORY_SORTED,
     payload: payload,
 });

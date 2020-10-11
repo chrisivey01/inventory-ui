@@ -77,10 +77,10 @@ function InventorySlots(props) {
                                         elevation={3}
                                         className={classes.slot}
                                         onMouseDown={(e) =>
-                                            props.onStart(e, props.i, props.inventoryType)
+                                            props.onStart(e, props.i, props.inventoryType, props.item.type)
                                         }
                                         onMouseUp={(e) =>
-                                            props.onStop(e, props.i, props.inventoryType)
+                                            props.onStop(e, props.i, props.inventoryType, props.item.type)
                                         }
                                     >
                                         <Typography
@@ -137,10 +137,10 @@ function InventorySlots(props) {
                                         elevation={3}
                                         className={classes.slot}
                                         onMouseDown={(e) =>
-                                            props.onStart(e, props.i, props.inventoryType)
+                                            props.onStart(e, props.i, props.inventoryType, props.item.type)
                                         }
                                         onMouseUp={(e) =>
-                                            props.onStop(e, props.i, props.inventoryType)
+                                            props.onStop(e, props.i, props.inventoryType, props.item.type)
                                         }
                                     >
                                         <Typography
@@ -158,8 +158,8 @@ function InventorySlots(props) {
                             <Paper
                                 elevation={3}
                                 className={classes.slot}
-                                onMouseDown={(e) => props.onStart(e, props.i, props.inventoryType)}
-                                onMouseUp={(e) => props.onStop(e, props.i, props.inventoryType)}
+                                onMouseDown={(e) => props.onStart(e, props.i, props.inventoryType, props.item.type)}
+                                onMouseUp={(e) => props.onStop(e, props.i, props.inventoryType, props.item.type)}
                             >
                                 <Typography
                                     className={classes.countGrid}
@@ -205,8 +205,8 @@ function InventorySlots(props) {
                             <Paper
                                 elevation={3}
                                 className={classes.slot}
-                                onMouseDown={(e) => props.onStart(e, props.i, props.inventoryType)}
-                                onMouseUp={(e) => props.onStop(e, props.i, props.inventoryType)}
+                                onMouseDown={(e) => props.onStart(e, props.i, props.inventoryType, props.item.type)}
+                                onMouseUp={(e) => props.onStop(e, props.i, props.inventoryType, props.item.type)}
                             />
                         );
                     }
@@ -217,10 +217,10 @@ function InventorySlots(props) {
                                 elevation={3}
                                 className={classes.slot}
                                 onMouseDown={(e) =>
-                                    props.onStart(e, props.i, props.inventoryType)
+                                    props.onStart(e, props.i, props.inventoryType, props.item.type)
                                 }
                                 onMouseUp={(e) =>
-                                    props.onStop(e, props.i, props.inventoryType)
+                                    props.onStop(e, props.i, props.inventoryType, props.item.type)
                                 }
                             >
                                 <Typography
@@ -268,10 +268,10 @@ function InventorySlots(props) {
                                 elevation={3}
                                 className={classes.slot}
                                 onMouseDown={(e) =>
-                                    props.onStart(e, props.i, props.inventoryType)
+                                    props.onStart(e, props.i, props.inventoryType, props.item.type)
                                 }
                                 onMouseUp={(e) =>
-                                    props.onStop(e, props.i, props.inventoryType)
+                                    props.onStop(e, props.i, props.inventoryType, props.item.type)
                                 }
                             />
                         );

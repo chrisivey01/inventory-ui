@@ -4,7 +4,7 @@ import * as utils from "./inventory.utils";
 const initialState = {
     selectedItem: {},
     selectedItemIndex: null,
-    selectedItemType: null,
+    selectedType: null,
     usedItem: {},
     inventoryShow: false,
     inventoryType: "",
@@ -55,7 +55,8 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 selectedItem: action.payload.item,
                 selectedItemIndex: action.payload.index,
-                selectedItemType: action.payload.type,
+                selectedType: action.payload.type,
+                selectedItemType: action.payload.itemType
             };
         case types.MOVE_INVENTORY_ITEM:
             let inv = [...state.sortedInventory];
@@ -63,7 +64,7 @@ const inventoryReducer = (state = initialState, action) => {
             if (state.secondInventory) {
                 secInv = [...state.secondInventory];
             }
-            const selectedType = state.selectedItemType;
+            const selectedType = state.selectedType;
             const invData = action.payload;
             const selectedItemIndex = state.selectedItemIndex;
 
@@ -122,6 +123,17 @@ const inventoryReducer = (state = initialState, action) => {
                 ),
                 secondInventoryType: action.payload.inventoryType,
                 data: action.payload.carData,
+                showHide: true,
+            };
+        case types.LOAD_SECOND_INVENTORY_SORTED:
+            return {
+                ...state,
+                secondInventory: action.payload.inventory.items,
+                secondInventoryType: action.payload.inventoryType,
+                data: {
+                    plate: action.payload.inventory.plate,
+                    weight: action.payload.inventory.weight,
+                },
                 showHide: true,
             };
         default:

@@ -54,6 +54,11 @@ function InventoryContainer() {
     );
     const showHide = useSelector((state) => state.inventory.showHide);
     const carData = useSelector((state) => state.inventory.data);
+    const selectedItem = useSelector((state) => state.inventory.selectedItem);
+
+    useEffect(() => {
+        console.log(selectedItem)
+    }, [selectedItem])
 
     useEffect(() => {
         window.addEventListener("message", (e) => onMessage(e));
@@ -103,14 +108,25 @@ function InventoryContainer() {
                     dispatch(hotbarActions.loadHotbar(payload));
                 }
                 case "Trunk": {
-                    const payload = {
-                        inventoryType: event.data.inventoryType,
-                        inventory: event.data.inventory,
-                        carData: event.data.carData,
-                        sortedInventory: [],
-                    };
-
-                    dispatch(inventoryActions.loadSecondInventory(payload));
+                    let payload = {};
+                    if (!event.data.sortedInventory) {
+                        payload = {
+                            inventoryType: event.data.inventoryType,
+                            inventory: event.data.inventory,
+                            carData: event.data.carData,
+                        };
+                        dispatch(inventoryActions.loadSecondInventory(payload));
+                    } else {
+                        payload.inventoryType = event.data.inventoryType;
+                        payload.inventory = {};
+                        payload.inventory.items = [];
+                        payload.inventory.items = event.data.sortedInventory;
+                        payload.inventory.plate = event.data.carData.plate;
+                        payload.inventory.weight = event.data.carData.max;
+                        dispatch(
+                            inventoryActions.loadSecondInventorySorted(payload)
+                        );
+                    }
                 }
 
                 default:
@@ -122,44 +138,48 @@ function InventoryContainer() {
     useEffect(() => {
         window.addEventListener("keydown", closeFunction);
         return () => window.removeEventListener("keydown", closeFunction);
-    }, [sortedInventory]);
+    }, [sortedInventory, selectedItem]);
 
-    const onStart = (e, i, type) => {
+    const onStart = (e, i, type, itemType) => {
         let payload;
         if (type === "Personal") {
             payload = {
                 item: sortedInventory[i],
                 index: i,
                 type: type,
+                itemType: itemType
             };
         } else {
             payload = {
                 item: secondInventory[i],
                 index: i,
                 type: type,
+                itemType: itemType
             };
         }
         dispatch(inventoryActions.selectInventoryItem(payload));
         dispatch(itemActions.setInfo(payload));
     };
 
-    const onStop = (e, i, type) => {
+    const onStop = (e, i, type, itemType) => {
         let payload;
         if (type === "Personal") {
             payload = {
                 item: sortedInventory[i],
                 index: i,
                 type: type,
+                itemType: itemType,
             };
         } else {
             payload = {
                 item: secondInventory[i],
                 index: i,
                 type: type,
+                itemType: itemType,
             };
         }
         dispatch(itemActions.clearInfo());
-        dispatch(inventoryActions.moveInventoryItem(payload));
+        dispatch(inventoryActions.moveInventoryItem(payload, selectedItem));
     };
 
     const closeFunction = (event) => {
@@ -178,7 +198,7 @@ function InventoryContainer() {
     const onMessage = (e) => {
         switch (e.data.useItem) {
             case "useItemOne": {
-                useDispatch(inventoryActions.useInventoryItem(0));
+                dispatch(inventoryActions.useInventoryItem(0));
                 break;
             }
             case "useItemTwo": {
