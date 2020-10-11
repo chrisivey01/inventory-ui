@@ -71,18 +71,15 @@ export const loadSortedInventory = (inventory, currentInventory) => {
     return currentInventory;
 };
 
-export const moveInventoryItem = (
-    origInventory,
-    secondInventory,
-    firstItemIndex,
-    secondItemIndex
-) => {
-    let inventory = [...origInventory]
-    const selectedItem = inventory[firstItemIndex];
-    let movedTo = inventory.splice(secondItemIndex, 1, selectedItem);
-    inventory.splice(firstItemIndex, 1, movedTo[0]);
-    return inventory;
-};
+// inventoryData has
+// item: sortedInventory[i],
+// index: i,
+// type: type
+// state.sortedInventory,
+// state.secondInventory,
+// state.selectedItemIndex,
+// state.selectedItemType,
+
 
 export const useInventoryItem = (flattenedInventory, itemIndex, item) => {
     Apis.useInventoryItem(flattenedInventory[itemIndex], itemIndex);

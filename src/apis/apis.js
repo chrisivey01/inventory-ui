@@ -15,10 +15,11 @@ const Apis = {
         return axios.post(openInventoryUrl);
     },
 
-    closeInventory(sortedInventory, secondInventory) {
+    closeInventory(sortedInventory, secondInventory, carData) {
         let data = {
             sortedInventory: sortedInventory,
             secondInventory: secondInventory,
+            carData: carData,
         };
         axios.post(closeInventoryUrl, data);
     },

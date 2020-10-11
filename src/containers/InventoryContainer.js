@@ -1,12 +1,11 @@
 import { Grid, makeStyles } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Inventory from "../components/Inventory";
 import PlayerMenu from "../components/PlayerMenu";
 import SelectedItem from "../components/SelectedItem";
-import * as inventoryActions from "../store/inventory/inventory.actions";
 import * as hotbarActions from "../store/hotbar/hotbar.actions";
-
+import * as inventoryActions from "../store/inventory/inventory.actions";
 import * as itemActions from "../store/item/item.actions";
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 function InventoryContainer() {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [useOnce, setUseOnce] = useState(false);
     const sortedInventory = useSelector(
         (state) => state.inventory.sortedInventory
     );
@@ -55,9 +53,9 @@ function InventoryContainer() {
         (state) => state.inventory.secondInventoryType
     );
     const showHide = useSelector((state) => state.inventory.showHide);
+    const carData = useSelector((state) => state.inventory.data);
 
     useEffect(() => {
-        setUseOnce(true);
         window.addEventListener("message", (e) => onMessage(e));
         return () => {
             window.removeEventListener("message", (e) => onMessage(e));
@@ -127,19 +125,41 @@ function InventoryContainer() {
     }, [sortedInventory]);
 
     const onStart = (e, i, type) => {
-        const payload = {
-            item: sortedInventory[i],
-            index: i,
-        };
-        console.log(type);
+        let payload;
+        if (type === "Personal") {
+            payload = {
+                item: sortedInventory[i],
+                index: i,
+                type: type,
+            };
+        } else {
+            payload = {
+                item: secondInventory[i],
+                index: i,
+                type: type,
+            };
+        }
         dispatch(inventoryActions.selectInventoryItem(payload));
         dispatch(itemActions.setInfo(payload));
     };
 
     const onStop = (e, i, type) => {
-        console.log(type);
+        let payload;
+        if (type === "Personal") {
+            payload = {
+                item: sortedInventory[i],
+                index: i,
+                type: type,
+            };
+        } else {
+            payload = {
+                item: secondInventory[i],
+                index: i,
+                type: type,
+            };
+        }
         dispatch(itemActions.clearInfo());
-        dispatch(inventoryActions.moveInventoryItem(i));
+        dispatch(inventoryActions.moveInventoryItem(payload));
     };
 
     const closeFunction = (event) => {
@@ -147,7 +167,8 @@ function InventoryContainer() {
             dispatch(
                 inventoryActions.closeInventory(
                     sortedInventory,
-                    secondInventory
+                    secondInventory,
+                    carData
                 )
             );
             dispatch(hotbarActions.closeHotbar());

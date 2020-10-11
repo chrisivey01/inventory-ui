@@ -4,7 +4,7 @@ import * as utils from "./inventory.utils";
 const initialState = {
     selectedItem: {},
     selectedItemIndex: null,
-
+    selectedItemType: null,
     usedItem: {},
     inventoryShow: false,
     inventoryType: "",
@@ -24,6 +24,7 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 showHide: false,
                 type: "",
+                sortedInventory: state.sortedInventory,
                 secondInventory: [],
                 secondInventoryType: null,
             };
@@ -54,16 +55,48 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 selectedItem: action.payload.item,
                 selectedItemIndex: action.payload.index,
+                selectedItemType: action.payload.type,
             };
         case types.MOVE_INVENTORY_ITEM:
+            let inv = [...state.sortedInventory];
+            let secInv = [];
+            if (state.secondInventory) {
+                secInv = [...state.secondInventory];
+            }
+            const selectedType = state.selectedItemType;
+            const invData = action.payload;
+            const selectedItemIndex = state.selectedItemIndex;
+
+            if (selectedType === invData.type && selectedType === "Personal") {
+                const selectedItem = inv[selectedItemIndex];
+                let movedTo = inv.splice(invData.index, 1, selectedItem);
+                inv.splice(selectedItemIndex, 1, movedTo[0]);
+            } else if (
+                selectedType === invData.type &&
+                selectedType !== "Personal"
+            ) {
+                const selectedItem = secInv[selectedItemIndex];
+                let movedTo = secInv.splice(invData.index, 1, selectedItem);
+                secInv.splice(selectedItemIndex, 1, movedTo[0]);
+            } else if (
+                selectedType !== invData.type &&
+                selectedType === "Personal"
+            ) {
+                const selectedItem = inv[selectedItemIndex];
+                let movedTo = secInv.splice(invData.index, 1, selectedItem);
+                inv.splice(selectedItemIndex, 1, movedTo[0]);
+            } else if (
+                selectedType !== invData.type &&
+                selectedType !== "Personal"
+            ) {
+                const selectedItem = secInv[selectedItemIndex];
+                let movedTo = inv.splice(invData.index, 1, selectedItem);
+                secInv.splice(selectedItemIndex, 1, movedTo[0]);
+            }
             return {
                 ...state,
-                sortedInventory: utils.moveInventoryItem(
-                    state.sortedInventory,
-                    state.secondInventory,
-                    state.selectedItemIndex,
-                    action.payload
-                ),
+                sortedInventory: inv,
+                secondInventory: secInv,
             };
         case types.USE_INVENTORY_ITEM:
             return {
@@ -90,7 +123,6 @@ const inventoryReducer = (state = initialState, action) => {
                 secondInventoryType: action.payload.inventoryType,
                 data: action.payload.carData,
                 showHide: true,
-
             };
         default:
             return state;
