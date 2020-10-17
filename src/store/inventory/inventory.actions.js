@@ -46,12 +46,13 @@ export const selectInventoryItem = (payload) => ({
     payload: payload,
 });
 
-export const moveInventoryItem = (payload, selectedItem) => {
+export const moveInventoryItem = (payload, selectedItem, selectedType) => {
     return (dispatch) => {
         dispatch({ type: MOVE_INVENTORY_ITEM, payload: payload });
         const data = {
             selectedItem: selectedItem,
-            type: payload.type
+            type: payload.type,
+            itemType: payload.itemType
         }
         Apis.updateInventory(data);
     };

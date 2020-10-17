@@ -41,6 +41,7 @@ function Inventory(props) {
                                 item={item}
                                 inventoryType={props.inventoryType}
                                 hasSecondInventory={props.hasSecondInventory}
+                                selectedType={props.selectedType}
                             />
                         );
                     })

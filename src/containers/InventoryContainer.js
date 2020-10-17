@@ -55,10 +55,11 @@ function InventoryContainer() {
     const showHide = useSelector((state) => state.inventory.showHide);
     const carData = useSelector((state) => state.inventory.data);
     const selectedItem = useSelector((state) => state.inventory.selectedItem);
+    const selectedType = useSelector((state) => state.inventory.selectedType);
 
     useEffect(() => {
-        console.log(selectedItem)
-    }, [selectedItem])
+        console.log(sortedInventory);
+    }, [sortedInventory]);
 
     useEffect(() => {
         window.addEventListener("message", (e) => onMessage(e));
@@ -140,28 +141,28 @@ function InventoryContainer() {
         return () => window.removeEventListener("keydown", closeFunction);
     }, [sortedInventory, selectedItem]);
 
-    const onStart = (e, i, type, itemType) => {
+    const onStart = (e, i, type, itemType, selectedType) => {
         let payload;
         if (type === "Personal") {
             payload = {
                 item: sortedInventory[i],
                 index: i,
                 type: type,
-                itemType: itemType
+                itemType: itemType,
             };
         } else {
             payload = {
                 item: secondInventory[i],
                 index: i,
                 type: type,
-                itemType: itemType
+                itemType: itemType,
             };
         }
         dispatch(inventoryActions.selectInventoryItem(payload));
         dispatch(itemActions.setInfo(payload));
     };
 
-    const onStop = (e, i, type, itemType) => {
+    const onStop = (e, i, type, itemType, selectedType) => {
         let payload;
         if (type === "Personal") {
             payload = {
@@ -235,6 +236,7 @@ function InventoryContainer() {
                 onStart={onStart}
                 onStop={onStop}
                 isSecondInventory={false}
+                selectedType={selectedType}
             />
             <PlayerMenu />
             <Inventory
@@ -244,6 +246,7 @@ function InventoryContainer() {
                 onStart={onStart}
                 onStop={onStop}
                 isSecondInventory={true}
+                selectedType={selectedType}
             />
             <SelectedItem />
         </Grid>

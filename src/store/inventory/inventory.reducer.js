@@ -24,7 +24,7 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 showHide: false,
                 type: "",
-                sortedInventory: state.sortedInventory,
+                sortedInventory: action.payload.sortedInventory,
                 secondInventory: [],
                 secondInventoryType: null,
             };
@@ -56,7 +56,7 @@ const inventoryReducer = (state = initialState, action) => {
                 selectedItem: action.payload.item,
                 selectedItemIndex: action.payload.index,
                 selectedType: action.payload.type,
-                selectedItemType: action.payload.itemType
+                selectedItemType: action.payload.itemType,
             };
         case types.MOVE_INVENTORY_ITEM:
             let inv = [...state.sortedInventory];
@@ -67,8 +67,22 @@ const inventoryReducer = (state = initialState, action) => {
             const selectedType = state.selectedType;
             const invData = action.payload;
             const selectedItemIndex = state.selectedItemIndex;
-
-            if (selectedType === invData.type && selectedType === "Personal") {
+            const itemIndex = state.sortedInventory.filter(item => state.selectedItem.type === "item_weapon" && item.name === state.selectedItem.name)
+            if (
+                action.payload.type === "Personal" &&
+                action.payload.itemType !== "Personal" &&
+                state.selectedItem.type === "item_weapon" &&
+                itemIndex.length > 0
+            ) {
+                return {
+                    ...state,
+                    sortedInventory: inv,
+                    secondInventory: secInv,
+                };
+            } else if (
+                selectedType === invData.type &&
+                selectedType === "Personal"
+            ) {
                 const selectedItem = inv[selectedItemIndex];
                 let movedTo = inv.splice(invData.index, 1, selectedItem);
                 inv.splice(selectedItemIndex, 1, movedTo[0]);
