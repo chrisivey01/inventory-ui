@@ -54,7 +54,7 @@ const initialState = {
     mouseY: null,
 };
 
-function SelectedItem(props) {
+export default (props) => {
     const classes = useStyles();
     const [state, setState] = React.useState(initialState);
     const item = useSelector((state) => state.item.itemInfo);
@@ -111,5 +111,3 @@ function SelectedItem(props) {
         return <Fragment />;
     }
 }
-
-export default SelectedItem;

@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function InventorySlots(props) {
+export default (props) => {
     const classes = useStyles();
 
     return (
@@ -361,5 +361,3 @@ function InventorySlots(props) {
         </div>
     );
 }
-
-export default InventorySlots;

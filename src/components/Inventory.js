@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Inventory(props) {
+export default (props) => {
     const classes = useStyles();
 
     return (
@@ -52,5 +52,3 @@ function Inventory(props) {
         </Grid>
     );
 }
-
-export default Inventory;

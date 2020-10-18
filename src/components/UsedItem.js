@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function UsedItem() {
+export default (props) => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const usedItem = useSelector((state) => state.inventory.usedItem);
@@ -126,5 +126,3 @@ function UsedItem() {
         </div>
     );
 }
-
-export default UsedItem;

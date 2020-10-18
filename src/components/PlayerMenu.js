@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function PlayerMenu() {
+export default (props) => {
     const classes = useStyles();
 
     return (
@@ -46,5 +46,3 @@ function PlayerMenu() {
         </Grid>
     );
 }
-
-export default PlayerMenu;
