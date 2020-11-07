@@ -132,8 +132,7 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 secondInventory: utils.loadUnsortedInventory(
-                    action.payload.inventory,
-                    action.payload.sortedInventory
+                    action.payload.inventory
                 ),
                 secondInventoryType: action.payload.inventoryType,
                 data: action.payload.carData,

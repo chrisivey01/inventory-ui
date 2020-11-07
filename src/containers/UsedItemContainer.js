@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default (props) => {
+export default () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const usedItem = useSelector((state) => state.inventory.usedItem);

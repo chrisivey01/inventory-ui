@@ -103,14 +103,14 @@ function InventoryContainer() {
                     break;
                 }
                 case "Hotbar": {
-                    const payload = {
-                        inventory: event.data.inventory,
-                    };
-                    dispatch(hotbarActions.loadHotbar(payload));
+                    // const payload = {
+                    //     inventory: event.data.inventory,
+                    // };
+                    dispatch(hotbarActions.loadHotbar());
                 }
                 case "Trunk": {
                     let payload = {};
-                    if (!event.data.sortedInventory) {
+                    if (event.data.sortedInventory.length === 0) {
                         payload = {
                             inventoryType: event.data.inventoryType,
                             inventory: event.data.inventory,

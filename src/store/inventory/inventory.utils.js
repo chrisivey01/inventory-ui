@@ -4,40 +4,52 @@ let pastWeaponForSwaps;
 
 export const loadUnsortedInventory = (currentInventory) => {
     let inventory = {};
-    inventory.items = currentInventory.items.filter((item) => item.count > 0);
+    if(currentInventory.length > 0){
+        inventory.items = currentInventory.items.filter((item) => item.count > 0);
 
-    let weapons;
-    inventory.items.forEach((item) => {
-        item.type = "item_standard";
-    });
-    if (currentInventory.weapons) {
-        weapons = currentInventory.weapons;
-        weapons.map((item) => {
-            item.type = "item_weapon";
-            inventory.items.push(item);
+        let weapons;
+        inventory.items.forEach((item) => {
+            item.type = "item_standard";
         });
-    }
-    // currentInventory.items.forEach((item) => inventory.items.push(item));
-    if (currentInventory.accounts) {
-        currentInventory.accounts.forEach((item) => {
-            item.type = "item_account";
-
-            if (
-                (item.name === "money" && item.money > 0) ||
-                (item.name === "black_money" && item.money > 0)
-            ) {
+        if (currentInventory.weapons) {
+            weapons = currentInventory.weapons;
+            weapons.map((item) => {
+                item.type = "item_weapon";
                 inventory.items.push(item);
-            }
-        });
-    }
-    inventory.weight = currentInventory.weight;
-    inventory.money = currentInventory.money;
-    inventory.maxWeight = currentInventory.maxWeight;
+            });
+        }
+        // currentInventory.items.forEach((item) => inventory.items.push(item));
+        if (currentInventory.accounts) {
+            currentInventory.accounts.forEach((item) => {
+                item.type = "item_account";
+    
+                if (
+                    (item.name === "money" && item.money > 0) ||
+                    (item.name === "black_money" && item.money > 0)
+                ) {
+                    inventory.items.push(item);
+                }
+            });
+        }
+        inventory.weight = currentInventory.weight;
+        inventory.money = currentInventory.money;
+        inventory.maxWeight = currentInventory.maxWeight;
+    
+        while (inventory.items.length < 50) {
+            inventory.items.push("{}");
+        }
 
-    while (inventory.items.length < 50) {
-        inventory.items.push("{}");
+        return inventory.items;
+
+    } else {
+        inventory.items = [];
+
+        while(inventory.items.length < 50) {
+            inventory.items.push("{}");
+        }
+
+        return inventory.items;  
     }
-    return inventory.items;
 };
 
 export const loadSortedInventory = (inventory, currentInventory) => {

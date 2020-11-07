@@ -62,9 +62,14 @@ const useStyles = makeStyles((theme) => ({
 function HotbarContainer() {
     const classes = useStyles();
     const itemSlots = useSelector((state) => state.inventory.sortedInventory);
+    const showHotbar = useSelector((state) => state.hotbar.showHotbar);
 
     return (
-        <Grid container className={classes.hotkeyBar}>
+        <Grid
+            container
+            className={classes.hotkeyBar}
+            style={{ visibility: showHotbar ? "visible" : "hidden" }}
+        >
             {itemSlots.map((item, i) => {
                 if (i < 5) {
                     return (
