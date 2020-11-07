@@ -17,6 +17,9 @@ export const USE_ITEM_SLOT_FIVE = "USE_ITEM_SLOT_FIVE";
 
 export const LOAD_SECOND_INVENTORY = "LOAD_SECOND_INVENTORY";
 export const LOAD_SECOND_INVENTORY_SORTED = "LOAD_SECOND_INVENTORY_SORTED";
+
+export const UPDATE_WEAPON_INFO = "UPDATE_WEAPON_INFO";
+
 export const closeInventory = (sortedInventory, secondInventory, carData) => {
     return (dispatch) => {
         const payload = {
@@ -77,3 +80,12 @@ export const loadSecondInventorySorted = (payload) => ({
     type: LOAD_SECOND_INVENTORY_SORTED,
     payload: payload,
 });
+
+export const updateWeapon = (weaponData) => {
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_WEAPON_INFO,
+            payload: weaponData,
+        })
+    }
+}

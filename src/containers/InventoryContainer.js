@@ -62,13 +62,6 @@ function InventoryContainer() {
     }, [sortedInventory]);
 
     useEffect(() => {
-        window.addEventListener("message", (e) => onMessage(e));
-        return () => {
-            window.removeEventListener("message", (e) => onMessage(e));
-        };
-    }, []);
-
-    useEffect(() => {
         window.addEventListener("message", (event) => {
             switch (event.data.inventoryType) {
                 case "Personal": {
@@ -103,9 +96,6 @@ function InventoryContainer() {
                     break;
                 }
                 case "Hotbar": {
-                    // const payload = {
-                    //     inventory: event.data.inventory,
-                    // };
                     dispatch(hotbarActions.loadHotbar());
                 }
                 case "Trunk": {
@@ -193,33 +183,6 @@ function InventoryContainer() {
                 )
             );
             dispatch(hotbarActions.closeHotbar());
-        }
-    };
-
-    const onMessage = (e) => {
-        switch (e.data.useItem) {
-            case "useItemOne": {
-                dispatch(inventoryActions.useInventoryItem(0));
-                break;
-            }
-            case "useItemTwo": {
-                dispatch(inventoryActions.useInventoryItem(1));
-                break;
-            }
-            case "useItemThree": {
-                dispatch(inventoryActions.useInventoryItem(2));
-                break;
-            }
-            case "useItemFour": {
-                dispatch(inventoryActions.useInventoryItem(3));
-                break;
-            }
-            case "useItemFive": {
-                dispatch(inventoryActions.useInventoryItem(4));
-                break;
-            }
-            default:
-                return null;
         }
     };
 

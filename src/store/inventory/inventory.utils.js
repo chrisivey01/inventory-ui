@@ -98,14 +98,6 @@ export const loadSortedInventory = (inventory, currentInventory) => {
     return currentInventory;
 };
 
-// inventoryData has
-// item: sortedInventory[i],
-// index: i,
-// type: type
-// state.sortedInventory,
-// state.secondInventory,
-// state.selectedItemIndex,
-// state.selectedItemType,
 export const useInventoryItem = (flattenedInventory, itemIndex, item) => {
     Apis.useInventoryItem(flattenedInventory[itemIndex], itemIndex);
     if (flattenedInventory[itemIndex] !== undefined) {

@@ -149,6 +149,23 @@ const inventoryReducer = (state = initialState, action) => {
                 },
                 showHide: true,
             };
+        case types.UPDATE_WEAPON_INFO:
+            const weapon = action.payload;
+            let inventory = [...state.sortedInventory];
+            const updatedInventory = inventory.map(item => {
+                if(item.name && item.name === weapon.name){
+                    //if item is weapon, take the new weapon count
+                   return item = weapon
+                } else {
+                    return item
+                }
+            })
+            console.log(updatedInventory)
+            return {
+                ...state,
+                sortedInventory: updatedInventory
+            }
+        
         default:
             return state;
     }

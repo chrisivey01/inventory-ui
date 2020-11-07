@@ -12,6 +12,7 @@ module.exports = merge(common, {
             "C:/FXServer/server-data/resources/pma-inventory/dist/"
         ),
         filename: "index.js",
+        sourceMapFilename: "index.js.map"
     },
     plugins: [
         new HtmlWebpackPlugin({

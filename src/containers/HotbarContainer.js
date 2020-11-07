@@ -1,6 +1,7 @@
 import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
-import React, { Fragment } from "react";
-import { useSelector } from "react-redux";
+import React, { Fragment, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import * as inventoryActions from "../store/inventory/inventory.actions";
 
 const useStyles = makeStyles((theme) => ({
     hotkeyBar: {
@@ -63,6 +64,54 @@ function HotbarContainer() {
     const classes = useStyles();
     const itemSlots = useSelector((state) => state.inventory.sortedInventory);
     const showHotbar = useSelector((state) => state.hotbar.showHotbar);
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        window.addEventListener("message", (e) => onMessage(e));
+        return () => {
+            window.removeEventListener("message", (e) => onMessage(e));
+        };
+    }, []);
+
+
+    const onMessage = (e) => {
+        if(e.data.useItem) {
+            //USE ITEM section
+            switch (e.data.useItem) {
+                case "useItemOne": {
+                    dispatch(inventoryActions.useInventoryItem(0));
+                    break;
+                }
+                case "useItemTwo": {
+                    dispatch(inventoryActions.useInventoryItem(1));
+                    break;
+                }
+                case "useItemThree": {
+                    dispatch(inventoryActions.useInventoryItem(2));
+                    break;
+                }
+                case "useItemFour": {
+                    dispatch(inventoryActions.useInventoryItem(3));
+                    break;
+                }
+                case "useItemFive": {
+                    dispatch(inventoryActions.useInventoryItem(4));
+                    break;
+                }
+                default:
+                    return null;
+            }
+        } else {
+            //UPDATE WEAPON AMMO for inventory display for client side.
+            if(e.data.updateWeapon){
+                //weapon
+                dispatch(inventoryActions.updateWeapon(e.data.weaponData));
+            }
+
+        }
+    };
+
 
     return (
         <Grid

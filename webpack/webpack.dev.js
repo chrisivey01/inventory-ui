@@ -21,5 +21,4 @@ module.exports = merge(common, {
         historyApiFallback: true,
         hot: true,
     },
-    devtool: "inline-source-map",
 });
