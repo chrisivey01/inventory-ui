@@ -67,7 +67,11 @@ const inventoryReducer = (state = initialState, action) => {
             const selectedType = state.selectedType;
             const invData = action.payload;
             const selectedItemIndex = state.selectedItemIndex;
-            const itemIndex = state.sortedInventory.filter(item => state.selectedItem.type === "item_weapon" && item.name === state.selectedItem.name)
+            const itemIndex = state.sortedInventory.filter(
+                (item) =>
+                    state.selectedItem.type === "item_weapon" &&
+                    item.name === state.selectedItem.name
+            );
             if (
                 action.payload.type === "Personal" &&
                 action.payload.itemType !== "Personal" &&
@@ -150,22 +154,34 @@ const inventoryReducer = (state = initialState, action) => {
                 showHide: true,
             };
         case types.UPDATE_WEAPON_INFO:
-            const weapon = action.payload;
-            let inventory = [...state.sortedInventory];
-            const updatedInventory = inventory.map(item => {
-                if(item.name && item.name === weapon.name){
-                    //if item is weapon, take the new weapon count
-                   return item = weapon
-                } else {
-                    return item
-                }
-            })
-            console.log(updatedInventory)
             return {
                 ...state,
-                sortedInventory: updatedInventory
-            }
-        
+                sortedInventory: state.sortedInventory.map((item) => {
+                    if (item.name && item.name === action.payload.name) {
+                        //if item is weapon, take the new weapon count
+                        return (item = weapon);
+                    } else {
+                        return item;
+                    }
+                }),
+            };
+        case types.UPDATE_ITEM_INFO:
+            return {
+                ...state,
+                sortedInventory: state.sortedInventory.map((item) => {
+                    if (
+                        item.name &&
+                        item.name === action.payload.name &&
+                        item.count > 0
+                    ) {
+                        //if item take the new item count
+                        item.count = item.count - 1;
+                        return item;
+                    } else {
+                        return item;
+                    }
+                }),
+            };
         default:
             return state;
     }

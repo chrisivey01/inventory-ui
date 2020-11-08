@@ -19,6 +19,7 @@ export const LOAD_SECOND_INVENTORY = "LOAD_SECOND_INVENTORY";
 export const LOAD_SECOND_INVENTORY_SORTED = "LOAD_SECOND_INVENTORY_SORTED";
 
 export const UPDATE_WEAPON_INFO = "UPDATE_WEAPON_INFO";
+export const UPDATE_ITEM_INFO = "UPDATE_ITEM_INFO";
 
 export const closeInventory = (sortedInventory, secondInventory, carData) => {
     return (dispatch) => {
@@ -55,8 +56,8 @@ export const moveInventoryItem = (payload, selectedItem, selectedType) => {
         const data = {
             selectedItem: selectedItem,
             type: payload.type,
-            itemType: payload.itemType
-        }
+            itemType: payload.itemType,
+        };
         Apis.updateInventory(data);
     };
 };
@@ -86,6 +87,15 @@ export const updateWeapon = (weaponData) => {
         dispatch({
             type: UPDATE_WEAPON_INFO,
             payload: weaponData,
-        })
-    }
-}
+        });
+    };
+};
+
+export const updateItem = (itemData) => {
+    return (dispatch) => {
+        dispatch({
+            type: UPDATE_ITEM_INFO,
+            payload: itemData,
+        });
+    };
+};

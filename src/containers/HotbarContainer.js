@@ -109,6 +109,11 @@ function HotbarContainer() {
                 dispatch(inventoryActions.updateWeapon(e.data.weaponData));
             }
 
+            if(e.data.updateItem){
+                //item
+                dispatch(inventoryActions.updateItem(e.data.itemData));
+            }
+
         }
     };
 
