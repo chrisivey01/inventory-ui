@@ -159,7 +159,7 @@ const inventoryReducer = (state = initialState, action) => {
                 sortedInventory: state.sortedInventory.map((item) => {
                     if (item.name && item.name === action.payload.name) {
                         //if item is weapon, take the new weapon count
-                        return (item = weapon);
+                        return (item = action.payload);
                     } else {
                         return item;
                     }
