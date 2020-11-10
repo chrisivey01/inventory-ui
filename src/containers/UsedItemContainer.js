@@ -88,26 +88,40 @@ export default () => {
         );
         return () => clearTimeout(timer);
     }, [usedItem]);
+
+    const itemPopupHandler = () => {
+        if (usedItem.count) {
+            return (
+                <Typography className={classes.textUsed}>
+                    USED
+                </Typography>
+            );
+        } else if (usedItem.type === "item_weapon" && usedItem.unequip) {
+            return (
+                <Typography className={classes.textUsed}>
+                    UNEQUIP
+                </Typography>
+            );
+        } else if (
+            usedItem.type === "item_weapon" &&
+            usedItem.unequip !== true
+        ) {
+            return (
+                <Typography className={classes.textUsed}>
+                    EQUIP
+                </Typography>
+            );
+        } else {
+            return <Fragment />;
+        }
+    }
+
     return (
         <div>
             {usedItem.name ? (
                 <Fade className={classes.grid} timeout={2000} in={show}>
                     <Paper className={classes.slot}>
-                        {usedItem.count ? (
-                            <Typography className={classes.textUsed}>
-                                USED
-                            </Typography>
-                        ) : usedItem.ammo && usedItem.unequip ? (
-                            <Typography className={classes.textUsed}>
-                                UNEQUIP
-                            </Typography>
-                        ) : usedItem.ammo && usedItem.unequip === false ? (
-                            <Typography className={classes.textUsed}>
-                                EQUIP
-                            </Typography>
-                        ) : (
-                            <Fragment />
-                        )}
+                        {itemPopupHandler()}
 
                         <img
                             draggable="false"
@@ -125,4 +139,4 @@ export default () => {
             )}
         </div>
     );
-}
+};
