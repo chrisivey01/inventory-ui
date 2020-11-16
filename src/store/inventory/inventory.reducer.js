@@ -15,6 +15,9 @@ const initialState = {
     data: {},
     showHide: false,
     show: false,
+    showConfirmation: false,
+    quantity: 1,
+    boughtItem: {}
 };
 
 const inventoryReducer = (state = initialState, action) => {
@@ -54,6 +57,7 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 selectedItem: action.payload.item,
+                boughtItem: action.payload.item,
                 selectedItemIndex: action.payload.index,
                 selectedType: action.payload.type,
                 selectedItemType: action.payload.itemType,
@@ -182,6 +186,50 @@ const inventoryReducer = (state = initialState, action) => {
                     }
                 }),
             };
+        case types.LOAD_STORE_INVENTORY:
+            return {
+                ...state,
+                secondInventory: action.payload,
+                secondInventoryType: "Store",
+                showHide: true,
+            };
+        case types.TRANSFER_CONFIRMATION:
+            return {
+                ...state,
+                showConfirmation: true,
+            };
+        case types.UPDATE_QUANTITY:
+            return {
+                ...state,
+                quantity: action.payload,
+            };
+        case types.ADD_ITEM:
+            return {
+                ...state,
+                quantity: state.quantity += 1,
+                boughtItem: {
+                    price: state.boughtItem.price + state.selectedItem.price
+                }
+            };
+        case types.SUBTRACT_ITEM:
+            return {
+                ...state,
+                quantity: state.quantity -= 1,
+                boughtItem: {
+                    price: state.boughtItem.price - state.selectedItem.price
+                }
+            };
+        case types.CONFIRMATION_HANDLER:
+            return {
+                ...state,
+                showConfirmation: false,
+                sortedInventory: action.payload
+            }
+        case types.CLOSE_CONFIRMATION_HANDLER:
+            return {
+                ...state,
+                showConfirmation: false,
+            }
         default:
             return state;
     }

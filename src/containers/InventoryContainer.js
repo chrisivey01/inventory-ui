@@ -1,6 +1,7 @@
 import { Grid, makeStyles } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Confirmation from "../components/Confirmation";
 import Inventory from "../components/Inventory";
 import PlayerMenu from "../components/PlayerMenu";
 import SelectedItem from "../components/SelectedItem";
@@ -56,6 +57,7 @@ function InventoryContainer() {
     const carData = useSelector((state) => state.inventory.data);
     const selectedItem = useSelector((state) => state.inventory.selectedItem);
     const selectedType = useSelector((state) => state.inventory.selectedType);
+    const quantity = useSelector((state) => state.inventory.quantity);
 
     useEffect(() => {
         console.log(sortedInventory);
@@ -97,6 +99,7 @@ function InventoryContainer() {
                 }
                 case "Hotbar": {
                     dispatch(hotbarActions.loadHotbar());
+                    break;
                 }
                 case "Trunk": {
                     let payload = {};
@@ -118,6 +121,12 @@ function InventoryContainer() {
                             inventoryActions.loadSecondInventorySorted(payload)
                         );
                     }
+                    break;
+                }
+                case "Store": {
+                    dispatch(
+                        inventoryActions.loadStoreInventory(event.data.items)
+                    );
                 }
 
                 default:
@@ -140,7 +149,7 @@ function InventoryContainer() {
                 type: type,
                 itemType: itemType,
             };
-        } else {
+        } else if (type === "Trunk" || type === "Store") {
             payload = {
                 item: secondInventory[i],
                 index: i,
@@ -161,6 +170,13 @@ function InventoryContainer() {
                 type: type,
                 itemType: itemType,
             };
+            if(itemType === "Store"){
+                dispatch(itemActions.clearInfo());
+                dispatch(inventoryActions.transferConfirmation());
+            } else {
+                dispatch(itemActions.clearInfo());
+                dispatch(inventoryActions.moveInventoryItem(payload, selectedItem));
+            }
         } else {
             payload = {
                 item: secondInventory[i],
@@ -168,9 +184,9 @@ function InventoryContainer() {
                 type: type,
                 itemType: itemType,
             };
+            dispatch(itemActions.clearInfo());
+            dispatch(inventoryActions.moveInventoryItem(payload, selectedItem));
         }
-        dispatch(itemActions.clearInfo());
-        dispatch(inventoryActions.moveInventoryItem(payload, selectedItem));
     };
 
     const closeFunction = (event) => {
@@ -186,33 +202,54 @@ function InventoryContainer() {
         }
     };
 
+    const agreeHandler = () => {
+        const data = {
+            selectedItem: selectedItem,
+            quantity: quantity,
+            sortedInventory: sortedInventory
+        }
+
+        dispatch(inventoryActions.confirmationHandler(data));
+    };
+
+    const disagreeHandler = () => {
+        console.log("disagree");
+    };
+
     return (
-        <Grid
-            className={classes.inventoryDisplay}
-            style={{ visibility: showHide ? "visible" : "hidden" }}
-            container
-        >
-            <Inventory
-                inventoryTitle={inventoryType}
-                inventoryType={inventoryType}
-                inventory={sortedInventory}
-                onStart={onStart}
-                onStop={onStop}
-                isSecondInventory={false}
-                selectedType={selectedType}
+        <Fragment>
+            <Grid
+                className={classes.inventoryDisplay}
+                style={{ visibility: showHide ? "visible" : "hidden" }}
+                container
+            >
+                <Inventory
+                    inventoryTitle={inventoryType}
+                    inventoryType={inventoryType}
+                    inventory={sortedInventory}
+                    onStart={onStart}
+                    onStop={onStop}
+                    isSecondInventory={false}
+                    selectedType={selectedType}
+                />
+                <PlayerMenu />
+                <Inventory
+                    inventoryTitle={secondInventoryType}
+                    inventoryType={secondInventoryType}
+                    inventory={secondInventory}
+                    onStart={onStart}
+                    onStop={onStop}
+                    isSecondInventory={true}
+                    selectedType={selectedType}
+                />
+                <SelectedItem />
+            </Grid>
+            <Confirmation
+                agreeHandler={agreeHandler}
+                disagreeHandler={disagreeHandler}
+                selectedItem={selectedItem}
             />
-            <PlayerMenu />
-            <Inventory
-                inventoryTitle={secondInventoryType}
-                inventoryType={secondInventoryType}
-                inventory={secondInventory}
-                onStart={onStart}
-                onStop={onStop}
-                isSecondInventory={true}
-                selectedType={selectedType}
-            />
-            <SelectedItem />
-        </Grid>
+        </Fragment>
     );
 }
 

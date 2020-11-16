@@ -1,6 +1,7 @@
 import { Grid, makeStyles, Typography } from "@material-ui/core";
 import React, { Fragment } from "react";
 import InventorySlots from "./InventorySlots";
+import ShopSlots from "./ShopSlots";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -32,18 +33,34 @@ export default (props) => {
             <Grid item className={classes.inventory}>
                 {props.inventory ? (
                     props.inventory.map((item, i) => {
-                        return (
-                            <InventorySlots
-                                key={i}
-                                onStart={props.onStart}
-                                onStop={props.onStop}
-                                i={i}
-                                item={item}
-                                inventoryType={props.inventoryType}
-                                hasSecondInventory={props.hasSecondInventory}
-                                selectedType={props.selectedType}
-                            />
-                        );
+                        if (props.inventoryType !== "Store" && props.inventory) {
+                            return (
+                                <InventorySlots
+                                    key={i}
+                                    onStart={props.onStart}
+                                    onStop={props.onStop}
+                                    i={i}
+                                    item={item}
+                                    inventoryType={props.inventoryType}
+                                    hasSecondInventory={
+                                        props.hasSecondInventory
+                                    }
+                                    selectedType={props.selectedType}
+                                />
+                            );
+                        } else { 
+                            return (
+                                <ShopSlots
+                                    key={i}
+                                    onStart={props.onStart}
+                                    onStop={props.onStop}
+                                    i={i}
+                                    item={item}
+                                    inventoryType={props.inventoryType}
+                                    selectedType={props.selectedType}
+                                />
+                            );
+                        }
                     })
                 ) : (
                     <Fragment />
@@ -51,4 +68,4 @@ export default (props) => {
             </Grid>
         </Grid>
     );
-}
+};

@@ -21,6 +21,16 @@ export const LOAD_SECOND_INVENTORY_SORTED = "LOAD_SECOND_INVENTORY_SORTED";
 export const UPDATE_WEAPON_INFO = "UPDATE_WEAPON_INFO";
 export const UPDATE_ITEM_INFO = "UPDATE_ITEM_INFO";
 
+export const LOAD_STORE_INVENTORY = "LOAD_STORE_INVENTORY";
+export const BUY_STORE_ITEMS = "BUY_STORE_ITEMS";
+
+export const TRANSFER_CONFIRMATION = "TRANSFER_CONFIRMATION";
+export const UPDATE_QUANTITY = "UPDATE_QUANTITY";
+export const ADD_ITEM = "ADD_ITEM";
+export const SUBTRACT_ITEM = "SUBTRACT_ITEM";
+
+export const CONFIRMATION_HANDLER = "CONFIRMATION_HANDLER";
+export const CLOSE_CONFIRMATION_HANDLER = "CLOSE_CONFIRMATION_HANDLER";
 export const closeInventory = (sortedInventory, secondInventory, carData) => {
     return (dispatch) => {
         const payload = {
@@ -96,6 +106,110 @@ export const updateItem = (itemData) => {
         dispatch({
             type: UPDATE_ITEM_INFO,
             payload: itemData,
+        });
+    };
+};
+
+export const loadStoreInventory = (items) => {
+    return (dispatch) => {
+        dispatch({
+            type: LOAD_STORE_INVENTORY,
+            payload: items,
+        });
+    };
+};
+
+export const transferConfirmation = () => {
+    return (dispatch) => {
+        dispatch({
+            type: TRANSFER_CONFIRMATION,
+        });
+    };
+};
+
+export const addItem = () => {
+    return (dispatch) => {
+        dispatch({
+            type: ADD_ITEM,
+        });
+    };
+};
+
+export const subtractItem = () => {
+    return (dispatch) => {
+        dispatch({
+            type: SUBTRACT_ITEM,
+        });
+    };
+};
+
+export const updateQuantity = (value) => {
+    return (dispatch) => {
+        const regExp = /^[0-9\b]+$/;
+        if (regExp.test(e.target.value)) {
+            const value = e.target.value;
+            dispatch({
+                type: UPDATE_QUANTITY,
+                payload: value,
+            });
+        }
+    };
+};
+
+export const confirmationHandler = (data) => {
+    return (dispatch) => {
+        let sortedInventory = [...data.sortedInventory];
+        const itemIndex = sortedInventory.findIndex((item) => {
+            if (item !== "{}") {
+                return (
+                    item.name.toLowerCase() ===
+                    data.selectedItem.name.toLowerCase()
+                );
+            }
+        });
+        const bracketIndex = sortedInventory.findIndex((item) => item === "{}");
+
+        if (itemIndex > 0) {
+            sortedInventory[itemIndex].price =
+                sortedInventory[itemIndex].count * data.selectedItem.price;
+            sortedInventory[itemIndex].count =
+                sortedInventory[itemIndex].count + data.quantity;
+        }
+
+        if (bracketIndex && itemIndex < 0) {
+            sortedInventory[bracketIndex] = data.selectedItem;
+            sortedInventory[bracketIndex].count = data.quantity;
+        }
+        // const modifiedData = data.sortedInventory.map((item) => {
+        //     if (item.type !== "item_weapon") {
+        //         if(item.name === data.selectedItem.name){
+        //             item.price = data.quantity * data.selectedItem.price;
+        //             item.count = data.quantity + item.count
+        //             return item
+        //         } else {
+        //             return item
+        //         }
+        //     } else {
+        //         return item
+        //     }
+        // });
+        // if(data.selectedItem.count){
+        //     data.selectedItem.count = data.quantity
+        //     modifiedData.splice(findBracket, 1, data.selectedItem)
+        // }
+
+        console.log(sortedInventory);
+        dispatch({
+            type: CONFIRMATION_HANDLER,
+            payload: sortedInventory,
+        });
+    };
+};
+
+export const closeConfirmationHandler = (data) => {
+    return (dispatch) => {
+        dispatch({
+            type: CLOSE_CONFIRMATION_HANDLER,
         });
     };
 };
