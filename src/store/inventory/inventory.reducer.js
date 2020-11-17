@@ -17,7 +17,7 @@ const initialState = {
     show: false,
     showConfirmation: false,
     quantity: 1,
-    boughtItem: {}
+    boughtItem: {},
 };
 
 const inventoryReducer = (state = initialState, action) => {
@@ -35,22 +35,19 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 sortedInventory: utils.loadUnsortedInventory(
-                    action.payload.inventory,
+                    action.payload,
                     state.inventory
                 ),
-                currentWeight: action.payload.inventory.weight,
-                maxWeight: action.payload.inventory.maxWeight,
-                inventoryType: action.payload.inventoryType,
+                currentWeight: action.payload.weight,
+                maxWeight: action.payload.maxWeight,
+                inventoryType: "Personal",
                 showHide: true,
             };
         case types.LOAD_SORTED_INVENTORY:
             return {
                 ...state,
-                sortedInventory: utils.loadSortedInventory(
-                    action.payload.inventory,
-                    action.payload.sortedInventory
-                ),
-                inventoryType: action.payload.inventoryType,
+                sortedInventory: utils.loadSortedInventory(action.payload.inventory, action.payload.sortedInventory),
+                inventoryType: "Personal",
                 showHide: true,
             };
         case types.SELECT_INVENTORY_ITEM:
@@ -180,7 +177,12 @@ const inventoryReducer = (state = initialState, action) => {
                     ) {
                         //if item take the new item count
                         item.count = item.count - 1;
-                        return item;
+                        if (item.count > 0) {
+                            return item;
+                        } else {
+                            item = "{}";
+                            return item;
+                        }
                     } else {
                         return item;
                     }
@@ -206,30 +208,35 @@ const inventoryReducer = (state = initialState, action) => {
         case types.ADD_ITEM:
             return {
                 ...state,
-                quantity: state.quantity += 1,
+                quantity: (state.quantity += 1),
                 boughtItem: {
-                    price: state.boughtItem.price + state.selectedItem.price
-                }
+                    price: state.boughtItem.price + state.selectedItem.price,
+                },
             };
         case types.SUBTRACT_ITEM:
             return {
                 ...state,
-                quantity: state.quantity -= 1,
+                quantity: state.quantity !== 0 ? (state.quantity -= 1) : 0,
                 boughtItem: {
-                    price: state.boughtItem.price - state.selectedItem.price
-                }
+                    price:
+                        state.boughtItem.price !== 0
+                            ? state.boughtItem.price - state.selectedItem.price
+                            : 0,
+                },
             };
         case types.CONFIRMATION_HANDLER:
             return {
                 ...state,
                 showConfirmation: false,
-                sortedInventory: action.payload
-            }
+                sortedInventory: action.payload,
+                quantity: 1,
+            };
         case types.CLOSE_CONFIRMATION_HANDLER:
             return {
                 ...state,
                 showConfirmation: false,
-            }
+                quantity: 1,
+            };
         default:
             return state;
     }

@@ -27,8 +27,9 @@ export default (props) => {
         (state) => state.inventory.showConfirmation
     );
     const selectedType = useSelector((state) => state.inventory.selectedType);
+    const sortedInventory = useSelector((state) => state.inventory.sortedInventory);
     const boughtItem = useSelector((state) => state.inventory.boughtItem);
-
+    const selectedItem= useSelector((state) => state.inventory.selectedItem);
     const closeHandler = () => {
         dispatch(inventoryActions.closeConfirmationHandler());
     };
@@ -66,7 +67,7 @@ export default (props) => {
                 </IconButton>
                 <IconButton
                     style={{ border: "none" }}
-                    onClick={(e) => dispatch(inventoryActions.subtractItem())}
+                    onClick={(e) => dispatch(inventoryActions.subtractItem(sortedInventory, boughtItem, selectedItem))}
                 >
                     <Remove />
                 </IconButton>

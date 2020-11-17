@@ -12,6 +12,9 @@ const openTrunkUrl = "http://pma-inventory/OpenTrunk";
 
 const updateInventoryUrl = "http://pma-inventory/UpdateInventory";
 
+const buyItemUrl = "http://pma-inventory/BuyItem";
+
+
 const Apis = {
     openInventory() {
         return axios.post(openInventoryUrl);
@@ -26,7 +29,7 @@ const Apis = {
         axios.post(closeInventoryUrl, data);
     },
 
-    useInventoryItem(item, itemSlot) {
+    useInventoryItem(item) {
         return axios.post(useItemUrl, item);
     },
 
@@ -37,6 +40,10 @@ const Apis = {
     updateInventory(item) {
         return axios.post(updateInventoryUrl, item);
     },
+
+    buyItem(item) {
+        return axios.post(buyItemUrl, item);
+    }
 };
 
 export default Apis;

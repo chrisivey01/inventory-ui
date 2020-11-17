@@ -71,28 +71,15 @@ function InventoryContainer() {
                         dispatch(inventoryActions.loadPersonalInventory(data));
                     } else {
                         if (event.data.inventory) {
-                            const sortedPayload = {
-                                inventory: event.data.inventory,
-                                inventoryType: event.data.inventoryType,
-                                sortedInventory: event.data.sortedInventory,
-                            };
-                            const payload = {
-                                inventory: event.data.inventory,
-                                inventoryType: event.data.inventoryType,
-                            };
-                            if (event.data.sortedInventory.length > 0) {
-                                dispatch(
-                                    inventoryActions.loadSortedInventory(
-                                        sortedPayload
-                                    )
-                                );
-                            } else {
-                                dispatch(
-                                    inventoryActions.loadUnsortedInventory(
-                                        payload
-                                    )
-                                );
-                            }
+                            const inventory = event.data.inventory;
+                            const sortedInventory = event.data.sortedInventory;
+
+                            dispatch(
+                                inventoryActions.loadInventory({
+                                    inventory,
+                                    sortedInventory,
+                                })
+                            );
                         }
                     }
                     break;
@@ -170,12 +157,14 @@ function InventoryContainer() {
                 type: type,
                 itemType: itemType,
             };
-            if(itemType === "Store"){
+            if (itemType === "Store") {
                 dispatch(itemActions.clearInfo());
                 dispatch(inventoryActions.transferConfirmation());
             } else {
                 dispatch(itemActions.clearInfo());
-                dispatch(inventoryActions.moveInventoryItem(payload, selectedItem));
+                dispatch(
+                    inventoryActions.moveInventoryItem(payload, selectedItem)
+                );
             }
         } else {
             payload = {
@@ -207,7 +196,7 @@ function InventoryContainer() {
             selectedItem: selectedItem,
             quantity: quantity,
             sortedInventory: sortedInventory
-        }
+        };
 
         dispatch(inventoryActions.confirmationHandler(data));
     };

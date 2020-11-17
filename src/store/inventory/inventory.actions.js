@@ -45,6 +45,22 @@ export const closeInventory = (sortedInventory, secondInventory, carData) => {
     };
 };
 
+export const loadInventory = (data) => {
+    return (dispatch) => {
+        if (data.sortedInventory.length > 0) {
+            dispatch({
+                type: LOAD_SORTED_INVENTORY,
+                payload: data,
+            });
+        } else {
+            dispatch({
+                type: LOAD_UNSORTED_INVENTORY,
+                payload: data,
+            });
+        }
+    };
+};
+
 export const loadSortedInventory = (payload) => ({
     type: LOAD_SORTED_INVENTORY,
     payload: payload,
@@ -135,11 +151,20 @@ export const addItem = () => {
     };
 };
 
-export const subtractItem = () => {
+export const subtractItem = (sortedInventory, boughtItem, selectedItem) => {
     return (dispatch) => {
+        // const moneyIndex = sortedInventory.findIndex(
+        //     (item) => item.name === "money"
+        // );
+        //once it goes negative, the name is removed
+        // if(boughtItem.name === undefined){
+        //     boughtItem.name = selectedItem.name
+        // }
+        // if (sortedInventory[moneyIndex].money - boughtItem.price >= 0) {
         dispatch({
             type: SUBTRACT_ITEM,
         });
+        // }
     };
 };
 
@@ -158,6 +183,12 @@ export const updateQuantity = (value) => {
 
 export const confirmationHandler = (data) => {
     return (dispatch) => {
+
+        const item = {
+            quantity: data.quantity,
+            selectedItem: data.selectedItem
+        }
+        Apis.buyItem(item);
         let sortedInventory = [...data.sortedInventory];
         const itemIndex = sortedInventory.findIndex((item) => {
             if (item !== "{}") {
@@ -168,37 +199,27 @@ export const confirmationHandler = (data) => {
             }
         });
         const bracketIndex = sortedInventory.findIndex((item) => item === "{}");
+        const moneyIndex = sortedInventory.findIndex(
+            (item) => item.name === "money"
+        );
 
         if (itemIndex > 0) {
             sortedInventory[itemIndex].price =
                 sortedInventory[itemIndex].count * data.selectedItem.price;
             sortedInventory[itemIndex].count =
                 sortedInventory[itemIndex].count + data.quantity;
+            sortedInventory[itemIndex].type = "item_standard";
         }
+        sortedInventory[moneyIndex].money =
+            sortedInventory[moneyIndex].money -
+            data.selectedItem.price * data.quantity;
 
         if (bracketIndex && itemIndex < 0) {
             sortedInventory[bracketIndex] = data.selectedItem;
             sortedInventory[bracketIndex].count = data.quantity;
+            sortedInventory[bracketIndex].type = "item_standard";
         }
-        // const modifiedData = data.sortedInventory.map((item) => {
-        //     if (item.type !== "item_weapon") {
-        //         if(item.name === data.selectedItem.name){
-        //             item.price = data.quantity * data.selectedItem.price;
-        //             item.count = data.quantity + item.count
-        //             return item
-        //         } else {
-        //             return item
-        //         }
-        //     } else {
-        //         return item
-        //     }
-        // });
-        // if(data.selectedItem.count){
-        //     data.selectedItem.count = data.quantity
-        //     modifiedData.splice(findBracket, 1, data.selectedItem)
-        // }
 
-        console.log(sortedInventory);
         dispatch({
             type: CONFIRMATION_HANDLER,
             payload: sortedInventory,

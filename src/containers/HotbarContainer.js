@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 function HotbarContainer() {
     const classes = useStyles();
-    const itemSlots = useSelector((state) => state.inventory.sortedInventory);
+    const sortedInventory = useSelector((state) => state.inventory.sortedInventory);
     const showHotbar = useSelector((state) => state.hotbar.showHotbar);
     const dispatch = useDispatch();
 
@@ -111,7 +111,7 @@ function HotbarContainer() {
 
             if(e.data.updateItem){
                 //item
-                dispatch(inventoryActions.updateItem(e.data.itemData));
+                dispatch(inventoryActions.updateItem(e.data.itemData, sortedInventory));
             }
 
         }
@@ -124,7 +124,7 @@ function HotbarContainer() {
             className={classes.hotkeyBar}
             style={{ visibility: showHotbar ? "visible" : "hidden" }}
         >
-            {itemSlots.map((item, i) => {
+            {sortedInventory.map((item, i) => {
                 if (i < 5) {
                     return (
                         <Paper elevation={3} className={classes.slot}>
