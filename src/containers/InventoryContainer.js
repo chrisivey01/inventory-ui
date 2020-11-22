@@ -43,6 +43,17 @@ const useStyles = makeStyles((theme) => ({
 function InventoryContainer() {
     const classes = useStyles();
     const dispatch = useDispatch();
+
+    const personalInventory = useSelector(
+        (state) => state.inventory.personalInventory
+    );
+    const otherInventory = useSelector(
+        (state) => state.inventory.otherInventory
+    );
+    const inventoryShow = useSelector((state) => state.inventory.inventoryShow);
+    const info = useSelector((state) => state.inventory.info);
+    const selectedItem = useSelector((state) => state.inventory.selectedItem);
+
     const sortedInventory = useSelector(
         (state) => state.inventory.sortedInventory
     );
@@ -53,15 +64,12 @@ function InventoryContainer() {
     const secondInventoryType = useSelector(
         (state) => state.inventory.secondInventoryType
     );
-    const showHide = useSelector((state) => state.inventory.showHide);
-    const carData = useSelector((state) => state.inventory.data);
-    const selectedItem = useSelector((state) => state.inventory.selectedItem);
     const selectedType = useSelector((state) => state.inventory.selectedType);
     const quantity = useSelector((state) => state.inventory.quantity);
 
     useEffect(() => {
-        console.log(sortedInventory);
-    }, [sortedInventory]);
+        console.log(personalInventory);
+    }, [personalInventory]);
 
     useEffect(() => {
         window.addEventListener("message", (event) => {
@@ -71,43 +79,32 @@ function InventoryContainer() {
                         dispatch(inventoryActions.loadPersonalInventory(data));
                     } else {
                         if (event.data.inventory) {
-                            const inventory = event.data.inventory;
-                            const sortedInventory = event.data.sortedInventory;
-
-                            dispatch(
-                                inventoryActions.loadInventory({
-                                    inventory,
-                                    sortedInventory,
-                                })
-                            );
+                            const data = {
+                                inventory: event.data.inventory,
+                                playerInventory: event.data.playerInventory,
+                                inventoryType: event.data.inventoryType,
+                                info: event.data.info
+                            };
+                            dispatch(inventoryActions.loadInventory(data));
                         }
                     }
-                    break;
                 }
+                break;
                 case "Hotbar": {
                     dispatch(hotbarActions.loadHotbar());
-                    break;
                 }
+                break;
                 case "Trunk": {
                     let payload = {};
-                    if (event.data.sortedInventory.length === 0) {
-                        payload = {
-                            inventoryType: event.data.inventoryType,
-                            inventory: event.data.inventory,
-                            carData: event.data.carData,
-                        };
-                        dispatch(inventoryActions.loadSecondInventory(payload));
-                    } else {
-                        payload.inventoryType = event.data.inventoryType;
-                        payload.inventory = {};
-                        payload.inventory.items = [];
-                        payload.inventory.items = event.data.sortedInventory;
-                        payload.inventory.plate = event.data.carData.plate;
-                        payload.inventory.weight = event.data.carData.max;
-                        dispatch(
-                            inventoryActions.loadSecondInventorySorted(payload)
-                        );
-                    }
+
+                    payload = {
+                        inventoryType: event.data.inventoryType,
+                        inventory: event.data.inventory,
+                        otherInventory: event.data.sortedInventory,
+                        info: event.data.carData,
+                    };
+
+                    dispatch(inventoryActions.loadOtherInventory(payload));
                     break;
                 }
                 case "Store": {
@@ -115,7 +112,7 @@ function InventoryContainer() {
                         inventoryActions.loadStoreInventory(event.data.items)
                     );
                 }
-
+                break;
                 default:
                     return null;
             }
@@ -125,56 +122,53 @@ function InventoryContainer() {
     useEffect(() => {
         window.addEventListener("keydown", closeFunction);
         return () => window.removeEventListener("keydown", closeFunction);
-    }, [sortedInventory, selectedItem]);
+    }, [personalInventory, selectedItem]);
 
     const onStart = (e, i, type, itemType, selectedType) => {
         let payload;
         if (type === "Personal") {
             payload = {
-                item: sortedInventory[i],
+                item: personalInventory.inventory[i],
                 index: i,
                 type: type,
-                itemType: itemType,
             };
         } else if (type === "Trunk" || type === "Store") {
             payload = {
-                item: secondInventory[i],
+                item: otherInventory.inventory[i],
                 index: i,
                 type: type,
-                itemType: itemType,
             };
         }
         dispatch(inventoryActions.selectInventoryItem(payload));
         dispatch(itemActions.setInfo(payload));
     };
 
+    //selectedItem.data is the full item object
     const onStop = (e, i, type, itemType, selectedType) => {
-        let payload;
+        let data;
         if (type === "Personal") {
-            payload = {
-                item: sortedInventory[i],
+            data = {
+                item: personalInventory.inventory[i],
                 index: i,
                 type: type,
-                itemType: itemType,
+                selectedItem: selectedItem
             };
             if (itemType === "Store") {
                 dispatch(itemActions.clearInfo());
                 dispatch(inventoryActions.transferConfirmation());
             } else {
                 dispatch(itemActions.clearInfo());
-                dispatch(
-                    inventoryActions.moveInventoryItem(payload, selectedItem)
-                );
+                dispatch(inventoryActions.moveInventoryItem(data));
             }
         } else {
-            payload = {
-                item: secondInventory[i],
+            data = {
+                item: otherInventory.inventory[i],
                 index: i,
                 type: type,
-                itemType: itemType,
+                selectedItem: selectedItem
             };
             dispatch(itemActions.clearInfo());
-            dispatch(inventoryActions.moveInventoryItem(payload, selectedItem));
+            dispatch(inventoryActions.moveInventoryItem(data));
         }
     };
 
@@ -182,9 +176,9 @@ function InventoryContainer() {
         if (event.which === 27) {
             dispatch(
                 inventoryActions.closeInventory(
-                    sortedInventory,
-                    secondInventory,
-                    carData
+                    personalInventory,
+                    otherInventory,
+                    info
                 )
             );
             dispatch(hotbarActions.closeHotbar());
@@ -195,7 +189,7 @@ function InventoryContainer() {
         const data = {
             selectedItem: selectedItem,
             quantity: quantity,
-            sortedInventory: sortedInventory
+            personalInventory: personalInventory,
         };
 
         dispatch(inventoryActions.confirmationHandler(data));
@@ -209,28 +203,29 @@ function InventoryContainer() {
         <Fragment>
             <Grid
                 className={classes.inventoryDisplay}
-                style={{ visibility: showHide ? "visible" : "hidden" }}
+                style={{ visibility: inventoryShow ? "visible" : "hidden" }}
                 container
             >
-                <Inventory
-                    inventoryTitle={inventoryType}
-                    inventoryType={inventoryType}
-                    inventory={sortedInventory}
-                    onStart={onStart}
-                    onStop={onStop}
-                    isSecondInventory={false}
-                    selectedType={selectedType}
-                />
-                <PlayerMenu />
-                <Inventory
-                    inventoryTitle={secondInventoryType}
-                    inventoryType={secondInventoryType}
-                    inventory={secondInventory}
-                    onStart={onStart}
-                    onStop={onStop}
-                    isSecondInventory={true}
-                    selectedType={selectedType}
-                />
+                {personalInventory.inventory.length > 0 ? (
+                    <Fragment>
+                        <Inventory
+                            inventory={personalInventory}
+                            info={info}
+                            onStart={onStart}
+                            onStop={onStop}
+                            isSecondInventory={false}
+                        />
+                        <PlayerMenu />
+                        <Inventory
+                            inventory={otherInventory}
+                            onStart={onStart}
+                            onStop={onStop}
+                            isSecondInventory={true}
+                        />
+                    </Fragment>
+                ) : (
+                    <Fragment />
+                )}
                 <SelectedItem />
             </Grid>
             <Confirmation

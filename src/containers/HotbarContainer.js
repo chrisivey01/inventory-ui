@@ -62,10 +62,11 @@ const useStyles = makeStyles((theme) => ({
 
 function HotbarContainer() {
     const classes = useStyles();
-    const sortedInventory = useSelector((state) => state.inventory.sortedInventory);
-    const showHotbar = useSelector((state) => state.hotbar.showHotbar);
+    const personalInventory = useSelector(
+        (state) => state.inventory.personalInventory
+    );
+    const hotbarShow = useSelector((state) => state.hotbar.hotbarShow);
     const dispatch = useDispatch();
-
 
     useEffect(() => {
         window.addEventListener("message", (e) => onMessage(e));
@@ -74,9 +75,8 @@ function HotbarContainer() {
         };
     }, []);
 
-
     const onMessage = (e) => {
-        if(e.data.useItem) {
+        if (e.data.useItem) {
             //USE ITEM section
             switch (e.data.useItem) {
                 case "useItemOne": {
@@ -104,68 +104,75 @@ function HotbarContainer() {
             }
         } else {
             //UPDATE WEAPON AMMO for inventory display for client side.
-            if(e.data.updateWeapon){
+            if (e.data.updateWeapon) {
                 //weapon
                 dispatch(inventoryActions.updateWeapon(e.data.weaponData));
             }
 
-            if(e.data.updateItem){
+            if (e.data.updateItem) {
                 //item
-                dispatch(inventoryActions.updateItem(e.data.itemData, sortedInventory));
+                dispatch(
+                    inventoryActions.updateItem(
+                        e.data.itemData,
+                        personalInventory.sorted
+                    )
+                );
             }
-
         }
     };
-
 
     return (
         <Grid
             container
             className={classes.hotkeyBar}
-            style={{ visibility: showHotbar ? "visible" : "hidden" }}
+            style={{ visibility: hotbarShow ? "visible" : "hidden" }}
         >
-            {sortedInventory.map((item, i) => {
-                if (i < 5) {
-                    return (
-                        <Paper elevation={3} className={classes.slot}>
-                            <Typography
-                                className={classes.slotNumberGrid}
-                                variant="outlined"
-                            >
-                                {i + 1}
-                            </Typography>
-                            <Typography
-                                className={classes.countGrid}
-                                variant="outlined"
-                            >
-                                {item.ammo ? item.ammo : <Fragment />}
-                                {item.count ? item.count : <Fragment />}
-                                {item.money ? (
-                                    <span style={{ color: "green" }}>
-                                        $
-                                        {item.money
-                                            .toString()
-                                            .replace(
-                                                /\B(?=(\d{3})+(?!\d))/g,
-                                                ","
-                                            )}
-                                    </span>
-                                ) : (
-                                    <Fragment />
-                                )}
-                            </Typography>
-                            <img
-                                draggable="false"
-                                className={classes.images}
-                                src={"./assets/" + item.name + ".png"}
-                            />
-                            <Typography className={classes.name}>
-                                {item.label}
-                            </Typography>
-                        </Paper>
-                    );
-                }
-            })}
+            {personalInventory.inventory ? (
+                personalInventory.inventory.map((item, i) => {
+                    if (i < 5) {
+                        return (
+                            <Paper elevation={3} className={classes.slot}>
+                                <Typography
+                                    className={classes.slotNumberGrid}
+                                    variant="outlined"
+                                >
+                                    {i + 1}
+                                </Typography>
+                                <Typography
+                                    className={classes.countGrid}
+                                    variant="outlined"
+                                >
+                                    {item.ammo ? item.ammo : <Fragment />}
+                                    {item.count ? item.count : <Fragment />}
+                                    {item.money ? (
+                                        <span style={{ color: "green" }}>
+                                            $
+                                            {item.money
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ","
+                                                )}
+                                        </span>
+                                    ) : (
+                                        <Fragment />
+                                    )}
+                                </Typography>
+                                <img
+                                    draggable="false"
+                                    className={classes.images}
+                                    src={"./assets/" + item.name + ".png"}
+                                />
+                                <Typography className={classes.name}>
+                                    {item.label}
+                                </Typography>
+                            </Paper>
+                        );
+                    }
+                })
+            ) : (
+                <Fragment />
+            )}
         </Grid>
     );
 }

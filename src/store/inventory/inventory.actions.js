@@ -1,8 +1,9 @@
 import Apis from "../../apis/apis";
+export const LOAD_INVENTORY = "LOAD_INVENTORY";
 export const SHOW_INVENTORY = "SHOW_INVENTORY";
 export const CLOSE_INVENTORY = "CLOSE_INVENTORY";
-export const LOAD_SORTED_INVENTORY = "LOAD_SORTED_INVENTORY";
-export const LOAD_UNSORTED_INVENTORY = "LOAD_UNSORTED_INVENTORY";
+export const LOAD_OTHER_INVENTORY = "LOAD_OTHER_INVENTORY"; 
+
 
 export const SELECT_INVENTORY_ITEM = "SELECT_INVENTORY_ITEM";
 export const SELECT_INVENTORY_ITEM_INDEX = "SELECT_INVENTORY_ITEM_INDEX";
@@ -31,71 +32,66 @@ export const SUBTRACT_ITEM = "SUBTRACT_ITEM";
 
 export const CONFIRMATION_HANDLER = "CONFIRMATION_HANDLER";
 export const CLOSE_CONFIRMATION_HANDLER = "CLOSE_CONFIRMATION_HANDLER";
-export const closeInventory = (sortedInventory, secondInventory, carData) => {
-    return (dispatch) => {
-        const payload = {
-            sortedInventory: sortedInventory,
-            secondInventory: secondInventory,
-        };
-        dispatch({
-            type: CLOSE_INVENTORY,
-            payload: payload,
-        });
-        Apis.closeInventory(sortedInventory, secondInventory, carData);
-    };
-};
 
 export const loadInventory = (data) => {
     return (dispatch) => {
-        if (data.sortedInventory.length > 0) {
-            dispatch({
-                type: LOAD_SORTED_INVENTORY,
-                payload: data,
-            });
-        } else {
-            dispatch({
-                type: LOAD_UNSORTED_INVENTORY,
-                payload: data,
-            });
-        }
+        dispatch({
+            type: LOAD_INVENTORY,
+            payload: data,
+        });
+
+        dispatch(showInventory())
     };
 };
 
-export const loadSortedInventory = (payload) => ({
-    type: LOAD_SORTED_INVENTORY,
-    payload: payload,
-});
+export const showInventory = () => {
+    return (dispatch) => {
+        dispatch({
+            type: SHOW_INVENTORY,
+        });
+    };
+};
 
-export const loadUnsortedInventory = (payload) => ({
-    type: LOAD_UNSORTED_INVENTORY,
-    payload: payload,
-});
+export const closeInventory = (personalInventory, otherInventory, info) => {
+    return (dispatch) => {
+        dispatch({
+            type: CLOSE_INVENTORY,
+        });
+
+        Apis.closeInventory({personalInventory, otherInventory, info});
+    };
+};
+
+export const loadOtherInventory = (data) => {
+    return (dispatch) => {
+        dispatch({
+            type: LOAD_OTHER_INVENTORY,
+            payload: data
+        })
+    }
+}
+
 
 export const selectInventoryItem = (payload) => ({
     type: SELECT_INVENTORY_ITEM,
     payload: payload,
 });
 
-export const moveInventoryItem = (payload, selectedItem, selectedType) => {
+export const moveInventoryItem = (payload) => {
     return (dispatch) => {
         dispatch({ type: MOVE_INVENTORY_ITEM, payload: payload });
-        const data = {
-            selectedItem: selectedItem,
-            type: payload.type,
-            itemType: payload.itemType,
-        };
-        Apis.updateInventory(data);
+        Apis.updateInventory(payload);
     };
 };
+
 
 export const useInventoryItem = (itemIndex) => ({
     type: USE_INVENTORY_ITEM,
     payload: itemIndex,
 });
 
-export const hideUseInventoryItem = (item) => ({
+export const hideUseInventoryItem = () => ({
     type: HIDE_USE_INVENTORY_ITEM,
-    payload: item,
 });
 
 export const loadSecondInventory = (payload) => ({
@@ -183,11 +179,10 @@ export const updateQuantity = (value) => {
 
 export const confirmationHandler = (data) => {
     return (dispatch) => {
-
         const item = {
             quantity: data.quantity,
-            selectedItem: data.selectedItem
-        }
+            selectedItem: data.selectedItem,
+        };
         Apis.buyItem(item);
         let sortedInventory = [...data.sortedInventory];
         const itemIndex = sortedInventory.findIndex((item) => {

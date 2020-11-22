@@ -2,127 +2,127 @@ import * as types from "./inventory.actions";
 import * as utils from "./inventory.utils";
 
 const initialState = {
-    selectedItem: {},
+    personalInventory: {
+        type: "Personal",
+        inventory: [],
+        unsorted: [],
+    },
+    info: {
+        personal: {},
+        car: {}
+    },
+    otherInventory: {
+        type: "",
+        inventory: [],
+    },
+    inventoryShow: false,
+    selectedItem: {
+        data: {},
+        index: null,
+        type: "",
+    },
     selectedItemIndex: null,
     selectedType: null,
     usedItem: {},
-    inventoryShow: false,
-    inventoryType: "",
-    inventory: [],
-    sortedInventory: [],
-    secondInventory: [],
-    secondInventoryType: null,
-    data: {},
-    showHide: false,
-    show: false,
     showConfirmation: false,
-    quantity: 1,
-    boughtItem: {},
+    // quantity: 1,
+    // boughtItem: {},
+    // secondInventory: [],
+    // secondInventoryType: null,
 };
 
 const inventoryReducer = (state = initialState, action) => {
     switch (action.type) {
+        case types.LOAD_INVENTORY:
+            return {
+                ...state,
+                personalInventory: {
+                    ...state.personalInventory,
+                    inventory: utils.loadInventory(
+                        action.payload.inventory,
+                        action.payload.playerInventory,
+                        action.payload.otherInventory
+                    ),
+                    unsorted: action.payload.inventory,
+                },
+                info:{
+                    ...state.info,
+                    personal: action.payload.info
+                } 
+            };
+        case types.SHOW_INVENTORY:
+            return {
+                ...state,
+                inventoryShow: true,
+            };
         case types.CLOSE_INVENTORY:
             return {
                 ...state,
-                showHide: false,
-                type: "",
-                sortedInventory: action.payload.sortedInventory,
-                secondInventory: [],
-                secondInventoryType: null,
+                inventoryShow: false,
+                otherInventory: {
+                    ...state.otherInventory,
+                    type: "",
+                    inventory: []
+                }
             };
-        case types.LOAD_UNSORTED_INVENTORY:
-            return {
-                ...state,
-                sortedInventory: utils.loadUnsortedInventory(
-                    action.payload,
-                    state.inventory
-                ),
-                currentWeight: action.payload.weight,
-                maxWeight: action.payload.maxWeight,
-                inventoryType: "Personal",
-                showHide: true,
-            };
-        case types.LOAD_SORTED_INVENTORY:
-            return {
-                ...state,
-                sortedInventory: utils.loadSortedInventory(action.payload.inventory, action.payload.sortedInventory),
-                inventoryType: "Personal",
-                showHide: true,
-            };
+
         case types.SELECT_INVENTORY_ITEM:
             return {
                 ...state,
-                selectedItem: action.payload.item,
-                boughtItem: action.payload.item,
-                selectedItemIndex: action.payload.index,
-                selectedType: action.payload.type,
-                selectedItemType: action.payload.itemType,
+                selectedItem: {
+                    data: action.payload.item,
+                    index: action.payload.index,
+                    type: action.payload.type,
+                },
             };
         case types.MOVE_INVENTORY_ITEM:
-            let inv = [...state.sortedInventory];
-            let secInv = [];
-            if (state.secondInventory) {
-                secInv = [...state.secondInventory];
+            let inv = [...state.personalInventory.inventory];
+            let secInv = [...state.otherInventory.inventory];
+
+            const itemSelected = state.selectedItem;
+            const itemDrop = action.payload;
+
+            //SWAPS BETWEEN PERSONAL INVENTORY
+            if(itemSelected.type === "Personal" && itemDrop.type === "Personal"){
+                const moveToSlot = inv.splice(itemSelected.index, 1, itemDrop.item)
+                inv.splice(itemDrop.index, 1, moveToSlot[0])
             }
-            const selectedType = state.selectedType;
-            const invData = action.payload;
-            const selectedItemIndex = state.selectedItemIndex;
-            const itemIndex = state.sortedInventory.filter(
-                (item) =>
-                    state.selectedItem.type === "item_weapon" &&
-                    item.name === state.selectedItem.name
-            );
-            if (
-                action.payload.type === "Personal" &&
-                action.payload.itemType !== "Personal" &&
-                state.selectedItem.type === "item_weapon" &&
-                itemIndex.length > 0
-            ) {
-                return {
-                    ...state,
-                    sortedInventory: inv,
-                    secondInventory: secInv,
-                };
-            } else if (
-                selectedType === invData.type &&
-                selectedType === "Personal"
-            ) {
-                const selectedItem = inv[selectedItemIndex];
-                let movedTo = inv.splice(invData.index, 1, selectedItem);
-                inv.splice(selectedItemIndex, 1, movedTo[0]);
-            } else if (
-                selectedType === invData.type &&
-                selectedType !== "Personal"
-            ) {
-                const selectedItem = secInv[selectedItemIndex];
-                let movedTo = secInv.splice(invData.index, 1, selectedItem);
-                secInv.splice(selectedItemIndex, 1, movedTo[0]);
-            } else if (
-                selectedType !== invData.type &&
-                selectedType === "Personal"
-            ) {
-                const selectedItem = inv[selectedItemIndex];
-                let movedTo = secInv.splice(invData.index, 1, selectedItem);
-                inv.splice(selectedItemIndex, 1, movedTo[0]);
-            } else if (
-                selectedType !== invData.type &&
-                selectedType !== "Personal"
-            ) {
-                const selectedItem = secInv[selectedItemIndex];
-                let movedTo = inv.splice(invData.index, 1, selectedItem);
-                secInv.splice(selectedItemIndex, 1, movedTo[0]);
+
+            //PUTS ITEMS INTO OTHER INVENTORY
+            if(itemSelected.type === "Personal" && itemDrop.type !== "Personal"){
+                const moveToSlot = inv.splice(itemSelected.index, 1, itemDrop.item)
+                secInv.splice(itemDrop.index, 1, moveToSlot[0])
             }
+
+            //SWAPS BETWEEN OTHER INVENTORY
+            if(itemSelected.type !== "Personal" && itemDrop.type !== "Personal"){
+                const moveToSlot = secInv.splice(itemSelected.index, 1, itemDrop.item)
+                secInv.splice(itemDrop.index, 1, moveToSlot[0])
+            }
+
+            //GETS ITEM FROM OTHER INVENTORY
+            if(itemSelected.type !== "Personal" && itemDrop.type === "Personal"){
+                const moveToSlot = secInv.splice(itemSelected.index, 1, itemDrop.item)
+                inv.splice(itemDrop.index, 1, moveToSlot[0])
+            }
+
             return {
                 ...state,
-                sortedInventory: inv,
-                secondInventory: secInv,
+                personalInventory: {
+                    ...state.personalInventory,
+                    inventory: inv,
+                },
+                otherInventory: {
+                    ...state.otherInventory,
+                    inventory: secInv,
+                },
             };
+
         case types.USE_INVENTORY_ITEM:
             return {
                 ...state,
                 usedItem: utils.useInventoryItem(
-                    state.sortedInventory,
+                    state.personalInventory.inventory,
                     action.payload,
                     state.usedItem
                 ),
@@ -133,68 +133,72 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 show: false,
             };
-        case types.LOAD_SECOND_INVENTORY:
+        case types.LOAD_OTHER_INVENTORY:
             return {
                 ...state,
-                secondInventory: utils.loadUnsortedInventory(
-                    action.payload.inventory
-                ),
-                secondInventoryType: action.payload.inventoryType,
-                data: action.payload.carData,
-                showHide: true,
-            };
-        case types.LOAD_SECOND_INVENTORY_SORTED:
-            return {
-                ...state,
-                secondInventory: action.payload.inventory.items,
-                secondInventoryType: action.payload.inventoryType,
-                data: {
-                    plate: action.payload.inventory.plate,
-                    weight: action.payload.inventory.weight,
+                otherInventory: {
+                    inventory: utils.loadOtherInventory(
+                        action.payload.inventory,
+                        action.payload.otherInventory
+                    ),
+                    type: action.payload.inventoryType,
                 },
-                showHide: true,
-            };
-        case types.UPDATE_WEAPON_INFO:
-            return {
-                ...state,
-                sortedInventory: state.sortedInventory.map((item) => {
-                    if (item.name && item.name === action.payload.name) {
-                        //if item is weapon, take the new weapon count
-                        return (item = action.payload);
-                    } else {
-                        return item;
-                    }
-                }),
-            };
-        case types.UPDATE_ITEM_INFO:
-            return {
-                ...state,
-                sortedInventory: state.sortedInventory.map((item) => {
-                    if (
-                        item.name &&
-                        item.name === action.payload.name &&
-                        item.count > 0
-                    ) {
-                        //if item take the new item count
-                        item.count = item.count - 1;
-                        if (item.count > 0) {
-                            return item;
-                        } else {
-                            item = "{}";
-                            return item;
-                        }
-                    } else {
-                        return item;
-                    }
-                }),
+                inventoryShow: true,
+                info:{
+                    ...state.info,
+                    car: action.payload.info,
+                } 
             };
         case types.LOAD_STORE_INVENTORY:
             return {
                 ...state,
-                secondInventory: action.payload,
-                secondInventoryType: "Store",
-                showHide: true,
+                otherInventory: {
+                    inventory: action.payload,
+                    type: "Store"
+                },
+                inventoryShow: true,
             };
+        case types.UPDATE_WEAPON_INFO:
+            return {
+                ...state,
+                personalInventory: {
+                    ...state.personalInventory,
+                    inventory: state.sortedInventory.map((item) => {
+                        if (item.name && item.name === action.payload.name) {
+                            //if item is weapon, take the new weapon count
+                            return (item = action.payload);
+                        } else {
+                            return item;
+                        }
+                    }),
+                }
+            };
+        case types.UPDATE_ITEM_INFO:
+            return {
+                ...state,
+                personalInventory: {
+                    ...state.personalInventory,
+                    inventory: state.personalInventory.inventory.map((item) => {
+                        if (
+                            item.name &&
+                            item.name === action.payload.name &&
+                            item.count > 0
+                        ) {
+                            //if item take the new item count
+                            item.count = item.count - 1;
+                            if (item.count > 0) {
+                                return item;
+                            } else {
+                                item = "{}";
+                                return item;
+                            }
+                        } else {
+                            return item;
+                        }
+                    }),
+                }
+            };
+
         case types.TRANSFER_CONFIRMATION:
             return {
                 ...state,

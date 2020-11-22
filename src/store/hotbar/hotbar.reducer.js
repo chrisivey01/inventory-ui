@@ -2,7 +2,7 @@ import * as types from "./hotbar.actions";
 
 const initialState = {
     itemSlots: [],
-    showHotbar: false,
+    hotbarShow: false,
 };
 
 const hotbarReducer = (state = initialState, action) => {
@@ -11,12 +11,12 @@ const hotbarReducer = (state = initialState, action) => {
             return {
                 ...state,
                 itemSlots: action.payload,
-                showHotbar: true,
+                hotbarShow: true,
             };
         case types.CLOSE_HOTBAR:
             return {
                 ...state,
-                showHotbar: false,
+                hotbarShow: false,
             };
         default:
             return state;

@@ -28,12 +28,12 @@ export default (props) => {
     return (
         <Grid container className={classes.container}>
             <Grid item>
-                <Typography variant="h4">{props.inventoryType}</Typography>
+                <Typography variant="h4">{props.inventory.type}</Typography>
             </Grid>
             <Grid item className={classes.inventory}>
                 {props.inventory ? (
-                    props.inventory.map((item, i) => {
-                        if (props.inventoryType !== "Store" && props.inventory) {
+                    props.inventory.type !== "Store" ? (
+                        props.inventory.inventory.map((item, i) => {
                             return (
                                 <InventorySlots
                                     key={i}
@@ -41,29 +41,27 @@ export default (props) => {
                                     onStop={props.onStop}
                                     i={i}
                                     item={item}
-                                    inventoryType={props.inventoryType}
-                                    hasSecondInventory={
-                                        props.hasSecondInventory
-                                    }
-                                    selectedType={props.selectedType}
+                                    inventoryType={props.inventory.type}
+                                    isSecondInventory={props.isSecondInventory}
                                 />
                             );
-                        } else { 
-                            return (
-                                <ShopSlots
-                                    key={i}
-                                    onStart={props.onStart}
-                                    onStop={props.onStop}
-                                    i={i}
-                                    item={item}
-                                    inventoryType={props.inventoryType}
-                                    selectedType={props.selectedType}
-                                />
-                            );
-                        }
-                    })
+                        })
+                    ) : (
+                        <Fragment />
+                    )
                 ) : (
-                    <Fragment />
+                    props.inventory.inventory.map((item, i) => {
+                        return (
+                            <ShopSlots
+                                key={i}
+                                onStart={props.onStart}
+                                onStop={props.onStop}
+                                i={i}
+                                item={item}
+                                inventoryType={props.inventory.type}
+                            />
+                        );
+                    })
                 )}
             </Grid>
         </Grid>
