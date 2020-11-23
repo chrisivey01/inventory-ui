@@ -9,7 +9,7 @@ const initialState = {
     },
     info: {
         personal: {},
-        car: {}
+        car: {},
     },
     otherInventory: {
         type: "",
@@ -21,14 +21,11 @@ const initialState = {
         index: null,
         type: "",
     },
+    quantity: 1,
     selectedItemIndex: null,
     selectedType: null,
     usedItem: {},
     showConfirmation: false,
-    // quantity: 1,
-    // boughtItem: {},
-    // secondInventory: [],
-    // secondInventoryType: null,
 };
 
 const inventoryReducer = (state = initialState, action) => {
@@ -45,10 +42,10 @@ const inventoryReducer = (state = initialState, action) => {
                     ),
                     unsorted: action.payload.inventory,
                 },
-                info:{
+                info: {
                     ...state.info,
-                    personal: action.payload.info
-                } 
+                    personal: action.payload.info,
+                },
             };
         case types.SHOW_INVENTORY:
             return {
@@ -62,8 +59,8 @@ const inventoryReducer = (state = initialState, action) => {
                 otherInventory: {
                     ...state.otherInventory,
                     type: "",
-                    inventory: []
-                }
+                    inventory: [],
+                },
             };
 
         case types.SELECT_INVENTORY_ITEM:
@@ -83,27 +80,55 @@ const inventoryReducer = (state = initialState, action) => {
             const itemDrop = action.payload;
 
             //SWAPS BETWEEN PERSONAL INVENTORY
-            if(itemSelected.type === "Personal" && itemDrop.type === "Personal"){
-                const moveToSlot = inv.splice(itemSelected.index, 1, itemDrop.item)
-                inv.splice(itemDrop.index, 1, moveToSlot[0])
+            if (
+                itemSelected.type === "Personal" &&
+                itemDrop.type === "Personal"
+            ) {
+                const moveToSlot = inv.splice(
+                    itemSelected.index,
+                    1,
+                    itemDrop.item
+                );
+                inv.splice(itemDrop.index, 1, moveToSlot[0]);
             }
 
             //PUTS ITEMS INTO OTHER INVENTORY
-            if(itemSelected.type === "Personal" && itemDrop.type !== "Personal"){
-                const moveToSlot = inv.splice(itemSelected.index, 1, itemDrop.item)
-                secInv.splice(itemDrop.index, 1, moveToSlot[0])
+            if (
+                itemSelected.type === "Personal" &&
+                itemDrop.type !== "Personal"
+            ) {
+                const moveToSlot = inv.splice(
+                    itemSelected.index,
+                    1,
+                    itemDrop.item
+                );
+                secInv.splice(itemDrop.index, 1, moveToSlot[0]);
             }
 
             //SWAPS BETWEEN OTHER INVENTORY
-            if(itemSelected.type !== "Personal" && itemDrop.type !== "Personal"){
-                const moveToSlot = secInv.splice(itemSelected.index, 1, itemDrop.item)
-                secInv.splice(itemDrop.index, 1, moveToSlot[0])
+            if (
+                itemSelected.type !== "Personal" &&
+                itemDrop.type !== "Personal"
+            ) {
+                const moveToSlot = secInv.splice(
+                    itemSelected.index,
+                    1,
+                    itemDrop.item
+                );
+                secInv.splice(itemDrop.index, 1, moveToSlot[0]);
             }
 
             //GETS ITEM FROM OTHER INVENTORY
-            if(itemSelected.type !== "Personal" && itemDrop.type === "Personal"){
-                const moveToSlot = secInv.splice(itemSelected.index, 1, itemDrop.item)
-                inv.splice(itemDrop.index, 1, moveToSlot[0])
+            if (
+                itemSelected.type !== "Personal" &&
+                itemDrop.type === "Personal"
+            ) {
+                const moveToSlot = secInv.splice(
+                    itemSelected.index,
+                    1,
+                    itemDrop.item
+                );
+                inv.splice(itemDrop.index, 1, moveToSlot[0]);
             }
 
             return {
@@ -144,17 +169,17 @@ const inventoryReducer = (state = initialState, action) => {
                     type: action.payload.inventoryType,
                 },
                 inventoryShow: true,
-                info:{
+                info: {
                     ...state.info,
                     car: action.payload.info,
-                } 
+                },
             };
         case types.LOAD_STORE_INVENTORY:
             return {
                 ...state,
                 otherInventory: {
                     inventory: action.payload,
-                    type: "Store"
+                    type: "Store",
                 },
                 inventoryShow: true,
             };
@@ -171,7 +196,7 @@ const inventoryReducer = (state = initialState, action) => {
                             return item;
                         }
                     }),
-                }
+                },
             };
         case types.UPDATE_ITEM_INFO:
             return {
@@ -196,13 +221,14 @@ const inventoryReducer = (state = initialState, action) => {
                             return item;
                         }
                     }),
-                }
+                },
             };
 
         case types.TRANSFER_CONFIRMATION:
             return {
                 ...state,
                 showConfirmation: true,
+                boughtItem: action.payload.selectedItem.data,
             };
         case types.UPDATE_QUANTITY:
             return {
@@ -214,7 +240,8 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 quantity: (state.quantity += 1),
                 boughtItem: {
-                    price: state.boughtItem.price + state.selectedItem.price,
+                    price:
+                        state.boughtItem.price + state.selectedItem.data.price,
                 },
             };
         case types.SUBTRACT_ITEM:
@@ -224,7 +251,8 @@ const inventoryReducer = (state = initialState, action) => {
                 boughtItem: {
                     price:
                         state.boughtItem.price !== 0
-                            ? state.boughtItem.price - state.selectedItem.price
+                            ? state.boughtItem.price -
+                              state.selectedItem.data.price
                             : 0,
                 },
             };
@@ -232,7 +260,10 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 showConfirmation: false,
-                sortedInventory: action.payload,
+                personalInventory: {
+                    ...state.personalInventory,
+                    inventory: action.payload,
+                },
                 quantity: 1,
             };
         case types.CLOSE_CONFIRMATION_HANDLER:

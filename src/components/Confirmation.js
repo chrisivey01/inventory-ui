@@ -26,8 +26,7 @@ export default (props) => {
     const showConfirmation = useSelector(
         (state) => state.inventory.showConfirmation
     );
-    const selectedType = useSelector((state) => state.inventory.selectedType);
-    const sortedInventory = useSelector((state) => state.inventory.sortedInventory);
+    const inventory = useSelector((state) => state.inventory.personalInventory.inventory);
     const boughtItem = useSelector((state) => state.inventory.boughtItem);
     const selectedItem= useSelector((state) => state.inventory.selectedItem);
     const closeHandler = () => {
@@ -44,7 +43,7 @@ export default (props) => {
         >
             <DialogTitle>How much?</DialogTitle>
             <DialogContent>
-                {selectedType === "Store" ? (
+                {boughtItem  ? (
                     <Typography>Cost: {boughtItem.price} </Typography>
                 ) : (
                     <Fragment />
@@ -67,7 +66,7 @@ export default (props) => {
                 </IconButton>
                 <IconButton
                     style={{ border: "none" }}
-                    onClick={(e) => dispatch(inventoryActions.subtractItem(sortedInventory, boughtItem, selectedItem))}
+                    onClick={(e) => dispatch(inventoryActions.subtractItem(inventory, boughtItem, selectedItem))}
                 >
                     <Remove />
                 </IconButton>

@@ -2,8 +2,7 @@ import Apis from "../../apis/apis";
 export const LOAD_INVENTORY = "LOAD_INVENTORY";
 export const SHOW_INVENTORY = "SHOW_INVENTORY";
 export const CLOSE_INVENTORY = "CLOSE_INVENTORY";
-export const LOAD_OTHER_INVENTORY = "LOAD_OTHER_INVENTORY"; 
-
+export const LOAD_OTHER_INVENTORY = "LOAD_OTHER_INVENTORY";
 
 export const SELECT_INVENTORY_ITEM = "SELECT_INVENTORY_ITEM";
 export const SELECT_INVENTORY_ITEM_INDEX = "SELECT_INVENTORY_ITEM_INDEX";
@@ -40,7 +39,7 @@ export const loadInventory = (data) => {
             payload: data,
         });
 
-        dispatch(showInventory())
+        dispatch(showInventory());
     };
 };
 
@@ -58,7 +57,7 @@ export const closeInventory = (personalInventory, otherInventory, info) => {
             type: CLOSE_INVENTORY,
         });
 
-        Apis.closeInventory({personalInventory, otherInventory, info});
+        Apis.closeInventory({ personalInventory, otherInventory, info });
     };
 };
 
@@ -66,11 +65,10 @@ export const loadOtherInventory = (data) => {
     return (dispatch) => {
         dispatch({
             type: LOAD_OTHER_INVENTORY,
-            payload: data
-        })
-    }
-}
-
+            payload: data,
+        });
+    };
+};
 
 export const selectInventoryItem = (payload) => ({
     type: SELECT_INVENTORY_ITEM,
@@ -83,7 +81,6 @@ export const moveInventoryItem = (payload) => {
         Apis.updateInventory(payload);
     };
 };
-
 
 export const useInventoryItem = (itemIndex) => ({
     type: USE_INVENTORY_ITEM,
@@ -131,10 +128,11 @@ export const loadStoreInventory = (items) => {
     };
 };
 
-export const transferConfirmation = () => {
+export const transferConfirmation = (dataObject) => {
     return (dispatch) => {
         dispatch({
             type: TRANSFER_CONFIRMATION,
+            payload: dataObject,
         });
     };
 };
@@ -179,45 +177,43 @@ export const updateQuantity = (value) => {
 
 export const confirmationHandler = (data) => {
     return (dispatch) => {
-        const item = {
-            quantity: data.quantity,
-            selectedItem: data.selectedItem,
-        };
-        Apis.buyItem(item);
-        let sortedInventory = [...data.sortedInventory];
-        const itemIndex = sortedInventory.findIndex((item) => {
+
+        let inventory = [...data.personalInventory.inventory];
+        const itemIndex = inventory.findIndex((item) => {
             if (item !== "{}") {
                 return (
                     item.name.toLowerCase() ===
-                    data.selectedItem.name.toLowerCase()
+                    data.selectedItem.data.name.toLowerCase()
                 );
             }
         });
-        const bracketIndex = sortedInventory.findIndex((item) => item === "{}");
-        const moneyIndex = sortedInventory.findIndex(
-            (item) => item.name === "money"
-        );
+        const bracketIndex = inventory.findIndex((item) => item === "{}");
+        const moneyIndex = inventory.findIndex((item) => item.name === "money");
 
         if (itemIndex > 0) {
-            sortedInventory[itemIndex].price =
-                sortedInventory[itemIndex].count * data.selectedItem.price;
-            sortedInventory[itemIndex].count =
-                sortedInventory[itemIndex].count + data.quantity;
-            sortedInventory[itemIndex].type = "item_standard";
+            inventory[itemIndex].price =
+                inventory[itemIndex].count * data.selectedItem.data.price;
+            inventory[itemIndex].count =
+                inventory[itemIndex].count + data.quantity;
+            inventory[itemIndex].type = "item_standard";
         }
-        sortedInventory[moneyIndex].money =
-            sortedInventory[moneyIndex].money -
-            data.selectedItem.price * data.quantity;
+        inventory[moneyIndex].money =
+            inventory[moneyIndex].money -
+            data.selectedItem.data.price * data.quantity;
 
         if (bracketIndex && itemIndex < 0) {
-            sortedInventory[bracketIndex] = data.selectedItem;
-            sortedInventory[bracketIndex].count = data.quantity;
-            sortedInventory[bracketIndex].type = "item_standard";
+            inventory[bracketIndex] = {};
+            inventory[bracketIndex].name = data.selectedItem.data.name;
+            inventory[bracketIndex].count = data.quantity;
+            inventory[bracketIndex].type = "item_standard";
+
+            // Apis.updateInventory(data);
         }
+        Apis.buyItem(data);
 
         dispatch({
             type: CONFIRMATION_HANDLER,
-            payload: sortedInventory,
+            payload: inventory,
         });
     };
 };

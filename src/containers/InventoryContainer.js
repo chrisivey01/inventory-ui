@@ -2,7 +2,7 @@ import { Grid, makeStyles } from "@material-ui/core";
 import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Confirmation from "../components/Confirmation";
-import Inventory from "../components/Inventory";
+import InventoryView from "../components/InventoryView";
 import PlayerMenu from "../components/PlayerMenu";
 import SelectedItem from "../components/SelectedItem";
 import * as hotbarActions from "../store/hotbar/hotbar.actions";
@@ -124,7 +124,7 @@ function InventoryContainer() {
         return () => window.removeEventListener("keydown", closeFunction);
     }, [personalInventory, selectedItem]);
 
-    const onStart = (e, i, type, itemType, selectedType) => {
+    const onStart = (e, i, type) => {
         let payload;
         if (type === "Personal") {
             payload = {
@@ -144,7 +144,7 @@ function InventoryContainer() {
     };
 
     //selectedItem.data is the full item object
-    const onStop = (e, i, type, itemType, selectedType) => {
+    const onStop = (e, i, type) => {
         let data;
         if (type === "Personal") {
             data = {
@@ -153,9 +153,9 @@ function InventoryContainer() {
                 type: type,
                 selectedItem: selectedItem
             };
-            if (itemType === "Store") {
+            if (selectedItem.type === "Store") {
                 dispatch(itemActions.clearInfo());
-                dispatch(inventoryActions.transferConfirmation());
+                dispatch(inventoryActions.transferConfirmation(data));
             } else {
                 dispatch(itemActions.clearInfo());
                 dispatch(inventoryActions.moveInventoryItem(data));
@@ -185,17 +185,19 @@ function InventoryContainer() {
         }
     };
 
-    const agreeHandler = () => {
+    const agreeHandlerStores = () => {
         const data = {
             selectedItem: selectedItem,
             quantity: quantity,
             personalInventory: personalInventory,
+            otherInventory: otherInventory,
+            type: "item_standard"
         };
 
         dispatch(inventoryActions.confirmationHandler(data));
     };
 
-    const disagreeHandler = () => {
+    const disagreeHandlerStores = () => {
         console.log("disagree");
     };
 
@@ -208,7 +210,7 @@ function InventoryContainer() {
             >
                 {personalInventory.inventory.length > 0 ? (
                     <Fragment>
-                        <Inventory
+                        <InventoryView
                             inventory={personalInventory}
                             info={info}
                             onStart={onStart}
@@ -216,7 +218,7 @@ function InventoryContainer() {
                             isSecondInventory={false}
                         />
                         <PlayerMenu />
-                        <Inventory
+                        <InventoryView
                             inventory={otherInventory}
                             onStart={onStart}
                             onStop={onStop}
@@ -229,8 +231,8 @@ function InventoryContainer() {
                 <SelectedItem />
             </Grid>
             <Confirmation
-                agreeHandler={agreeHandler}
-                disagreeHandler={disagreeHandler}
+                agreeHandler={agreeHandlerStores}
+                disagreeHandler={disagreeHandlerStores}
                 selectedItem={selectedItem}
             />
         </Fragment>

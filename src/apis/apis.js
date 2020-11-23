@@ -32,8 +32,8 @@ const Apis = {
         return axios.post(openTrunkUrl);
     },
 
-    updateInventory(item) {
-        return axios.post(updateInventoryUrl, item);
+    updateInventory(data) {
+        return axios.post(updateInventoryUrl, data);
     },
 
     buyItem(item) {
