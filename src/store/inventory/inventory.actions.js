@@ -30,7 +30,9 @@ export const ADD_ITEM = "ADD_ITEM";
 export const SUBTRACT_ITEM = "SUBTRACT_ITEM";
 
 export const CONFIRMATION_HANDLER = "CONFIRMATION_HANDLER";
-export const CLOSE_CONFIRMATION_HANDLER = "CLOSE_CONFIRMATION_HANDLER";
+
+export const OPEN_MENU = "OPEN_MENU";
+export const CLOSE_MENU = "CLOSE_MENU";
 
 export const loadInventory = (data) => {
     return (dispatch) => {
@@ -165,8 +167,7 @@ export const subtractItem = (sortedInventory, boughtItem, selectedItem) => {
 export const updateQuantity = (value) => {
     return (dispatch) => {
         const regExp = /^[0-9\b]+$/;
-        if (regExp.test(e.target.value)) {
-            const value = e.target.value;
+        if (regExp.test(parseInt(value)) || value === "") {
             dispatch({
                 type: UPDATE_QUANTITY,
                 payload: value,
@@ -177,7 +178,6 @@ export const updateQuantity = (value) => {
 
 export const confirmationHandler = (data) => {
     return (dispatch) => {
-
         let inventory = [...data.personalInventory.inventory];
         const itemIndex = inventory.findIndex((item) => {
             if (item !== "{}") {
@@ -206,9 +206,8 @@ export const confirmationHandler = (data) => {
             inventory[bracketIndex].name = data.selectedItem.data.name;
             inventory[bracketIndex].count = data.quantity;
             inventory[bracketIndex].type = "item_standard";
-
-            // Apis.updateInventory(data);
         }
+
         Apis.buyItem(data);
 
         dispatch({
@@ -218,10 +217,14 @@ export const confirmationHandler = (data) => {
     };
 };
 
-export const closeConfirmationHandler = (data) => {
+export const openMenu = (data) => {
     return (dispatch) => {
-        dispatch({
-            type: CLOSE_CONFIRMATION_HANDLER,
-        });
+        dispatch({ type: OPEN_MENU, payload: data });
+    };
+};
+
+export const closeMenu = (data) => {
+    return (dispatch) => {
+        dispatch({ type: CLOSE_MENU });
     };
 };

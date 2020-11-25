@@ -22,10 +22,13 @@ const initialState = {
         type: "",
     },
     quantity: 1,
+    boughtItem: {},
     selectedItemIndex: null,
     selectedType: null,
     usedItem: {},
     showConfirmation: false,
+    openMenu: false,
+    contextCoords: null
 };
 
 const inventoryReducer = (state = initialState, action) => {
@@ -233,7 +236,11 @@ const inventoryReducer = (state = initialState, action) => {
         case types.UPDATE_QUANTITY:
             return {
                 ...state,
-                quantity: action.payload,
+                quantity: parseInt(action.payload),
+                boughtItem: {
+                    ...state.boughtItem,
+                    price: action.payload * state.selectedItem.data.price,
+                },
             };
         case types.ADD_ITEM:
             return {
@@ -264,13 +271,20 @@ const inventoryReducer = (state = initialState, action) => {
                     ...state.personalInventory,
                     inventory: action.payload,
                 },
+                boughtItem: {},
                 quantity: 1,
+                showConfirmation: false,
             };
-        case types.CLOSE_CONFIRMATION_HANDLER:
+        case types.OPEN_MENU:
             return {
                 ...state,
-                showConfirmation: false,
-                quantity: 1,
+                openMenu: true,
+                contextCoords: action.payload
+            };
+        case types.CLOSE_MENU:
+            return {
+                ...state,
+                openMenu: false
             };
         default:
             return state;

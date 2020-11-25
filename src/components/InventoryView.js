@@ -32,6 +32,7 @@ const PersonalInventory = (props) => {
             {props.inventory.inventory.map((item, i) => {
                 return (
                     <InventorySlots
+                        anchorEl={props.anchorEl}
                         key={i}
                         onStart={props.onStart}
                         onStop={props.onStop}

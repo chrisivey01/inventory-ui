@@ -51,9 +51,9 @@ export default (props) => {
 
                 <TextField
                     style={{ border: "none" }}
-                    value={quantity}
+                    value={quantity ? quantity : null}
                     onChange={(e) =>
-                        dispatch(inventoryActions.updateQuantity(value))
+                        dispatch(inventoryActions.updateQuantity(e.target.value))
                     }
                     variant="outlined"
                     size="small"

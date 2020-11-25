@@ -3,7 +3,7 @@ import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Confirmation from "../components/Confirmation";
 import InventoryView from "../components/InventoryView";
-import PlayerMenu from "../components/PlayerMenu";
+import PlayerContextMenu from "../components/PlayerContextMenu";
 import SelectedItem from "../components/SelectedItem";
 import * as hotbarActions from "../store/hotbar/hotbar.actions";
 import * as inventoryActions from "../store/inventory/inventory.actions";
@@ -53,19 +53,9 @@ function InventoryContainer() {
     const inventoryShow = useSelector((state) => state.inventory.inventoryShow);
     const info = useSelector((state) => state.inventory.info);
     const selectedItem = useSelector((state) => state.inventory.selectedItem);
-
-    const sortedInventory = useSelector(
-        (state) => state.inventory.sortedInventory
-    );
-    const secondInventory = useSelector(
-        (state) => state.inventory.secondInventory
-    );
-    const inventoryType = useSelector((state) => state.inventory.inventoryType);
-    const secondInventoryType = useSelector(
-        (state) => state.inventory.secondInventoryType
-    );
-    const selectedType = useSelector((state) => state.inventory.selectedType);
+    const boughtItem = useSelector((state) => state.inventory.boughtItem);
     const quantity = useSelector((state) => state.inventory.quantity);
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
     useEffect(() => {
         console.log(personalInventory);
@@ -74,26 +64,30 @@ function InventoryContainer() {
     useEffect(() => {
         window.addEventListener("message", (event) => {
             switch (event.data.inventoryType) {
-                case "Personal": {
-                    if (process.env.NODE_ENV === "development") {
-                        dispatch(inventoryActions.loadPersonalInventory(data));
-                    } else {
-                        if (event.data.inventory) {
-                            const data = {
-                                inventory: event.data.inventory,
-                                playerInventory: event.data.playerInventory,
-                                inventoryType: event.data.inventoryType,
-                                info: event.data.info
-                            };
-                            dispatch(inventoryActions.loadInventory(data));
+                case "Personal":
+                    {
+                        if (process.env.NODE_ENV === "development") {
+                            dispatch(
+                                inventoryActions.loadPersonalInventory(data)
+                            );
+                        } else {
+                            if (event.data.inventory) {
+                                const data = {
+                                    inventory: event.data.inventory,
+                                    playerInventory: event.data.playerInventory,
+                                    inventoryType: event.data.inventoryType,
+                                    info: event.data.info,
+                                };
+                                dispatch(inventoryActions.loadInventory(data));
+                            }
                         }
                     }
-                }
-                break;
-                case "Hotbar": {
-                    dispatch(hotbarActions.loadHotbar());
-                }
-                break;
+                    break;
+                case "Hotbar":
+                    {
+                        dispatch(hotbarActions.loadHotbar());
+                    }
+                    break;
                 case "Trunk": {
                     let payload = {};
 
@@ -107,12 +101,15 @@ function InventoryContainer() {
                     dispatch(inventoryActions.loadOtherInventory(payload));
                     break;
                 }
-                case "Store": {
-                    dispatch(
-                        inventoryActions.loadStoreInventory(event.data.items)
-                    );
-                }
-                break;
+                case "Store":
+                    {
+                        dispatch(
+                            inventoryActions.loadStoreInventory(
+                                event.data.items
+                            )
+                        );
+                    }
+                    break;
                 default:
                     return null;
             }
@@ -126,6 +123,7 @@ function InventoryContainer() {
 
     const onStart = (e, i, type) => {
         let payload;
+
         if (type === "Personal") {
             payload = {
                 item: personalInventory.inventory[i],
@@ -139,36 +137,49 @@ function InventoryContainer() {
                 type: type,
             };
         }
-        dispatch(inventoryActions.selectInventoryItem(payload));
-        dispatch(itemActions.setInfo(payload));
+
+        //e.which === 3 is the right click action
+        if (e.button === 2) {
+            //right click actions
+            if (type === "Personal") {
+                setAnchorEl(e.currentTarget);
+                dispatch(inventoryActions.openMenu(payload));
+            }
+        } else {
+            //left click actions
+            dispatch(inventoryActions.selectInventoryItem(payload));
+            dispatch(itemActions.setInfo(payload));
+        }
     };
 
     //selectedItem.data is the full item object
     const onStop = (e, i, type) => {
         let data;
-        if (type === "Personal") {
-            data = {
-                item: personalInventory.inventory[i],
-                index: i,
-                type: type,
-                selectedItem: selectedItem
-            };
-            if (selectedItem.type === "Store") {
-                dispatch(itemActions.clearInfo());
-                dispatch(inventoryActions.transferConfirmation(data));
+        if (e.button !== 2) {
+            if (type === "Personal") {
+                data = {
+                    item: personalInventory.inventory[i],
+                    index: i,
+                    type: type,
+                    selectedItem: selectedItem,
+                };
+                if (selectedItem.type === "Store") {
+                    dispatch(itemActions.clearInfo());
+                    dispatch(inventoryActions.transferConfirmation(data));
+                } else {
+                    dispatch(itemActions.clearInfo());
+                    dispatch(inventoryActions.moveInventoryItem(data));
+                }
             } else {
+                data = {
+                    item: otherInventory.inventory[i],
+                    index: i,
+                    type: type,
+                    selectedItem: selectedItem,
+                };
                 dispatch(itemActions.clearInfo());
                 dispatch(inventoryActions.moveInventoryItem(data));
             }
-        } else {
-            data = {
-                item: otherInventory.inventory[i],
-                index: i,
-                type: type,
-                selectedItem: selectedItem
-            };
-            dispatch(itemActions.clearInfo());
-            dispatch(inventoryActions.moveInventoryItem(data));
         }
     };
 
@@ -191,7 +202,8 @@ function InventoryContainer() {
             quantity: quantity,
             personalInventory: personalInventory,
             otherInventory: otherInventory,
-            type: "item_standard"
+            type: "item_standard",
+            boughtItem: boughtItem,
         };
 
         dispatch(inventoryActions.confirmationHandler(data));
@@ -217,7 +229,6 @@ function InventoryContainer() {
                             onStop={onStop}
                             isSecondInventory={false}
                         />
-                        <PlayerMenu />
                         <InventoryView
                             inventory={otherInventory}
                             onStart={onStart}
@@ -229,6 +240,7 @@ function InventoryContainer() {
                     <Fragment />
                 )}
                 <SelectedItem />
+                <PlayerContextMenu anchorEl={anchorEl}/>
             </Grid>
             <Confirmation
                 agreeHandler={agreeHandlerStores}
