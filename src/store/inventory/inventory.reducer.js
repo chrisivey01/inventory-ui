@@ -28,7 +28,7 @@ const initialState = {
     usedItem: {},
     showConfirmation: false,
     openMenu: false,
-    contextCoords: null
+    contextCoords: null,
 };
 
 const inventoryReducer = (state = initialState, action) => {
@@ -76,76 +76,17 @@ const inventoryReducer = (state = initialState, action) => {
                 },
             };
         case types.MOVE_INVENTORY_ITEM:
-            let inv = [...state.personalInventory.inventory];
-            let secInv = [...state.otherInventory.inventory];
-
-            const itemSelected = state.selectedItem;
-            const itemDrop = action.payload;
-
-            //SWAPS BETWEEN PERSONAL INVENTORY
-            if (
-                itemSelected.type === "Personal" &&
-                itemDrop.type === "Personal"
-            ) {
-                const moveToSlot = inv.splice(
-                    itemSelected.index,
-                    1,
-                    itemDrop.item
-                );
-                inv.splice(itemDrop.index, 1, moveToSlot[0]);
-            }
-
-            //PUTS ITEMS INTO OTHER INVENTORY
-            if (
-                itemSelected.type === "Personal" &&
-                itemDrop.type !== "Personal"
-            ) {
-                const moveToSlot = inv.splice(
-                    itemSelected.index,
-                    1,
-                    itemDrop.item
-                );
-                secInv.splice(itemDrop.index, 1, moveToSlot[0]);
-            }
-
-            //SWAPS BETWEEN OTHER INVENTORY
-            if (
-                itemSelected.type !== "Personal" &&
-                itemDrop.type !== "Personal"
-            ) {
-                const moveToSlot = secInv.splice(
-                    itemSelected.index,
-                    1,
-                    itemDrop.item
-                );
-                secInv.splice(itemDrop.index, 1, moveToSlot[0]);
-            }
-
-            //GETS ITEM FROM OTHER INVENTORY
-            if (
-                itemSelected.type !== "Personal" &&
-                itemDrop.type === "Personal"
-            ) {
-                const moveToSlot = secInv.splice(
-                    itemSelected.index,
-                    1,
-                    itemDrop.item
-                );
-                inv.splice(itemDrop.index, 1, moveToSlot[0]);
-            }
-
             return {
                 ...state,
                 personalInventory: {
                     ...state.personalInventory,
-                    inventory: inv,
+                    inventory: action.payload.personalInventory.inventory,
                 },
                 otherInventory: {
                     ...state.otherInventory,
-                    inventory: secInv,
+                    inventory: action.payload.otherInventory.inventory,
                 },
             };
-
         case types.USE_INVENTORY_ITEM:
             return {
                 ...state,
@@ -231,7 +172,7 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 showConfirmation: true,
-                boughtItem: action.payload.selectedItem.data,
+                boughtItem: action.payload,
             };
         case types.UPDATE_QUANTITY:
             return {
@@ -269,7 +210,7 @@ const inventoryReducer = (state = initialState, action) => {
                 showConfirmation: false,
                 personalInventory: {
                     ...state.personalInventory,
-                    inventory: action.payload,
+                    inventory: action.payload.inventory,
                 },
                 boughtItem: {},
                 quantity: 1,
@@ -279,12 +220,12 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 openMenu: true,
-                contextCoords: action.payload
+                contextCoords: action.payload,
             };
         case types.CLOSE_MENU:
             return {
                 ...state,
-                openMenu: false
+                openMenu: false,
             };
         default:
             return state;

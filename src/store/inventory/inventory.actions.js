@@ -77,10 +77,82 @@ export const selectInventoryItem = (payload) => ({
     payload: payload,
 });
 
-export const moveInventoryItem = (payload) => {
+export const moveInventoryItem = (
+    item,
+    personalInventory,
+    otherInventory,
+    selectedItem,
+    dropLocation,
+    index,
+    info
+) => {
     return (dispatch) => {
-        dispatch({ type: MOVE_INVENTORY_ITEM, payload: payload });
-        Apis.updateInventory(payload);
+        let inventories = {
+            personalInventory: { ...personalInventory },
+            otherInventory: { ...otherInventory },
+            selectedItem: { ...selectedItem },
+            info: { ...info },
+            dropLocation: dropLocation,
+        };
+
+        //SWAPS BETWEEN PERSONAL INVENTORY
+        if (selectedItem.type === "Personal" && dropLocation === "Personal") {
+            const moveToSlot = inventories.personalInventory.inventory.splice(
+                selectedItem.index,
+                1,
+                item
+            );
+            inventories.personalInventory.inventory.splice(
+                index,
+                1,
+                moveToSlot[0]
+            );
+        }
+
+        //PUTS ITEMS INTO OTHER INVENTORY
+        if (selectedItem.type === "Personal" && dropLocation !== "Personal") {
+            const moveToSlot = inventories.personalInventory.inventory.splice(
+                selectedItem.index,
+                1,
+                item
+            );
+            inventories.otherInventory.inventory.splice(
+                index,
+                1,
+                moveToSlot[0]
+            );
+        }
+
+        //SWAPS BETWEEN OTHER INVENTORY
+        if (selectedItem.type !== "Personal" && dropLocation !== "Personal") {
+            const moveToSlot = inventories.otherInventory.inventory.splice(
+                selectedItem.index,
+                1,
+                item
+            );
+            inventories.otherInventory.inventory.splice(
+                index,
+                1,
+                moveToSlot[0]
+            );
+        }
+
+        //GETS ITEM FROM OTHER INVENTORY
+        if (selectedItem.type !== "Personal" && dropLocation === "Personal") {
+            const moveToSlot = inventories.otherInventory.inventory.splice(
+                selectedItem.index,
+                1,
+                item
+            );
+            inventories.personalInventory.inventory.splice(
+                index,
+                1,
+                moveToSlot[0]
+            );
+        }
+
+        Apis.updateInventory(inventories);
+        dispatch({ type: MOVE_INVENTORY_ITEM, payload: inventories });
     };
 };
 
@@ -130,11 +202,11 @@ export const loadStoreInventory = (items) => {
     };
 };
 
-export const transferConfirmation = (dataObject) => {
+export const transferConfirmation = (selectedItem) => {
     return (dispatch) => {
         dispatch({
             type: TRANSFER_CONFIRMATION,
-            payload: dataObject,
+            payload: selectedItem,
         });
     };
 };
@@ -176,14 +248,21 @@ export const updateQuantity = (value) => {
     };
 };
 
-export const confirmationHandler = (data) => {
+export const confirmationHandler = (
+    personalInventory,
+    otherInventory,
+    selectedItem,
+    quantity,
+    info,
+    boughtItem
+) => {
     return (dispatch) => {
-        let inventory = [...data.personalInventory.inventory];
+        let inventory = [...personalInventory.inventory];
         const itemIndex = inventory.findIndex((item) => {
             if (item !== "{}") {
                 return (
                     item.name.toLowerCase() ===
-                    data.selectedItem.data.name.toLowerCase()
+                    selectedItem.data.name.toLowerCase()
                 );
             }
         });
@@ -192,27 +271,36 @@ export const confirmationHandler = (data) => {
 
         if (itemIndex > 0) {
             inventory[itemIndex].price =
-                inventory[itemIndex].count * data.selectedItem.data.price;
-            inventory[itemIndex].count =
-                inventory[itemIndex].count + data.quantity;
+                inventory[itemIndex].count * selectedItem.data.price;
+            inventory[itemIndex].count = inventory[itemIndex].count + quantity;
             inventory[itemIndex].type = "item_standard";
         }
         inventory[moneyIndex].money =
-            inventory[moneyIndex].money -
-            data.selectedItem.data.price * data.quantity;
+            inventory[moneyIndex].money - selectedItem.data.price * quantity;
 
         if (bracketIndex && itemIndex < 0) {
             inventory[bracketIndex] = {};
-            inventory[bracketIndex].name = data.selectedItem.data.name;
-            inventory[bracketIndex].count = data.quantity;
+            inventory[bracketIndex].name = selectedItem.data.name;
+            inventory[bracketIndex].count = quantity;
             inventory[bracketIndex].type = "item_standard";
         }
 
-        Apis.buyItem(data);
 
+        if (otherInventory.type === "Store") {
+            selectedItem.data.type = "item_standard";
+        }
+        const updated = {
+            inventory,
+            otherInventory,
+            selectedItem,
+            quantity,
+            info,
+            boughtItem,
+        };
+        Apis.buyItem(updated);
         dispatch({
             type: CONFIRMATION_HANDLER,
-            payload: inventory,
+            payload: updated,
         });
     };
 };

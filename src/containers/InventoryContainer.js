@@ -153,32 +153,44 @@ function InventoryContainer() {
     };
 
     //selectedItem.data is the full item object
-    const onStop = (e, i, type) => {
+    const onStop = (e, index, dropLocation) => {
         let data;
         if (e.button !== 2) {
-            if (type === "Personal") {
-                data = {
-                    item: personalInventory.inventory[i],
-                    index: i,
-                    type: type,
-                    selectedItem: selectedItem,
-                };
+            if (dropLocation === "Personal") {
+                const item = personalInventory.inventory[index];
                 if (selectedItem.type === "Store") {
                     dispatch(itemActions.clearInfo());
-                    dispatch(inventoryActions.transferConfirmation(data));
+                    dispatch(
+                        inventoryActions.transferConfirmation(selectedItem.data)
+                    );
                 } else {
                     dispatch(itemActions.clearInfo());
-                    dispatch(inventoryActions.moveInventoryItem(data));
+                    dispatch(
+                        inventoryActions.moveInventoryItem(
+                            item,
+                            personalInventory,
+                            otherInventory,
+                            selectedItem,
+                            dropLocation,
+                            index,
+                            info
+                        )
+                    );
                 }
             } else {
-                data = {
-                    item: otherInventory.inventory[i],
-                    index: i,
-                    type: type,
-                    selectedItem: selectedItem,
-                };
+                const item = otherInventory.inventory[index];
                 dispatch(itemActions.clearInfo());
-                dispatch(inventoryActions.moveInventoryItem(data));
+                dispatch(
+                    inventoryActions.moveInventoryItem(
+                        item,
+                        personalInventory,
+                        otherInventory,
+                        selectedItem,
+                        dropLocation,
+                        index,
+                        info
+                    )
+                );
             }
         }
     };
@@ -197,16 +209,17 @@ function InventoryContainer() {
     };
 
     const agreeHandlerStores = () => {
-        const data = {
-            selectedItem: selectedItem,
-            quantity: quantity,
-            personalInventory: personalInventory,
-            otherInventory: otherInventory,
-            type: "item_standard",
-            boughtItem: boughtItem,
-        };
-
-        dispatch(inventoryActions.confirmationHandler(data));
+        
+        dispatch(
+            inventoryActions.confirmationHandler(
+                personalInventory,
+                otherInventory,
+                selectedItem,
+                quantity,
+                info,
+                boughtItem
+            )
+        );
     };
 
     const disagreeHandlerStores = () => {
@@ -240,7 +253,7 @@ function InventoryContainer() {
                     <Fragment />
                 )}
                 <SelectedItem />
-                <PlayerContextMenu anchorEl={anchorEl}/>
+                <PlayerContextMenu anchorEl={anchorEl} />
             </Grid>
             <Confirmation
                 agreeHandler={agreeHandlerStores}
