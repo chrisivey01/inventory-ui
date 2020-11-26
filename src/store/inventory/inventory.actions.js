@@ -24,15 +24,30 @@ export const UPDATE_ITEM_INFO = "UPDATE_ITEM_INFO";
 export const LOAD_STORE_INVENTORY = "LOAD_STORE_INVENTORY";
 export const BUY_STORE_ITEMS = "BUY_STORE_ITEMS";
 
-export const TRANSFER_CONFIRMATION = "TRANSFER_CONFIRMATION";
-export const UPDATE_QUANTITY = "UPDATE_QUANTITY";
-export const ADD_ITEM = "ADD_ITEM";
-export const SUBTRACT_ITEM = "SUBTRACT_ITEM";
+// Belongs to Confirmation Box
+export const CLOSE_CONFIRMATION = "CLOSE_CONFIRMATION";
+export const DROP_ITEM_CONFIRMATION = "DROP_ITEM_CONFIRMATION";
+export const GIVE_ITEM_CONFIRMATION = "GIVE_ITEM_CONFIRMATION";
+export const SPLIT_ITEM_CONFIRMATION = "SPLIT_ITEM_CONFIRMATION";
+export const STORE_CONFIRMATION = "STORE_CONFIRMATION";
+export const UPDATE_QUANTITY_STORE = "UPDATE_QUANTITY_STORE";
+export const ADD_ITEM_STORE = "ADD_ITEM_STORE";
+export const SUBTRACT_ITEM_STORE = "SUBTRACT_ITEM_STORE";
+export const UPDATE_QUANTITY_CONTEXT = "UPDATE_QUANTITY_CONTEXT";
+export const ADD_ITEM_CONTEXT = "ADD_ITEM_CONTEXT";
+export const SUBTRACT_ITEM_CONTEXT = "SUBTRACT_ITEM_CONTEXT";
 
-export const CONFIRMATION_HANDLER = "CONFIRMATION_HANDLER";
+export const STORE_CONFIRMATION_HANDLER = "STORE_CONFIRMATION_HANDLER";
+export const SHOW_DROP_CONFIRMATION = "SHOW_DROP_CONFIRMATION";
+export const SHOW_GIVE_CONFIRMATION = "SHOW_GIVE_CONFIRMATION";
+export const SHOW_SPLIT_CONFIRMATION = "SHOW_SPLIT_CONFIRMATION";
 
-export const OPEN_MENU = "OPEN_MENU";
-export const CLOSE_MENU = "CLOSE_MENU";
+export const OPEN_CONTEXT_MENU = "OPEN_CONTEXT_MENU";
+export const CLOSE_CONTEXT_MENU = "CLOSE_CONTEXT_MENU";
+
+export const DROP_ITEM_HANDLER = "DROP_ITEM_HANDLER";
+export const GIVE_ITEM_HANDLER = "GIVE_ITEM_HANDLER";
+export const SPLIT_ITEM_HANDLER = "SPLIT_ITEM_HANDLER";
 
 export const loadInventory = (data) => {
     return (dispatch) => {
@@ -165,16 +180,6 @@ export const hideUseInventoryItem = () => ({
     type: HIDE_USE_INVENTORY_ITEM,
 });
 
-export const loadSecondInventory = (payload) => ({
-    type: LOAD_SECOND_INVENTORY,
-    payload: payload,
-});
-
-export const loadSecondInventorySorted = (payload) => ({
-    type: LOAD_SECOND_INVENTORY_SORTED,
-    payload: payload,
-});
-
 export const updateWeapon = (weaponData) => {
     return (dispatch) => {
         dispatch({
@@ -202,53 +207,80 @@ export const loadStoreInventory = (items) => {
     };
 };
 
-export const transferConfirmation = (selectedItem) => {
+export const closeConfirmation = () => {
     return (dispatch) => {
         dispatch({
-            type: TRANSFER_CONFIRMATION,
+            type: CLOSE_CONFIRMATION,
+        });
+    };
+};
+
+export const storeConfirmation = (selectedItem) => {
+    return (dispatch) => {
+        dispatch({
+            type: STORE_CONFIRMATION,
             payload: selectedItem,
         });
     };
 };
 
-export const addItem = () => {
+export const addItemStore = () => {
     return (dispatch) => {
         dispatch({
-            type: ADD_ITEM,
+            type: ADD_ITEM_STORE,
         });
     };
 };
 
-export const subtractItem = (sortedInventory, boughtItem, selectedItem) => {
+export const subtractItemStore = () => {
     return (dispatch) => {
-        // const moneyIndex = sortedInventory.findIndex(
-        //     (item) => item.name === "money"
-        // );
-        //once it goes negative, the name is removed
-        // if(boughtItem.name === undefined){
-        //     boughtItem.name = selectedItem.name
-        // }
-        // if (sortedInventory[moneyIndex].money - boughtItem.price >= 0) {
         dispatch({
-            type: SUBTRACT_ITEM,
+            type: SUBTRACT_ITEM_STORE,
         });
-        // }
     };
 };
 
-export const updateQuantity = (value) => {
+export const updateQuantityStore = (value) => {
     return (dispatch) => {
         const regExp = /^[0-9\b]+$/;
         if (regExp.test(parseInt(value)) || value === "") {
             dispatch({
-                type: UPDATE_QUANTITY,
+                type: UPDATE_QUANTITY_STORE,
                 payload: value,
             });
         }
     };
 };
 
-export const confirmationHandler = (
+export const addItemContext = () => {
+    return (dispatch) => {
+        dispatch({
+            type: ADD_ITEM_CONTEXT,
+        });
+    };
+};
+
+export const subtractItemContext = () => {
+    return (dispatch) => {
+        dispatch({
+            type: SUBTRACT_ITEM_CONTEXT,
+        });
+    };
+};
+
+export const updateQuantityContext = (value) => {
+    return (dispatch) => {
+        const regExp = /^[0-9\b]+$/;
+        if (regExp.test(parseInt(value)) || value === "") {
+            dispatch({
+                type: UPDATE_QUANTITY_CONTEXT,
+                payload: value,
+            });
+        }
+    };
+};
+
+export const storeConfirmationHandler = (
     personalInventory,
     otherInventory,
     selectedItem,
@@ -285,7 +317,6 @@ export const confirmationHandler = (
             inventory[bracketIndex].type = "item_standard";
         }
 
-
         if (otherInventory.type === "Store") {
             selectedItem.data.type = "item_standard";
         }
@@ -299,20 +330,81 @@ export const confirmationHandler = (
         };
         Apis.buyItem(updated);
         dispatch({
-            type: CONFIRMATION_HANDLER,
+            type: STORE_CONFIRMATION_HANDLER,
             payload: updated,
         });
     };
 };
 
-export const openMenu = (data) => {
+export const openContextMenu = (data) => {
     return (dispatch) => {
-        dispatch({ type: OPEN_MENU, payload: data });
+        dispatch({ type: OPEN_CONTEXT_MENU, payload: data });
     };
 };
 
-export const closeMenu = (data) => {
+export const closeContextMenu = () => {
     return (dispatch) => {
-        dispatch({ type: CLOSE_MENU });
+        dispatch({ type: CLOSE_CONTEXT_MENU });
+    };
+};
+
+//re-render the inventory to display where the inventory's current state
+
+export const showDropConfirmation = () => {
+    return (dispatch) => {
+        dispatch({
+            type: SHOW_DROP_CONFIRMATION,
+        });
+    };
+};
+
+export const showGiveConfirmation = () => {
+    return (dispatch) => {
+        dispatch({
+            type: SHOW_GIVE_CONFIRMATION,
+        });
+    };
+};
+
+export const showSplitConfirmation = () => {
+    return (dispatch) => {
+        dispatch({
+            type: SHOW_SPLIT_CONFIRMATION,
+        });
+    };
+};
+
+export const dropItemHandler = (item) => {
+    return (dispatch) => {
+        dispatch({ type: DROP_ITEM_HANDLER, payload: item });
+    };
+};
+
+export const giveItemHandler = (item) => {
+    return (dispatch) => {
+        dispatch({ type: GIVE_ITEM_HANDLER, payload: item });
+    };
+};
+// { item, quantity, personalInventory }
+export const splitItemHandler = (data) => {
+    return (dispatch) => {
+        if (data.item.type !== "item_weapon") {
+            let splitItem = { ...data.item };
+            splitItem.count = data.quantity;
+            data.item.count = data.item.count - data.quantity;
+
+            const newLocation = data.personalInventory.inventory.findIndex(
+                (item) => item === "{}"
+            );
+            if (newLocation !== -1) {
+                data.personalInventory.inventory[newLocation] = splitItem;
+                dispatch({
+                    type: SPLIT_ITEM_HANDLER,
+                    payload: data.personalInventory.inventory,
+                });
+            }
+        }
+
+        dispatch(closeConfirmation());
     };
 };

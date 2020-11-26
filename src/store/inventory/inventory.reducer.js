@@ -23,12 +23,15 @@ const initialState = {
     },
     quantity: 1,
     boughtItem: {},
-    selectedItemIndex: null,
-    selectedType: null,
     usedItem: {},
-    showConfirmation: false,
-    openMenu: false,
-    contextCoords: null,
+    confirmation: {
+        show: false,
+        title: "",
+        type: "",
+    },
+    // showConfirmation: false,
+    openContextMenu: false,
+    contextItem: {},
 };
 
 const inventoryReducer = (state = initialState, action) => {
@@ -167,14 +170,31 @@ const inventoryReducer = (state = initialState, action) => {
                     }),
                 },
             };
-
-        case types.TRANSFER_CONFIRMATION:
+        case types.STORE_CONFIRMATION:
             return {
                 ...state,
-                showConfirmation: true,
+                confirmation: {
+                    show: true,
+                    title: "How much?",
+                    type: "Store",
+                },
                 boughtItem: action.payload,
             };
-        case types.UPDATE_QUANTITY:
+        case types.STORE_CONFIRMATION_HANDLER:
+            return {
+                ...state,
+                personalInventory: {
+                    ...state.personalInventory,
+                    inventory: action.payload.inventory,
+                },
+                boughtItem: {},
+                quantity: 1,
+                confirmation: {
+                    ...state.confirmation,
+                    show: false,
+                },
+            };
+        case types.UPDATE_QUANTITY_STORE:
             return {
                 ...state,
                 quantity: parseInt(action.payload),
@@ -183,7 +203,12 @@ const inventoryReducer = (state = initialState, action) => {
                     price: action.payload * state.selectedItem.data.price,
                 },
             };
-        case types.ADD_ITEM:
+        case types.UPDATE_QUANTITY_CONTEXT:
+            return {
+                ...state,
+                quantity: parseInt(action.payload),
+            };
+        case types.ADD_ITEM_STORE:
             return {
                 ...state,
                 quantity: (state.quantity += 1),
@@ -192,7 +217,7 @@ const inventoryReducer = (state = initialState, action) => {
                         state.boughtItem.price + state.selectedItem.data.price,
                 },
             };
-        case types.SUBTRACT_ITEM:
+        case types.SUBTRACT_ITEM_STORE:
             return {
                 ...state,
                 quantity: state.quantity !== 0 ? (state.quantity -= 1) : 0,
@@ -204,28 +229,91 @@ const inventoryReducer = (state = initialState, action) => {
                             : 0,
                 },
             };
-        case types.CONFIRMATION_HANDLER:
+        case types.ADD_ITEM_CONTEXT:
             return {
                 ...state,
-                showConfirmation: false,
+                quantity: (state.quantity += 1),
+            };
+        case types.SUBTRACT_ITEM_CONTEXT:
+            return {
+                ...state,
+                quantity: state.quantity !== 0 ? (state.quantity -= 1) : 0,
+            };
+        case types.OPEN_CONTEXT_MENU:
+            return {
+                ...state,
+                openContextMenu: true,
+                contextItem: action.payload,
+            };
+        case types.CLOSE_CONTEXT_MENU:
+            return {
+                ...state,
+                openContextMenu: false,
+            };
+        case types.SHOW_DROP_CONFIRMATION:
+            return {
+                ...state,
+                openContextMenu: false,
+                confirmation: {
+                    show: true,
+                    title: "How many to drop?",
+                    type: "Drop",
+                },
+            };
+        case types.SHOW_GIVE_CONFIRMATION:
+            return {
+                ...state,
+
+                openContextMenu: false,
+                confirmation: {
+                    show: true,
+                    title: "How many to give?",
+                    type: "Give",
+                },
+            };
+        case types.SHOW_SPLIT_CONFIRMATION:
+            return {
+                ...state,
+                openContextMenu: false,
+                confirmation: {
+                    show: true,
+                    title: "How many to split?",
+                    type: "Split",
+                },
+            };
+        case types.CLOSE_CONFIRMATION:
+            return {
+                ...state,
+                confirmation: {
+                    ...state.confirmation,
+                    show: false,
+                    title: "",
+                    type: "",
+                },
+            };
+        case types.DROP_ITEM_HANDLER:
+            return {
+                ...state,
                 personalInventory: {
                     ...state.personalInventory,
-                    inventory: action.payload.inventory,
+                    inventory: action.payload,
                 },
-                boughtItem: {},
-                quantity: 1,
-                showConfirmation: false,
             };
-        case types.OPEN_MENU:
+        case types.GIVE_ITEM_HANDLER:
             return {
                 ...state,
-                openMenu: true,
-                contextCoords: action.payload,
+                personalInventory: {
+                    ...state.personalInventory,
+                    inventory: action.payload,
+                },
             };
-        case types.CLOSE_MENU:
+        case types.SPLIT_ITEM_HANDLER:
             return {
                 ...state,
-                openMenu: false,
+                personalInventory: {
+                    ...state.personalInventory,
+                    inventory: action.payload,
+                },
             };
         default:
             return state;

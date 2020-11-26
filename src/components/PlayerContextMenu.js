@@ -15,7 +15,6 @@ import * as inventoryActions from "../store/inventory/inventory.actions";
 const useStyles = makeStyles((theme) => ({
     root: {
         position: "relative",
-        
     },
     paper: {
         marginRight: theme.spacing(2),
@@ -24,32 +23,47 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PlayerContextMenu({ anchorEl }) {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const anchorRef = React.useRef(null);
-    const openMenu = useSelector((state) => state.inventory.openMenu);
-    const contextCoords = useSelector((state) => state.inventory.contextCoords);
+    const openContextMenu = useSelector(
+        (state) => state.inventory.openContextMenu
+    );
+    const contextItem = useSelector((state) => state.inventory.contextItem);
+    const quantity = useSelector((state) => state.inventory.quantity);
+    const personalInventory = useSelector(
+        (state) => state.inventory.personalInventory.inventory
+    );
+
     const dispatch = useDispatch();
 
-    const handleClose = (event) => {
-        dispatch(inventoryActions.closeMenu());
+    const handleClose = () => {
+        dispatch(inventoryActions.closeContextMenu());
     };
 
-    if (openMenu) {
+    const handleDrop = () => {
+        dispatch(inventoryActions.showDropConfirmation())
+    };
+
+    const handleGive = () => {
+        dispatch(inventoryActions.showGiveConfirmation())
+    };
+
+    const handleSplit = () => {
+        dispatch(inventoryActions.showSplitConfirmation())
+    };
+
+    if (openContextMenu) {
         return (
-
-                    <Menu
-                        anchorEl={anchorEl}
-                        open={openMenu}
-                        onClose={handleClose}
-                        keepMounted
-                        autoFocusItem={openMenu}
-                        id="menu-list-grow"
-                    >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={handleClose}>My account</MenuItem>
-                        <MenuItem onClick={handleClose}>Logout</MenuItem>
-                    </Menu>
-
+            <Menu
+                anchorEl={anchorEl}
+                open={openContextMenu}
+                onClose={handleClose}
+                keepMounted
+                autoFocusItem={openContextMenu}
+                id="menu-list-grow"
+            >
+                <MenuItem onClick={handleDrop}>Drop</MenuItem>
+                <MenuItem onClick={handleGive}>Give</MenuItem>
+                <MenuItem onClick={handleSplit}>Split</MenuItem>
+            </Menu>
         );
     } else {
         return <Fragment />;

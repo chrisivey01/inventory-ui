@@ -56,6 +56,9 @@ function InventoryContainer() {
     const boughtItem = useSelector((state) => state.inventory.boughtItem);
     const quantity = useSelector((state) => state.inventory.quantity);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const confirmation = useSelector((state) => state.inventory.confirmation);
+    const contextItem = useSelector((state) => state.inventory.contextItem);
+
 
     useEffect(() => {
         console.log(personalInventory);
@@ -121,29 +124,28 @@ function InventoryContainer() {
         return () => window.removeEventListener("keydown", closeFunction);
     }, [personalInventory, selectedItem]);
 
-    const onStart = (e, i, type) => {
+    const onStart = (e, index, type) => {
         let payload;
 
         if (type === "Personal") {
             payload = {
-                item: personalInventory.inventory[i],
-                index: i,
+                item: personalInventory.inventory[index],
+                index: index,
                 type: type,
             };
         } else if (type === "Trunk" || type === "Store") {
             payload = {
-                item: otherInventory.inventory[i],
-                index: i,
+                item: otherInventory.inventory[index],
+                index: index,
                 type: type,
             };
         }
 
-        //e.which === 3 is the right click action
         if (e.button === 2) {
             //right click actions
             if (type === "Personal") {
                 setAnchorEl(e.currentTarget);
-                dispatch(inventoryActions.openMenu(payload));
+                dispatch(inventoryActions.openContextMenu(payload));
             }
         } else {
             //left click actions
@@ -161,7 +163,7 @@ function InventoryContainer() {
                 if (selectedItem.type === "Store") {
                     dispatch(itemActions.clearInfo());
                     dispatch(
-                        inventoryActions.transferConfirmation(selectedItem.data)
+                        inventoryActions.storeConfirmation(selectedItem.data)
                     );
                 } else {
                     dispatch(itemActions.clearInfo());
@@ -208,10 +210,9 @@ function InventoryContainer() {
         }
     };
 
-    const agreeHandlerStores = () => {
-        
+    const agreeHandlerStore = () => {
         dispatch(
-            inventoryActions.confirmationHandler(
+            inventoryActions.storeConfirmationHandler(
                 personalInventory,
                 otherInventory,
                 selectedItem,
@@ -222,14 +223,77 @@ function InventoryContainer() {
         );
     };
 
-    const disagreeHandlerStores = () => {
-        console.log("disagree");
+    const agreeHandlerDrop = () => {
+        console.log("drop worked!");
+    };
+
+    const agreeHandlerGive = () => {
+        console.log("give worked!");
+    };
+
+    const agreeHandlerSplit = () => {
+        console.log("split worked!");
+        const item = contextItem.item;
+        dispatch(
+            inventoryActions.splitItemHandler({
+                item,
+                quantity,
+                personalInventory,
+            })
+        );
+    };
+
+    const disagreeHandler = () => {
+        dispatch(inventoryActions.closeConfirmation());
+    };
+
+    const confirmationRenderer = () => {
+        switch (confirmation.type) {
+            case "Store":
+                return (
+                    <Confirmation
+                        agreeHandler={agreeHandlerStore}
+                        disagreeHandler={disagreeHandler}
+                        selectedItem={selectedItem}
+                    />
+                );
+                break;
+            case "Drop":
+                return (
+                    <Confirmation
+                        agreeHandler={agreeHandlerDrop}
+                        disagreeHandler={disagreeHandler}
+                        selectedItem={selectedItem}
+                    />
+                );
+                break;
+            case "Give":
+                return (
+                    <Confirmation
+                        agreeHandler={agreeHandlerGive}
+                        disagreeHandler={disagreeHandler}
+                        selectedItem={selectedItem}
+                    />
+                );
+                break;
+            case "Split":
+                return (
+                    <Confirmation
+                        agreeHandler={agreeHandlerSplit}
+                        disagreeHandler={disagreeHandler}
+                        selectedItem={selectedItem}
+                    />
+                );
+                break;
+            default:
+                break;
+        }
     };
 
     return (
         <Fragment>
             <Grid
-                className={classes.inventoryDisplay}
+                className={classes.inventoryDiay}
                 style={{ visibility: inventoryShow ? "visible" : "hidden" }}
                 container
             >
@@ -255,11 +319,7 @@ function InventoryContainer() {
                 <SelectedItem />
                 <PlayerContextMenu anchorEl={anchorEl} />
             </Grid>
-            <Confirmation
-                agreeHandler={agreeHandlerStores}
-                disagreeHandler={disagreeHandlerStores}
-                selectedItem={selectedItem}
-            />
+            {confirmationRenderer()}
         </Fragment>
     );
 }
