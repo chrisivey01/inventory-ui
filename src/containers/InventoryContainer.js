@@ -24,16 +24,8 @@ const useStyles = makeStyles((theme) => ({
     },
 
     inventoryDisplay: {
-        width: "90vw",
-        position: "absolute",
-        height: "80vh",
-        margin: "auto",
-        overflow: "hidden",
-        right: 0,
-        left: 0,
-        bottom: 0,
-        top: 0,
-        zIndex: -1,
+        justifyContent: "center",
+        marginTop: "5%"
     },
     inventoryHide: {
         display: "none",
@@ -58,7 +50,6 @@ function InventoryContainer() {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const confirmation = useSelector((state) => state.inventory.confirmation);
     const contextItem = useSelector((state) => state.inventory.contextItem);
-
 
     useEffect(() => {
         console.log(personalInventory);
@@ -156,7 +147,6 @@ function InventoryContainer() {
 
     //selectedItem.data is the full item object
     const onStop = (e, index, dropLocation) => {
-        let data;
         if (e.button !== 2) {
             if (dropLocation === "Personal") {
                 const item = personalInventory.inventory[index];
@@ -232,7 +222,6 @@ function InventoryContainer() {
     };
 
     const agreeHandlerSplit = () => {
-        console.log("split worked!");
         const item = contextItem.item;
         dispatch(
             inventoryActions.splitItemHandler({
@@ -293,7 +282,7 @@ function InventoryContainer() {
     return (
         <Fragment>
             <Grid
-                className={classes.inventoryDiay}
+                className={classes.inventoryDisplay}
                 style={{ visibility: inventoryShow ? "visible" : "hidden" }}
                 container
             >

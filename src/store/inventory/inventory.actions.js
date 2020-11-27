@@ -112,16 +112,37 @@ export const moveInventoryItem = (
 
         //SWAPS BETWEEN PERSONAL INVENTORY
         if (selectedItem.type === "Personal" && dropLocation === "Personal") {
-            const moveToSlot = inventories.personalInventory.inventory.splice(
-                selectedItem.index,
-                1,
-                item
-            );
-            inventories.personalInventory.inventory.splice(
-                index,
-                1,
-                moveToSlot[0]
-            );
+            //this is for item splits, and recombinding stacks, this makes it to where you cant stack a stack on a stack[dupe]
+            if (
+                selectedItem.data.name ===
+                    personalInventory.inventory[index].name &&
+                selectedItem.index !== index
+            ) {
+
+                let moveToSlot = inventories.personalInventory.inventory.splice(
+                    selectedItem.index,
+                    1,
+                    "{}"
+                );
+                moveToSlot[0].count += item.count;
+                inventories.personalInventory.inventory.splice(
+                    index,
+                    1,
+                    moveToSlot[0]
+                );
+                
+            } else {
+                const moveToSlot = inventories.personalInventory.inventory.splice(
+                    selectedItem.index,
+                    1,
+                    item
+                );
+                inventories.personalInventory.inventory.splice(
+                    index,
+                    1,
+                    moveToSlot[0]
+                );
+            }
         }
 
         //PUTS ITEMS INTO OTHER INVENTORY
@@ -376,7 +397,9 @@ export const showSplitConfirmation = () => {
 
 export const dropItemHandler = (item) => {
     return (dispatch) => {
+
         dispatch({ type: DROP_ITEM_HANDLER, payload: item });
+        Apis.dropItem(item)
     };
 };
 

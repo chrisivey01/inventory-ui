@@ -39,15 +39,15 @@ export default function PlayerContextMenu({ anchorEl }) {
     };
 
     const handleDrop = () => {
-        dispatch(inventoryActions.showDropConfirmation())
+        dispatch(inventoryActions.dropItemHandler(contextItem));
     };
 
     const handleGive = () => {
-        dispatch(inventoryActions.showGiveConfirmation())
+        dispatch(inventoryActions.showGiveConfirmation());
     };
 
     const handleSplit = () => {
-        dispatch(inventoryActions.showSplitConfirmation())
+        dispatch(inventoryActions.showSplitConfirmation());
     };
 
     if (openContextMenu) {
@@ -62,7 +62,11 @@ export default function PlayerContextMenu({ anchorEl }) {
             >
                 <MenuItem onClick={handleDrop}>Drop</MenuItem>
                 <MenuItem onClick={handleGive}>Give</MenuItem>
-                <MenuItem onClick={handleSplit}>Split</MenuItem>
+                {contextItem.item.type === "item_standard" ? (
+                    <MenuItem onClick={handleSplit}>Split</MenuItem>
+                ) : (
+                    <Fragment />
+                )}
             </Menu>
         );
     } else {

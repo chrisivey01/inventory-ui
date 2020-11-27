@@ -1,6 +1,14 @@
 import Apis from "../../apis/apis";
+import { weaponReset } from '../../helpers/weapons';
 
-let pastWeaponForSwaps;
+
+function getAllIndexes(arr, val) {
+    var indexes = [], i;
+    for(i = 0; i < arr.length; i++)
+        if (arr[i].name === val.name)
+            indexes.push(i);
+    return indexes;
+}
 
 export const loadInventory = (inventory, playerInventory) => {
     //convert
@@ -17,7 +25,8 @@ export const loadInventory = (inventory, playerInventory) => {
             weapons = inventory.weapons;
             weapons.map((item) => {
                 item.type = "item_weapon";
-                playerInventory.unsorted.push(item);
+                const weap = weaponReset(item)
+                playerInventory.unsorted.push(weap);
             });
         }
         // currentInventory.items.forEach((item) => inventory.items.push(item));
@@ -41,13 +50,14 @@ export const loadInventory = (inventory, playerInventory) => {
         return playerInventory.unsorted;
     } else {
         let playerInv = [...playerInventory];
-
+        //NOTE: THIS UPDATES INVENTORY, BUT TURNED IT OFF CAUSE UPDATING DURING ACTIONS/REDUX. SEEING IF THIS WORKS OR NOT.
         let items = inventory.items.filter((item) => item.count > 0);
         let weapons = inventory.weapons;
         let array = [];
         weapons.forEach((item) => {
             item.type = "item_weapon";
-            array.push(item);
+            const weap = weaponReset(item)
+            array.push(weap);
         });
         items.forEach((item) => {
             item.type = "item_standard";
@@ -66,12 +76,30 @@ export const loadInventory = (inventory, playerInventory) => {
             const invIndex = playerInv.findIndex(
                 (inventory) => inventory.name === item.name
             );
+            const indexMap = getAllIndexes(playerInv, item)
             const space = playerInv.findIndex((item) => item === "{}");
 
+            let count = 0
             if (invIndex > -1) {
-                playerInv[invIndex] = item;
+                count = 0
+                indexMap.forEach(index => {
+                    if(playerInv[index].count && indexMap.length > 1){
+                        count = playerInv[index].count + count
+                    } else {
+                        count = playerInv[index]
+                    }
+                })
+                if(item.count >= count){
+                    indexMap.forEach(i => {
+                        if(playerInv[i].count === count){
+                            return playerInv[invIndex]
+                        }
+                    })
+                } else {
+                    return playerInv[invIndex] = item;
+                }
             } else {
-                playerInv[space] = item;
+                return playerInv[space] = item;
             }
         });
 
@@ -164,6 +192,7 @@ export const useInventoryItem = (
     switch (flattenedInventory[itemIndex].type) {
         case "item_standard":
             return item;
+            break;
         case "item_weapon":
             if (previousItem.type === "item_standard") {
                 item.unequip = false;

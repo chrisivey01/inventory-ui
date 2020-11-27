@@ -2,7 +2,7 @@ import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import React, { Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     hover: {
         position: "absolute",
         width: "6vw",
@@ -54,7 +54,7 @@ const initialState = {
     mouseY: null,
 };
 
-export default (props) => {
+export default () => {
     const classes = useStyles();
     const [state, setState] = React.useState(initialState);
     const item = useSelector((state) => state.item.itemInfo);
@@ -83,7 +83,7 @@ export default (props) => {
                         ? {
                               top: state.mouseY,
                               left: state.mouseX,
-                              transform: "translate(-8vw, -15vh)",
+                              transform: "translate(-2vw, -5vh)",
                           }
                         : undefined
                 }
@@ -110,4 +110,4 @@ export default (props) => {
     } else {
         return <Fragment />;
     }
-}
+};

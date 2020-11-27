@@ -14,6 +14,7 @@ const updateInventoryUrl = "http://pma-inventory/UpdateInventory";
 
 const buyItemUrl = "http://pma-inventory/BuyItem";
 
+const dropItemUrl = "http://pma-inventory/DropItem";
 
 const Apis = {
     openInventory() {
@@ -38,6 +39,10 @@ const Apis = {
 
     buyItem(item) {
         return axios.post(buyItemUrl, item);
+    },
+
+    dropItem(item) {
+        return axios.post(dropItemUrl, item);
     }
 };
 

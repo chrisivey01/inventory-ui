@@ -104,6 +104,7 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 show: false,
+                usedItem: {}
             };
         case types.LOAD_OTHER_INVENTORY:
             return {
@@ -135,7 +136,7 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 personalInventory: {
                     ...state.personalInventory,
-                    inventory: state.sortedInventory.map((item) => {
+                    inventory: state.personalInventory.inventory.map((item) => {
                         if (item.name && item.name === action.payload.name) {
                             //if item is weapon, take the new weapon count
                             return (item = action.payload);
@@ -296,8 +297,15 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 personalInventory: {
                     ...state.personalInventory,
-                    inventory: action.payload,
+                    inventory: state.personalInventory.inventory.map(item => {
+                        if(item.name === action.payload.item.name){
+                            return "{}"
+                        } else {
+                            return item
+                        }
+                    }),
                 },
+                openContextMenu: false,
             };
         case types.GIVE_ITEM_HANDLER:
             return {
