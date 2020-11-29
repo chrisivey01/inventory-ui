@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
 const personal = "Personal";
 const trunk = "Trunk";
 const store = "Store";
+const property = "Property";
+const player = "Player";
+
 
 const PersonalInventory = (props) => {
     return (
@@ -47,7 +50,7 @@ const PersonalInventory = (props) => {
     );
 };
 
-const TrunkInventory = (props) => {
+const LargeInventory = (props) => {
     return (
         <Fragment>
             {props.inventory.inventory.map((item, i) => {
@@ -101,8 +104,8 @@ export default (props) => {
                     <Fragment />
                 )}
 
-                {props.inventory.type === trunk ? (
-                    <TrunkInventory {...props} />
+                {props.inventory.type === trunk ||  props.inventory.type === property || props.inventory.type === player ? (
+                    <LargeInventory {...props} />
                 ) : (
                     <Fragment />
                 )}

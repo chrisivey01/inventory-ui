@@ -91,34 +91,24 @@ export default () => {
 
     const itemPopupHandler = () => {
         if (usedItem.count) {
-            return (
-                <Typography className={classes.textUsed}>
-                    USED
-                </Typography>
-            );
+            return <Typography className={classes.textUsed}>USED</Typography>;
         } else if (usedItem.type === "item_weapon" && usedItem.unequip) {
             return (
-                <Typography className={classes.textUsed}>
-                    UNEQUIP
-                </Typography>
+                <Typography className={classes.textUsed}>UNEQUIP</Typography>
             );
         } else if (
             usedItem.type === "item_weapon" &&
             usedItem.unequip !== true
         ) {
-            return (
-                <Typography className={classes.textUsed}>
-                    EQUIP
-                </Typography>
-            );
+            return <Typography className={classes.textUsed}>EQUIP</Typography>;
         } else {
             return <Fragment />;
         }
-    }
+    };
 
     return (
         <div>
-            {usedItem.name ? (
+            {usedItem !== '{}' ? (
                 <Fade className={classes.grid} timeout={2000} in={show}>
                     <Paper className={classes.slot}>
                         {itemPopupHandler()}

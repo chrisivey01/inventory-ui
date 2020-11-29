@@ -9,7 +9,7 @@ const initialState = {
     },
     info: {
         personal: {},
-        car: {},
+        other: {},
     },
     otherInventory: {
         type: "",
@@ -67,8 +67,11 @@ const inventoryReducer = (state = initialState, action) => {
                     type: "",
                     inventory: [],
                 },
+                info: {
+                    ...state.info,
+                    other: {}
+                }
             };
-
         case types.SELECT_INVENTORY_ITEM:
             return {
                 ...state,
@@ -104,12 +107,12 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 show: false,
-                usedItem: {}
             };
         case types.LOAD_OTHER_INVENTORY:
             return {
                 ...state,
                 otherInventory: {
+                    ...state.otherInventory,
                     inventory: utils.loadOtherInventory(
                         action.payload.inventory,
                         action.payload.otherInventory
@@ -119,8 +122,21 @@ const inventoryReducer = (state = initialState, action) => {
                 inventoryShow: true,
                 info: {
                     ...state.info,
-                    car: action.payload.info,
+                    other: action.payload.info,
                 },
+            };
+        case types.LOAD_OTHER_PLAYER_INVENTORY:
+            return {
+                ...state,
+                otherInventory: {
+                    inventory: utils.loadOtherPlayerInventory(
+                        action.payload.inventory,
+                        action.payload.otherInventory
+                    ),
+                    type: action.payload.inventoryType,
+                },
+                inventoryShow: true,
+                info: action.payload.info
             };
         case types.LOAD_STORE_INVENTORY:
             return {
@@ -297,23 +313,19 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 personalInventory: {
                     ...state.personalInventory,
-                    inventory: state.personalInventory.inventory.map(item => {
-                        if(item.name === action.payload.item.name){
-                            return "{}"
-                        } else {
-                            return item
-                        }
-                    }),
+                    //this here needs to be rewrote, if item is split it overwrites both, need index transfered of what item is clicked.
+                    inventory: action.payload,
                 },
                 openContextMenu: false,
             };
-        case types.GIVE_ITEM_HANDLER:
+        case types.GIVE_ITEM_SUCCESS:
             return {
                 ...state,
                 personalInventory: {
                     ...state.personalInventory,
                     inventory: action.payload,
                 },
+                openContextMenu: false,
             };
         case types.SPLIT_ITEM_HANDLER:
             return {

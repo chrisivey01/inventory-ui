@@ -21,13 +21,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function PlayerContextMenu({ anchorEl }) {
-    const classes = useStyles();
+export default function PlayerContextMenu({ anchorEl, dropHandler }) {
     const openContextMenu = useSelector(
         (state) => state.inventory.openContextMenu
     );
     const contextItem = useSelector((state) => state.inventory.contextItem);
-    const quantity = useSelector((state) => state.inventory.quantity);
     const personalInventory = useSelector(
         (state) => state.inventory.personalInventory.inventory
     );
@@ -39,11 +37,11 @@ export default function PlayerContextMenu({ anchorEl }) {
     };
 
     const handleDrop = () => {
-        dispatch(inventoryActions.dropItemHandler(contextItem));
+        dispatch(inventoryActions.dropItemHandler(contextItem, personalInventory));
     };
 
     const handleGive = () => {
-        dispatch(inventoryActions.showGiveConfirmation());
+        dispatch(inventoryActions.giveItemHandler(contextItem, personalInventory));
     };
 
     const handleSplit = () => {

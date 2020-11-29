@@ -3,6 +3,7 @@ export const LOAD_INVENTORY = "LOAD_INVENTORY";
 export const SHOW_INVENTORY = "SHOW_INVENTORY";
 export const CLOSE_INVENTORY = "CLOSE_INVENTORY";
 export const LOAD_OTHER_INVENTORY = "LOAD_OTHER_INVENTORY";
+export const LOAD_OTHER_PLAYER_INVENTORY = "LOAD_OTHER_PLAYER_INVENTORY";
 
 export const SELECT_INVENTORY_ITEM = "SELECT_INVENTORY_ITEM";
 export const SELECT_INVENTORY_ITEM_INDEX = "SELECT_INVENTORY_ITEM_INDEX";
@@ -14,9 +15,6 @@ export const USE_ITEM_SLOT_TWO = "USE_ITEM_SLOT_TWO";
 export const USE_ITEM_SLOT_THREE = "USE_ITEM_SLOT_THREE";
 export const USE_ITEM_SLOT_FOUR = "USE_ITEM_SLOT_FOUR";
 export const USE_ITEM_SLOT_FIVE = "USE_ITEM_SLOT_FIVE";
-
-export const LOAD_SECOND_INVENTORY = "LOAD_SECOND_INVENTORY";
-export const LOAD_SECOND_INVENTORY_SORTED = "LOAD_SECOND_INVENTORY_SORTED";
 
 export const UPDATE_WEAPON_INFO = "UPDATE_WEAPON_INFO";
 export const UPDATE_ITEM_INFO = "UPDATE_ITEM_INFO";
@@ -47,6 +45,7 @@ export const CLOSE_CONTEXT_MENU = "CLOSE_CONTEXT_MENU";
 
 export const DROP_ITEM_HANDLER = "DROP_ITEM_HANDLER";
 export const GIVE_ITEM_HANDLER = "GIVE_ITEM_HANDLER";
+export const GIVE_ITEM_SUCCESS = "GIVE_ITEM_SUCCESS";
 export const SPLIT_ITEM_HANDLER = "SPLIT_ITEM_HANDLER";
 
 export const loadInventory = (data) => {
@@ -68,13 +67,25 @@ export const showInventory = () => {
     };
 };
 
-export const closeInventory = (personalInventory, otherInventory, info) => {
-    return (dispatch) => {
-        dispatch({
-            type: CLOSE_INVENTORY,
+export const closeInventory = (
+    personalInventory,
+    otherInventory,
+    info,
+    inventoryType
+) => {
+    return async (dispatch) => {
+        await Apis.closeInventory({
+            personalInventory,
+            otherInventory,
+            info,
+            inventoryType,
+        }).then((res) => {
+            if (res.data === "true") {
+                dispatch({
+                    type: CLOSE_INVENTORY,
+                });
+            }
         });
-
-        Apis.closeInventory({ personalInventory, otherInventory, info });
     };
 };
 
@@ -118,7 +129,6 @@ export const moveInventoryItem = (
                     personalInventory.inventory[index].name &&
                 selectedItem.index !== index
             ) {
-
                 let moveToSlot = inventories.personalInventory.inventory.splice(
                     selectedItem.index,
                     1,
@@ -130,7 +140,6 @@ export const moveInventoryItem = (
                     1,
                     moveToSlot[0]
                 );
-                
             } else {
                 const moveToSlot = inventories.personalInventory.inventory.splice(
                     selectedItem.index,
@@ -157,6 +166,11 @@ export const moveInventoryItem = (
                 1,
                 moveToSlot[0]
             );
+        }
+
+        //SWAPS BETWEEN PERSONAL AND PLAYER TO PREVENT DUPING, THIS NEEDS TO REMAIN BEFORE OTHERS
+        if (selectedItem.type === "Player" && dropLocation === "Player") {
+            return;
         }
 
         //SWAPS BETWEEN OTHER INVENTORY
@@ -395,17 +409,34 @@ export const showSplitConfirmation = () => {
     };
 };
 
-export const dropItemHandler = (item) => {
+export const dropItemHandler = (contextItem, personalInventory) => {
     return (dispatch) => {
-
-        dispatch({ type: DROP_ITEM_HANDLER, payload: item });
-        Apis.dropItem(item)
+        personalInventory[contextItem.index] = "{}";
+        dispatch({ type: DROP_ITEM_HANDLER, payload: personalInventory });
+        Apis.dropItem(contextItem);
     };
 };
 
-export const giveItemHandler = (item) => {
+export const giveItemSuccess = (contextItem, personalInventory) => {
     return (dispatch) => {
-        dispatch({ type: GIVE_ITEM_HANDLER, payload: item });
+        personalInventory[contextItem.index] = "{}";
+        dispatch({ type: GIVE_ITEM_SUCCESS, payload: personalInventory });
+    };
+};
+
+export const giveItemFailure = () => {};
+
+export const giveItemHandler = (contextItem, personalInventory) => {
+    return (dispatch) => {
+        Apis.givePlayerItem(contextItem)
+            .then((res) => {
+                if (res.data === "true") {
+                    dispatch(giveItemSuccess(contextItem, personalInventory));
+                } else {
+                    console.log("Error");
+                }
+            })
+            .catch((error) => console.log(error));
     };
 };
 // { item, quantity, personalInventory }
@@ -427,7 +458,15 @@ export const splitItemHandler = (data) => {
                 });
             }
         }
-
         dispatch(closeConfirmation());
+    };
+};
+
+export const loadOtherPlayerInventory = (data) => {
+    return (dispatch) => {
+        dispatch({
+            type: LOAD_OTHER_PLAYER_INVENTORY,
+            payload: data,
+        });
     };
 };

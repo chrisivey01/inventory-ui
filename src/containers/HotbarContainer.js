@@ -105,7 +105,6 @@ function HotbarContainer() {
         } else {
             //UPDATE WEAPON AMMO for inventory display for client side.
             if (e.data.updateWeapon) {
-                //weapon
                 dispatch(inventoryActions.updateWeapon(e.data.weaponData));
             }
 

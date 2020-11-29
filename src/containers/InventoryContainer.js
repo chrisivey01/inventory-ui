@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
     inventoryDisplay: {
         justifyContent: "center",
-        marginTop: "5%"
+        marginTop: "5%",
     },
     inventoryHide: {
         display: "none",
@@ -47,6 +47,7 @@ function InventoryContainer() {
     const selectedItem = useSelector((state) => state.inventory.selectedItem);
     const boughtItem = useSelector((state) => state.inventory.boughtItem);
     const quantity = useSelector((state) => state.inventory.quantity);
+    const inventoryType = useSelector((state) => state.inventory.otherInventory.type);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const confirmation = useSelector((state) => state.inventory.confirmation);
     const contextItem = useSelector((state) => state.inventory.contextItem);
@@ -58,52 +59,73 @@ function InventoryContainer() {
     useEffect(() => {
         window.addEventListener("message", (event) => {
             switch (event.data.inventoryType) {
-                case "Personal":
-                    {
-                        if (process.env.NODE_ENV === "development") {
-                            dispatch(
-                                inventoryActions.loadPersonalInventory(data)
-                            );
-                        } else {
-                            if (event.data.inventory) {
-                                const data = {
-                                    inventory: event.data.inventory,
-                                    playerInventory: event.data.playerInventory,
-                                    inventoryType: event.data.inventoryType,
-                                    info: event.data.info,
-                                };
-                                dispatch(inventoryActions.loadInventory(data));
-                            }
-                        }
+                case "Personal": {
+                    if (process.env.NODE_ENV === "development") {
+                        dispatch(inventoryActions.loadPersonalInventory(data));
+                    } else {
+                        const data = {
+                            inventory: event.data.inventory,
+                            playerInventory: event.data.playerInventory,
+                            inventoryType: event.data.inventoryType,
+                            info: event.data.info,
+                        };
+                        dispatch(inventoryActions.loadInventory(data));
                     }
                     break;
-                case "Hotbar":
-                    {
-                        dispatch(hotbarActions.loadHotbar());
-                    }
+                }
+                case "Hotbar": {
+                    dispatch(hotbarActions.loadHotbar());
                     break;
+                }
                 case "Trunk": {
                     let payload = {};
 
                     payload = {
                         inventoryType: event.data.inventoryType,
                         inventory: event.data.inventory,
-                        otherInventory: event.data.sortedInventory,
+                        otherInventory: event.data.otherInventory,
                         info: event.data.carData,
                     };
 
                     dispatch(inventoryActions.loadOtherInventory(payload));
                     break;
                 }
-                case "Store":
-                    {
-                        dispatch(
-                            inventoryActions.loadStoreInventory(
-                                event.data.items
-                            )
-                        );
-                    }
+                case "Store": {
+                    dispatch(
+                        inventoryActions.loadStoreInventory(event.data.items)
+                    );
                     break;
+                }
+                case "Property": {
+                    let payload = {};
+
+                    payload = {
+                        inventoryType: event.data.inventoryType,
+                        inventory: event.data.inventory,
+                        otherInventory: event.data.otherInventory,
+                        info: event.data.property,
+                    };
+
+                    dispatch(inventoryActions.loadOtherInventory(payload));
+
+                    break;
+                }
+
+                case "Player": {
+                    let payload = {};
+
+                    payload = {
+                        inventoryType: event.data.inventoryType,
+                        inventory: event.data.inventory,
+                        otherInventory: [],
+                        info: event.data.info
+                    };
+
+                    dispatch(
+                        inventoryActions.loadOtherPlayerInventory(payload)
+                    );
+                    break;
+                }
                 default:
                     return null;
             }
@@ -113,7 +135,7 @@ function InventoryContainer() {
     useEffect(() => {
         window.addEventListener("keydown", closeFunction);
         return () => window.removeEventListener("keydown", closeFunction);
-    }, [personalInventory, selectedItem]);
+    }, [personalInventory, selectedItem, otherInventory]);
 
     const onStart = (e, index, type) => {
         let payload;
@@ -124,7 +146,12 @@ function InventoryContainer() {
                 index: index,
                 type: type,
             };
-        } else if (type === "Trunk" || type === "Store") {
+        } else if (
+            type === "Trunk" ||
+            type === "Store" ||
+            type === "Property" ||
+            type === "Player"
+        ) {
             payload = {
                 item: otherInventory.inventory[index],
                 index: index,
@@ -193,7 +220,8 @@ function InventoryContainer() {
                 inventoryActions.closeInventory(
                     personalInventory,
                     otherInventory,
-                    info
+                    info,
+                    inventoryType
                 )
             );
             dispatch(hotbarActions.closeHotbar());
@@ -211,14 +239,6 @@ function InventoryContainer() {
                 boughtItem
             )
         );
-    };
-
-    const agreeHandlerDrop = () => {
-        console.log("drop worked!");
-    };
-
-    const agreeHandlerGive = () => {
-        console.log("give worked!");
     };
 
     const agreeHandlerSplit = () => {
