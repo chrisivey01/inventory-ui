@@ -103,6 +103,10 @@ export const selectInventoryItem = (payload) => ({
     payload: payload,
 });
 
+const sleep = (ms) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 export const moveInventoryItem = (
     item,
     personalInventory,
@@ -156,16 +160,20 @@ export const moveInventoryItem = (
 
         //PUTS ITEMS INTO OTHER INVENTORY
         if (selectedItem.type === "Personal" && dropLocation !== "Personal") {
-            const moveToSlot = inventories.personalInventory.inventory.splice(
-                selectedItem.index,
-                1,
-                item
-            );
-            inventories.otherInventory.inventory.splice(
-                index,
-                1,
-                moveToSlot[0]
-            );
+            if (inventories.otherInventory.inventory[index] === "{}") {
+                const moveToSlot = inventories.personalInventory.inventory.splice(
+                    selectedItem.index,
+                    1,
+                    item
+                );
+                inventories.otherInventory.inventory.splice(
+                    index,
+                    1,
+                    moveToSlot[0]
+                );
+            } else {
+                return;
+            }
         }
 
         //SWAPS BETWEEN PERSONAL AND PLAYER TO PREVENT DUPING, THIS NEEDS TO REMAIN BEFORE OTHERS
@@ -189,19 +197,23 @@ export const moveInventoryItem = (
 
         //GETS ITEM FROM OTHER INVENTORY
         if (selectedItem.type !== "Personal" && dropLocation === "Personal") {
-            const moveToSlot = inventories.otherInventory.inventory.splice(
-                selectedItem.index,
-                1,
-                item
-            );
-            inventories.personalInventory.inventory.splice(
-                index,
-                1,
-                moveToSlot[0]
-            );
+            if (inventories.personalInventory.inventory[index] === "{}") {
+                const moveToSlot = inventories.otherInventory.inventory.splice(
+                    selectedItem.index,
+                    1,
+                    item
+                );
+                inventories.personalInventory.inventory.splice(
+                    index,
+                    1,
+                    moveToSlot[0]
+                );
+            } else {
+                return;
+            }
         }
-
         Apis.updateInventory(inventories);
+        sleep(600);
         dispatch({ type: MOVE_INVENTORY_ITEM, payload: inventories });
     };
 };

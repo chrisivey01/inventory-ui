@@ -10,7 +10,6 @@ const hotbarReducer = (state = initialState, action) => {
         case types.LOAD_HOTBAR:
             return {
                 ...state,
-                itemSlots: action.payload,
                 hotbarShow: true,
             };
         case types.CLOSE_HOTBAR:

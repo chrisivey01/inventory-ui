@@ -220,7 +220,7 @@ export const useInventoryItem = (
         Apis.useInventoryItem(flattenedInventory[itemIndex], itemIndex);
 
         if (flattenedInventory[itemIndex].type === "item_standard") {
-            flattenedInventory[itemIndex].count -= 1;
+            // flattenedInventory[itemIndex].count -= 1;
             if (flattenedInventory[itemIndex].count === 0) {
                 flattenedInventory[itemIndex] = "{}";
             } else {

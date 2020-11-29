@@ -74,7 +74,11 @@ function InventoryContainer() {
                     break;
                 }
                 case "Hotbar": {
-                    dispatch(hotbarActions.loadHotbar());
+                    if(event.data.hotbar) {
+                        dispatch(hotbarActions.loadHotbar());
+                    } else {
+                        dispatch(hotbarActions.closeHotbar());
+                    }
                     break;
                 }
                 case "Trunk": {
