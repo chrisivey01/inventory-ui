@@ -63,7 +63,11 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
                 autoFocusItem={openContextMenu}
                 id="menu-list-grow"
             >
-				<MenuItem onClick={handleUse}>Use</MenuItem>
+				{contextItem.item.type === "item_weapon"  || contextItem.item.usable  ? (
+                    <MenuItem onClick={handleUse}>Use</MenuItem>
+                ) : (
+                    <Fragment />
+                )}
                 <MenuItem onClick={handleDrop}>Drop</MenuItem>
                 <MenuItem onClick={handleGive}>Give</MenuItem>
                 {contextItem.item.type === "item_standard" ? (
