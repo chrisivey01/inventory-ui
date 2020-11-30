@@ -5,7 +5,7 @@ import { applyMiddleware, createStore } from 'redux';
 import thunk from "redux-thunk";
 import App from './App';
 import combineReducers from "./store/index";
-import logger from 'redux-logger'
+// import logger from 'redux-logger'
 
 // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSIONS_COMPOSE__ || compose;
 const middle = [thunk]

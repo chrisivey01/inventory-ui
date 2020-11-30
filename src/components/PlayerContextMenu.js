@@ -69,7 +69,7 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
                 )}
                 <MenuItem onClick={handleDrop}>Drop</MenuItem>
                 <MenuItem onClick={handleGive}>Give</MenuItem>
-                {contextItem.item.type === "item_standard" ? (
+                {contextItem.item.type === "item_standard" || contextItem.item.type == "item_account" ? (
                     <MenuItem onClick={handleSplit}>Split</MenuItem>
                 ) : (
                     <Fragment />

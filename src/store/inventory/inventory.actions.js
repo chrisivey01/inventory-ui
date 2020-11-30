@@ -147,12 +147,21 @@ export const moveInventoryItem = (
                     1,
                     "{}"
                 );
-                moveToSlot[0].count += item.count;
-                inventories.personalInventory.inventory.splice(
-                    index,
-                    1,
-                    moveToSlot[0]
-                );
+                if (moveToSlot[0].count) {
+                    moveToSlot[0].count += item.count;
+                    inventories.personalInventory.inventory.splice(
+                        index,
+                        1,
+                        moveToSlot[0]
+                    );
+                } else if (moveToSlot[0].money) {
+                    moveToSlot[0].money += item.money;
+                    inventories.personalInventory.inventory.splice(
+                        index,
+                        1,
+                        moveToSlot[0]
+                    );
+                }
             } else {
                 const moveToSlot = inventories.personalInventory.inventory.splice(
                     selectedItem.index,
@@ -169,19 +178,74 @@ export const moveInventoryItem = (
 
         //PUTS ITEMS INTO OTHER INVENTORY
         if (selectedItem.type === "Personal" && dropLocation !== "Personal") {
-            if (inventories.otherInventory.inventory[index] === "{}") {
-                const moveToSlot = inventories.personalInventory.inventory.splice(
-                    selectedItem.index,
-                    1,
-                    item
-                );
-                inventories.otherInventory.inventory.splice(
-                    index,
-                    1,
-                    moveToSlot[0]
-                );
+            if (dropLocation === "Trunk") {
+                let trunkWeight = 0;
+                let maxWeight = info.other.max / 1000;
+                //get weight
+                inventories.otherInventory.inventory.forEach((item) => {
+                    if (item.count) {
+                        trunkWeight += item.count * item.weight;
+                    } else if (item.ammo !== undefined) {
+                        trunkWeight += 1;
+                    }
+                });
+
+                //get item selected
+                if (
+                    inventories.personalInventory.inventory[
+                        selectedItem.index
+                    ] !== "{}"
+                ) {
+                    if (
+                        inventories.personalInventory.inventory[
+                            selectedItem.index
+                        ].count
+                    ) {
+                        trunkWeight +=
+                            inventories.personalInventory.inventory[
+                                selectedItem.index
+                            ].count *
+                            inventories.personalInventory.inventory[
+                                selectedItem.index
+                            ].weight;
+                    } else if (
+                        inventories.personalInventory.inventory[
+                            selectedItem.index
+                        ].ammo !== undefined
+                    ) {
+                        trunkWeight += 1;
+                    }
+                }
+
+                if (trunkWeight <= maxWeight) {
+                    const moveToSlot = inventories.personalInventory.inventory.splice(
+                        selectedItem.index,
+                        1,
+                        item
+                    );
+                    inventories.otherInventory.inventory.splice(
+                        index,
+                        1,
+                        moveToSlot[0]
+                    );
+                } else {
+                    return;
+                }
             } else {
-                return;
+                if (inventories.otherInventory.inventory[index] === "{}") {
+                    const moveToSlot = inventories.personalInventory.inventory.splice(
+                        selectedItem.index,
+                        1,
+                        item
+                    );
+                    inventories.otherInventory.inventory.splice(
+                        index,
+                        1,
+                        moveToSlot[0]
+                    );
+                } else {
+                    return;
+                }
             }
         }
 
@@ -472,23 +536,54 @@ export const giveItemHandler = (contextItem, personalInventory) => {
 export const splitItemHandler = (data) => {
     return (dispatch) => {
         if (data.item.type !== "item_weapon") {
-            let splitItem = { ...data.item };
-            splitItem.count = data.quantity;
-            data.item.count = data.item.count - data.quantity;
-
-            const newLocation = data.personalInventory.inventory.findIndex(
-                (item) => item === "{}"
-            );
-            if (newLocation !== -1) {
-                data.personalInventory.inventory[newLocation] = splitItem;
-                dispatch({
-                    type: SPLIT_ITEM_HANDLER,
-                    payload: data.personalInventory.inventory,
-                });
+            if (data.item.type === "item_standard") {
+                splitItemStandard(dispatch, data);
+            } else if (data.item.type === "item_account") {
+                splitItemMoney(dispatch, data);
             }
         }
         dispatch(closeConfirmation());
     };
+};
+
+const splitItemStandard = (dispatch, data) => {
+    let splitItem = { ...data.item };
+    if (splitItem.count < data.quantity) {
+        return;
+    }
+    splitItem.count = data.quantity;
+    data.item.count = data.item.count - data.quantity;
+
+    const newLocation = data.personalInventory.inventory.findIndex(
+        (item) => item === "{}"
+    );
+    if (newLocation !== -1) {
+        data.personalInventory.inventory[newLocation] = splitItem;
+        dispatch({
+            type: SPLIT_ITEM_HANDLER,
+            payload: data.personalInventory.inventory,
+        });
+    }
+};
+
+const splitItemMoney = (dispatch, data) => {
+    let splitItem = { ...data.item };
+    if (splitItem.money < data.quantity) {
+        return;
+    }
+    splitItem.money = data.quantity;
+    data.item.money = data.item.money - data.quantity;
+
+    const newLocation = data.personalInventory.inventory.findIndex(
+        (item) => item === "{}"
+    );
+    if (newLocation !== -1) {
+        data.personalInventory.inventory[newLocation] = splitItem;
+        dispatch({
+            type: SPLIT_ITEM_HANDLER,
+            payload: data.personalInventory.inventory,
+        });
+    }
 };
 
 export const loadOtherPlayerInventory = (data) => {

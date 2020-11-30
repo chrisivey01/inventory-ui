@@ -1,7 +1,6 @@
 import Apis from "../../apis/apis";
 import { weaponReset } from "../../helpers/weapons";
 import { itemType, weaponType, accountType } from "../../helpers/types";
-let weaponCache = null 
 
 function getAllIndexes(arr, val) {
     var indexes = [],
@@ -52,7 +51,6 @@ export const loadInventory = (inventory, playerInventory) => {
         return playerInventory.unsorted;
     } else {
         let playerInv = [...playerInventory];
-        //NOTE: THIS UPDATES INVENTORY, BUT TURNED IT OFF CAUSE UPDATING DURING ACTIONS/REDUX. SEEING IF THIS WORKS OR NOT.
         let items = inventory.items.filter((item) => item.count > 0);
         let weapons = inventory.weapons;
         let array = [];
@@ -88,11 +86,13 @@ export const loadInventory = (inventory, playerInventory) => {
                 indexMap.forEach((index) => {
                     if (playerInv[index].count && indexMap.length > 1) {
                         count = playerInv[index].count + count;
+                    } else if(playerInv[index].money && indexMap.length > 1) {
+                        count = playerInv[index].money + count;
                     } else {
                         count = playerInv[index];
                     }
                 });
-                if (item.count >= count) {
+                if (item.count >= count || item.money >= count) {
                     indexMap.forEach((i) => {
                         if (playerInv[i].count === count) {
                             return playerInv[invIndex];
