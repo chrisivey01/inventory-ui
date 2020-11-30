@@ -185,21 +185,39 @@ export const moveInventoryItem = (
                 inventories.otherInventory.inventory.forEach((item) => {
                     if (item.count) {
                         trunkWeight += item.count * item.weight;
-                    } else if (item.ammo) {
+                    } else if (item.ammo !== undefined) {
                         trunkWeight += 1;
                     }
                 });
 
                 //get item selected
-                if(inventories.personalInventory.inventory[selectedItem.index] !== '{}'){
-                    if(inventories.personalInventory.inventory[selectedItem.index].count){
-                        trunkWeight += inventories.personalInventory.inventory[selectedItem.index].count * inventories.personalInventory.inventory[selectedItem.index].weight
-                    } else if(nventories.personalInventory.inventory[selectedItem.index].ammo) {
-                        trunkWeight += inventories.personalInventory.inventory[selectedItem.index].ammo += 1
+                if (
+                    inventories.personalInventory.inventory[
+                        selectedItem.index
+                    ] !== "{}"
+                ) {
+                    if (
+                        inventories.personalInventory.inventory[
+                            selectedItem.index
+                        ].count
+                    ) {
+                        trunkWeight +=
+                            inventories.personalInventory.inventory[
+                                selectedItem.index
+                            ].count *
+                            inventories.personalInventory.inventory[
+                                selectedItem.index
+                            ].weight;
+                    } else if (
+                        inventories.personalInventory.inventory[
+                            selectedItem.index
+                        ].ammo !== undefined
+                    ) {
+                        trunkWeight += 1;
                     }
                 }
 
-                if(trunkWeight <= maxWeight) {
+                if (trunkWeight <= maxWeight) {
                     const moveToSlot = inventories.personalInventory.inventory.splice(
                         selectedItem.index,
                         1,
@@ -210,7 +228,6 @@ export const moveInventoryItem = (
                         1,
                         moveToSlot[0]
                     );
-
                 } else {
                     return;
                 }
