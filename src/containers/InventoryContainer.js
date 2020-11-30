@@ -75,8 +75,6 @@ function InventoryContainer() {
 							} else {
 								dispatch(inventoryActions.loadInventory(data));
 							}
-						} else {
-							closeFunction()
 						}
                     }
                     break;
@@ -148,12 +146,12 @@ function InventoryContainer() {
 	// but i'm not going to remove it because i don't know if it has different
 	// functionality.
     useEffect(() => {
-		window.addEventListener("keydown", function(event) {
-			if (event.which === 27) {
-				closeFunction()
-			}
-		});
-        return () => window.removeEventListener("keydown", closeFunction);
+		window.addEventListener("keydown", closeFunction);
+		window.addEventListener("message", closeFunction);
+        return () => {
+			window.removeEventListener("keydown", closeFunction)
+			window.removeEventListener("message", closeFunction)
+		};
     }, [personalInventory, selectedItem, otherInventory]);
 
     const onStart = (e, index, type) => {
@@ -233,16 +231,19 @@ function InventoryContainer() {
         }
     };
 
-    const closeFunction = () => {
-		dispatch(
-			inventoryActions.closeInventory(
-				personalInventory,
-				otherInventory,
-				info,
-				inventoryType
-			)
-		);
-		dispatch(hotbarActions.closeHotbar());
+    const closeFunction = (event) => {
+
+		if (event.which == 27 || event.data.closeInventory){
+			dispatch(
+				inventoryActions.closeInventory(
+					personalInventory,
+					otherInventory,
+					info,
+					inventoryType
+				)
+			);
+			dispatch(hotbarActions.closeHotbar());
+		}
     };
 
     const agreeHandlerStore = () => {
