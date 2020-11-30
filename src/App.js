@@ -8,7 +8,7 @@ function App() {
         <Fragment>
             <InventoryContainer />
             <HotbarContainer />
-            <UsedItemContainer />
+            {/* <UsedItemContainer /> */}
         </Fragment>
     );
 }

@@ -86,8 +86,8 @@ export default () => {
             () => dispatch(actions.hideUseInventoryItem()),
             2000
         );
-        return () => clearTimeout(timer);
-    }, [usedItem]);
+        return () => setTimeout(timer);
+    }, [usedItem, show]);
 
     const itemPopupHandler = () => {
         if (usedItem.count) {
@@ -108,7 +108,7 @@ export default () => {
 
     return (
         <div>
-            {usedItem !== '{}' ? (
+            {show ? (
                 <Fade className={classes.grid} timeout={2000} in={show}>
                     <Paper className={classes.slot}>
                         {itemPopupHandler()}

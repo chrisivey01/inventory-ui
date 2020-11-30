@@ -1,6 +1,7 @@
 import Apis from "../../apis/apis";
 import { weaponReset } from "../../helpers/weapons";
 import { itemType, weaponType, accountType } from "../../helpers/types";
+let weaponCache = null 
 
 function getAllIndexes(arr, val) {
     var indexes = [],
@@ -25,6 +26,7 @@ export const loadInventory = (inventory, playerInventory) => {
             weapons = inventory.weapons;
             weapons.map((item) => {
                 item.type = "item_weapon";
+                item.name = item.name.toUpperCase();
                 const weap = weaponReset(item);
                 playerInventory.unsorted.push(weap);
             });
@@ -56,6 +58,7 @@ export const loadInventory = (inventory, playerInventory) => {
         let array = [];
         weapons.forEach((item) => {
             item.type = "item_weapon";
+            item.name = item.name.toUpperCase();
             const weap = weaponReset(item);
             array.push(weap);
         });
@@ -186,6 +189,7 @@ export const loadOtherPlayerInventory = (inventory) => {
         weapons = inventory.weapons;
         weapons.map((item) => {
             item.type = "item_weapon";
+            item.name = item.name.toUpperCase();
             const weap = weaponReset(item);
             inventoryArray.push(weap);
         });
@@ -220,7 +224,6 @@ export const useInventoryItem = (
         Apis.useInventoryItem(flattenedInventory[itemIndex], itemIndex);
 
         if (flattenedInventory[itemIndex].type === "item_standard") {
-            // flattenedInventory[itemIndex].count -= 1;
             if (flattenedInventory[itemIndex].count === 0) {
                 flattenedInventory[itemIndex] = "{}";
             } else {
@@ -234,7 +237,7 @@ export const useInventoryItem = (
         if (
             previousItem &&
             previousItem.type === "item_weapon" &&
-            flattenedInventory[itemIndex] !== previousItem
+            flattenedInventory[itemIndex].name !== previousItem.name 
         ) {
             item.unequip = false;
             return item;
@@ -245,15 +248,11 @@ export const useInventoryItem = (
                 return item;
                 break;
             case "item_weapon":
-                if (previousItem.type === "item_standard") {
+                if (previousItem.unequip === undefined || previousItem.unequip) {
                     item.unequip = false;
                     return item;
                     break;
-                } else if (item.unequip === undefined || item.unequip) {
-                    item.unequip = false;
-                    return item;
-                    break;
-                } else if (item.unequip === false) {
+                } else if (previousItem.unequip === false) {
                     item.unequip = true;
                     return item;
                     break;
@@ -261,8 +260,6 @@ export const useInventoryItem = (
             default:
                 return;
         }
-    } else {
-        return flattenedInventory[itemIndex];
     }
 };
 

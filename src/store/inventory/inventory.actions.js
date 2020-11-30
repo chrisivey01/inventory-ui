@@ -213,7 +213,6 @@ export const moveInventoryItem = (
             }
         }
         Apis.updateInventory(inventories);
-        sleep(600);
         dispatch({ type: MOVE_INVENTORY_ITEM, payload: inventories });
     };
 };
