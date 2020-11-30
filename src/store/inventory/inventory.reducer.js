@@ -334,6 +334,7 @@ const inventoryReducer = (state = initialState, action) => {
                     ...state.personalInventory,
                     inventory: action.payload,
                 },
+                openContextMenu: false
             };
         default:
             return state;

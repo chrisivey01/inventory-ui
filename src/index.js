@@ -8,7 +8,7 @@ import combineReducers from "./store/index";
 import logger from 'redux-logger'
 
 // const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSIONS_COMPOSE__ || compose;
-const middle = [thunk]
+const middle = [thunk, logger]
 const store = createStore(combineReducers, applyMiddleware(...middle));
 
 ReactDOM.render(
