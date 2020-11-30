@@ -59,6 +59,15 @@ export const loadInventory = (data) => {
     };
 };
 
+export const updateInventory = (data) => {
+    return (dispatch) => {
+        dispatch({
+            type: LOAD_INVENTORY,
+            payload: data,
+        });
+    };
+};
+
 export const showInventory = () => {
     return (dispatch) => {
         dispatch({

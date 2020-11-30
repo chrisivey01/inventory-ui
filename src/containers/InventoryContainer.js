@@ -63,13 +63,19 @@ function InventoryContainer() {
                     if (process.env.NODE_ENV === "development") {
                         dispatch(inventoryActions.loadPersonalInventory(data));
                     } else {
-                        const data = {
-                            inventory: event.data.inventory,
-                            playerInventory: event.data.playerInventory,
-                            inventoryType: event.data.inventoryType,
-                            info: event.data.info,
-                        };
-                        dispatch(inventoryActions.loadInventory(data));
+						if(!event.data.closeInventory){
+							const data = {
+								inventory: event.data.inventory,
+								playerInventory: event.data.playerInventory,
+								inventoryType: event.data.inventoryType,
+								info: event.data.info,
+							};
+							if (event.data.updateInventory) {
+								dispatch(inventoryActions.updateInventory(data))
+							} else {
+								dispatch(inventoryActions.loadInventory(data));
+							}
+						}
                     }
                     break;
                 }
@@ -137,8 +143,10 @@ function InventoryContainer() {
     }, []);
 
     useEffect(() => {
-        window.addEventListener("keydown", closeFunction);
-        return () => window.removeEventListener("keydown", closeFunction);
+		window.addEventListener("message", closeFunction);
+        return () => {
+			window.removeEventListener("message", closeFunction)
+		};
     }, [personalInventory, selectedItem, otherInventory]);
 
     const onStart = (e, index, type) => {
@@ -219,17 +227,18 @@ function InventoryContainer() {
     };
 
     const closeFunction = (event) => {
-        if (event.which === 27) {
-            dispatch(
-                inventoryActions.closeInventory(
-                    personalInventory,
-                    otherInventory,
-                    info,
-                    inventoryType
-                )
-            );
-            dispatch(hotbarActions.closeHotbar());
-        }
+
+		if (event.data.closeInventory){
+			dispatch(
+				inventoryActions.closeInventory(
+					personalInventory,
+					otherInventory,
+					info,
+					inventoryType
+				)
+			);
+			dispatch(hotbarActions.closeHotbar());
+		}
     };
 
     const agreeHandlerStore = () => {
