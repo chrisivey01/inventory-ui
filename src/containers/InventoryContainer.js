@@ -70,7 +70,11 @@ function InventoryContainer() {
 								inventoryType: event.data.inventoryType,
 								info: event.data.info,
 							};
-							dispatch(inventoryActions.loadInventory(data));
+							if (event.data.updateInventory) {
+								dispatch(inventoryActions.updateInventory(data))
+							} else {
+								dispatch(inventoryActions.loadInventory(data));
+							}
 						} else {
 							closeFunction()
 						}
