@@ -237,6 +237,7 @@ function InventoryContainer() {
 					inventoryType
 				)
 			);
+			dispatch(inventoryActions.closeContextMenu());
 			dispatch(hotbarActions.closeHotbar());
 		}
     };
