@@ -8,7 +8,7 @@ export const LOAD_OTHER_PLAYER_INVENTORY = "LOAD_OTHER_PLAYER_INVENTORY";
 export const SELECT_INVENTORY_ITEM = "SELECT_INVENTORY_ITEM";
 export const SELECT_INVENTORY_ITEM_INDEX = "SELECT_INVENTORY_ITEM_INDEX";
 export const MOVE_INVENTORY_ITEM = "MOVE_INVENTORY_ITEM";
-
+export const USE_ITEM_HANDLER = "USE_ITEM_HANDLER";
 export const USE_INVENTORY_ITEM = "USE_INVENTORY_ITEM";
 export const HIDE_USE_INVENTORY_ITEM = "HIDE_USE_INVENTORY_ITEM";
 export const USE_ITEM_SLOT_TWO = "USE_ITEM_SLOT_TWO";
@@ -426,6 +426,15 @@ export const showSplitConfirmation = () => {
         dispatch({
             type: SHOW_SPLIT_CONFIRMATION,
         });
+    };
+};
+
+export const useItemHandler = (contextItem, personalInventory) => {
+    return (dispatch) => {
+		contextItem.item.count = --contextItem.item.count;
+        personalInventory[contextItem.index] = contextItem.item;
+        dispatch({ type: USE_ITEM_HANDLER, payload: personalInventory });
+        Apis.useItem(contextItem);
     };
 };
 
