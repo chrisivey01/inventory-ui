@@ -63,13 +63,17 @@ function InventoryContainer() {
                     if (process.env.NODE_ENV === "development") {
                         dispatch(inventoryActions.loadPersonalInventory(data));
                     } else {
-                        const data = {
-                            inventory: event.data.inventory,
-                            playerInventory: event.data.playerInventory,
-                            inventoryType: event.data.inventoryType,
-                            info: event.data.info,
-                        };
-                        dispatch(inventoryActions.loadInventory(data));
+						if(!event.data.closeInventory){
+							const data = {
+								inventory: event.data.inventory,
+								playerInventory: event.data.playerInventory,
+								inventoryType: event.data.inventoryType,
+								info: event.data.info,
+							};
+							dispatch(inventoryActions.loadInventory(data));
+						} else {
+							closeFunction()
+						}
                     }
                     break;
                 }
@@ -136,8 +140,15 @@ function InventoryContainer() {
         });
     }, []);
 
+	// don't think this is needed anymore since it doesn't directly call this
+	// but i'm not going to remove it because i don't know if it has different
+	// functionality.
     useEffect(() => {
-        window.addEventListener("keydown", closeFunction);
+		window.addEventListener("keydown", function(event) {
+			if (event.which === 27) {
+				closeFunction()
+			}
+		});
         return () => window.removeEventListener("keydown", closeFunction);
     }, [personalInventory, selectedItem, otherInventory]);
 
@@ -218,18 +229,16 @@ function InventoryContainer() {
         }
     };
 
-    const closeFunction = (event) => {
-        if (event.which === 27) {
-            dispatch(
-                inventoryActions.closeInventory(
-                    personalInventory,
-                    otherInventory,
-                    info,
-                    inventoryType
-                )
-            );
-            dispatch(hotbarActions.closeHotbar());
-        }
+    const closeFunction = () => {
+		dispatch(
+			inventoryActions.closeInventory(
+				personalInventory,
+				otherInventory,
+				info,
+				inventoryType
+			)
+		);
+		dispatch(hotbarActions.closeHotbar());
     };
 
     const agreeHandlerStore = () => {
