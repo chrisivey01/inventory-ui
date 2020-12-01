@@ -62,6 +62,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function fallbackSrc(ev){
+	ev.target.src =  "./assets/no-item.png"
+}
+
 export default (props) => {
     const classes = useStyles();
 
@@ -108,7 +112,8 @@ export default (props) => {
                     <img
                         draggable="false"
                         className={classes.images}
-                        src={"./assets/" + props.item.name + ".png"}
+						src={"./assets/" + props.item.name + ".png"}
+						onError={fallbackSrc}
                     />
                     <Typography className={classes.name}>
                         {props.item.label}

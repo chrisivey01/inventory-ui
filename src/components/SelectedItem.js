@@ -59,6 +59,10 @@ const initialState = {
     mouseY: null,
 };
 
+function fallbackSrc(ev){
+	ev.target.src =  "./assets/no-item.png"
+}
+
 export default () => {
     const classes = useStyles();
     const [state, setState] = React.useState(initialState);
@@ -97,7 +101,8 @@ export default () => {
                     <img
                         draggable="false"
                         className={classes.img}
-                        src={"./assets/" + item.name + ".png"}
+						src={"./assets/" + item.name + ".png"}
+						onError={fallbackSrc}
                     />
                     <Typography
                         className={classes.countGrid}
