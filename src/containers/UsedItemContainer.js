@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
         position: "absolute",
         transform: "translate(-50%, 0%)",
         backgroundColor: "rgba(0,0,0,0.4)",
-        fontSize: 10,
+        fontSize: 12,
         padding: "0px 5px 0px 0px",
     },
     img: {
