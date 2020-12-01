@@ -82,6 +82,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+function fallbackSrc(ev){
+	ev.target.src =  "./assets/no-item.png"
+}
+
 function HotbarContainer() {
     const classes = useStyles();
     const personalInventory = useSelector(
@@ -198,11 +202,17 @@ function HotbarContainer() {
                                         <Fragment />
                                     )}
                                 </Typography>
-                                <img
+								{item.count !== undefined || item.ammo !== undefined || item.money !== undefined ?
+								(<img
                                     draggable="false"
                                     className={classes.images}
-                                    src={"./assets/" + item.name + ".png"}
-                                />
+									src={"./assets/" + item.name + ".png"}
+									onError={fallbackSrc}
+								/>
+								):(
+									<Fragment />
+								)}
+                                
                                 <Typography className={classes.name}>
                                     {item.label}
                                 </Typography>
