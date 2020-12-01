@@ -1,4 +1,5 @@
 import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
+import { Translate } from "@material-ui/icons";
 import React, { Fragment, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as inventoryActions from "../store/inventory/inventory.actions";
@@ -11,17 +12,32 @@ const useStyles = makeStyles((theme) => ({
         width: "99%",
     },
     slot: {
-        width: "96px",
-        height: "96px",
+        width: "100px",
+        height: "100px",
         padding: theme.spacing(1),
         position: "relative",
         textAlign: "center",
         userSelect: "none",
         backgroundColor: "rgba(0,0,0,0.4)",
-        "&:hover": {
-            transform: ["scale(1.1)"],
-        },
         color: "#F2F2F2",
+        margin: "0px 3px 5px 3px",
+        fontSize: 12,
+        transform: ["translate(0, 0)"],
+        transition: "250ms ease-in-out",
+    },
+    slotSelected: {
+        transform: ["translate(0, -10px)"],
+        width: "100px",
+        height: "100px",
+        padding: theme.spacing(1),
+        position: "relative",
+        textAlign: "center",
+        userSelect: "none",
+        backgroundColor: "rgba(0,0,0,0.4)",
+        color: "#F2F2F2",
+        margin: "0px 3px 5px 3px",
+        fontSize: 12,
+        transition: "250ms ease-in-out",
     },
     name: {
         bottom: 0,
@@ -32,26 +48,32 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "rgba(0,0,0,0.4)",
         fontSize: 12,
         padding: "0px 5px 0px 0px",
+        width: "95%",
+        letterSpacing: "1px",
+        whiteSpace: "nowrap",
     },
     countGrid: {
         position: "absolute",
-        right: 0,
-        top: 0,
+        right: "5px",
+        top: "2.5px",
         height: "20%",
         userSelect: "none",
         border: "none",
+        fontSize: 12,
     },
     slotNumberGrid: {
         position: "absolute",
-        left: 0,
-        top: 0,
-        width: "20%",
-        height: "20%",
+        left: "2.5px",
+        top: "2.5px",
+        width: "15%",
+        height: "15%",
         userSelect: "none",
         border: "none",
         backgroundColor: "rgba(34, 49, 63, 1)",
         borderRadius: 3,
-        border: "inset",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
     },
     images: {
         height: "inherit",
@@ -68,6 +90,9 @@ function HotbarContainer() {
     const hotbarShow = useSelector((state) => state.hotbar.hotbarShow);
     const dispatch = useDispatch();
 
+    const [inUse,setInUse] = React.useState(false);
+    const [useIndex, setUseIndex] = React.useState();
+
     useEffect(() => {
         window.addEventListener("message", (e) => onMessage(e));
         return () => {
@@ -81,26 +106,42 @@ function HotbarContainer() {
             switch (e.data.useItem) {
                 case "useItemOne": {
                     dispatch(inventoryActions.useInventoryItem(0));
+                    setInUse(true);
+                    setUseIndex(0);
+                    setTimeout(() => setUseIndex(5), 500)
                     break;
                 }
                 case "useItemTwo": {
                     dispatch(inventoryActions.useInventoryItem(1));
+                    setInUse(true);
+                    setUseIndex(1);
+                    setTimeout(() => setUseIndex(5), 500)
                     break;
                 }
                 case "useItemThree": {
                     dispatch(inventoryActions.useInventoryItem(2));
+                    setInUse(true);
+                    setUseIndex(2);
+                    setTimeout(() => setUseIndex(5), 500)
                     break;
                 }
                 case "useItemFour": {
                     dispatch(inventoryActions.useInventoryItem(3));
+                    setInUse(true);
+                    setUseIndex(3);
+                    setTimeout(() => setUseIndex(5), 500)
                     break;
                 }
                 case "useItemFive": {
                     dispatch(inventoryActions.useInventoryItem(4));
+                    setInUse(true);
+                    setUseIndex(4);
+                    setTimeout(() => setUseIndex(5), 500)
                     break;
                 }
                 default:
                     return null;
+
             }
         } else {
             //UPDATE WEAPON AMMO for inventory display for client side.
@@ -130,7 +171,7 @@ function HotbarContainer() {
                 personalInventory.inventory.map((item, i) => {
                     if (i < 5) {
                         return (
-                            <Paper elevation={3} className={classes.slot}>
+                            <Paper elevation={3} className={ inUse === true && i === useIndex ? classes.slotSelected : classes.slot } >
                                 <Typography
                                     className={classes.slotNumberGrid}
                                     variant="outlined"

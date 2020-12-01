@@ -5,15 +5,17 @@ import { useSelector } from "react-redux";
 const useStyles = makeStyles(() => ({
     hover: {
         position: "absolute",
-        width: "6vw",
+        width: "110px",
+        height: "110px",
         pointerEvents: "none",
+        border: "1px solid #eeeeee",
     },
     slot: {
-        width: 116,
-        height: 120,
+        width: "110px",
+        height: "110px",
         textAlign: "center",
         userSelect: "none",
-        backgroundColor: "rgba(44,47,51,0.8)",
+        backgroundColor: "rgba(0,0,0,0.4)",
         color: "#F2F2F2",
     },
     img: {
@@ -38,6 +40,9 @@ const useStyles = makeStyles(() => ({
         width: "20%",
         height: "20%",
         userSelect: "none",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
     },
     name: {
         bottom: 0,

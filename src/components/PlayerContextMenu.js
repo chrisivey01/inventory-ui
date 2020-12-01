@@ -34,14 +34,10 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
 
     const handleClose = () => {
         dispatch(inventoryActions.closeContextMenu());
-	};
-	
-	const handleUse = () => {
-		dispatch(inventoryActions.useItemHandler(contextItem, personalInventory));
-	}
+    };
 
     const handleDrop = () => {
-		dispatch(inventoryActions.dropItemHandler(contextItem, personalInventory));
+        dispatch(inventoryActions.dropItemHandler(contextItem, personalInventory));
     };
 
     const handleGive = () => {
@@ -62,11 +58,6 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
                 autoFocusItem={openContextMenu}
                 id="menu-list-grow"
             >
-				{contextItem.item.type === "item_weapon"  || contextItem.item.usable  ? (
-                    <MenuItem onClick={handleUse}>Use</MenuItem>
-                ) : (
-                    <Fragment />
-                )}
                 <MenuItem onClick={handleDrop}>Drop</MenuItem>
                 <MenuItem onClick={handleGive}>Give</MenuItem>
                 {contextItem.item.type === "item_standard" || contextItem.item.type == "item_account" ? (

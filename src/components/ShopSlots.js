@@ -3,20 +3,18 @@ import { makeStyles, Paper, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     slot: {
-        width: 120,
-        height: 120,
+        width: "110px",
+        height: "110px",
         padding: theme.spacing(1),
         position: "relative",
         textAlign: "center",
         userSelect: "none",
         backgroundColor: "rgba(0,0,0,0.4)",
-        "&:hover": {
-            transform: ["scale(1.1)"],
-        },
         color: "#F2F2F2",
+        margin: "5px"
     },
     menu: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(1),
         width: "5vw",
     },
     img: {
@@ -53,7 +51,9 @@ const useStyles = makeStyles((theme) => ({
         border: "none",
         backgroundColor: "rgba(34, 49, 63, 1)",
         borderRadius: 3,
-        border: "inset",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
     },
     images: {
         height: "inherit",

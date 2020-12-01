@@ -3,7 +3,7 @@ import axios from "axios";
 const openInventoryUrl = "http://pma-inventory/OpenInventory";
 const closeInventoryUrl = "http://pma-inventory/CloseInventory";
 const useItemUrl = "http://pma-inventory/UseItem";
-const useHotbarItemUrl = "http://pma-inventory/UseHotbarItem";
+
 const openTrunkUrl = "http://pma-inventory/OpenTrunk";
 
 const updateInventoryUrl = "http://pma-inventory/UpdateInventory";
@@ -22,14 +22,10 @@ const Apis = {
 
     closeInventory(data) {
         return axios.post(closeInventoryUrl, data);
-	},
-	
-	useItem(item) {
-		return axios.post(useItemUrl, item)
-	},
+    },
 
     useInventoryItem(item) {
-        return axios.post(useHotbarItemUrl, item);
+        return axios.post(useItemUrl, item);
     },
 
     openTrunk() {
