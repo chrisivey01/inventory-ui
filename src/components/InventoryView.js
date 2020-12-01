@@ -6,8 +6,10 @@ import ShopSlots from "./ShopSlots";
 const useStyles = makeStyles((theme) => ({
     container: {
         color: "#F2F2F2",
-        backgroundColor: "rgba(0,0,0,0.4)",
+        backgroundColor: "#33333385",
         display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         flexWrap: "wrap",
         width: 760,
     },
