@@ -38,9 +38,11 @@ const useStyles = makeStyles((theme) => ({
     countGrid: {
         position: "absolute",
         right: "5px",
-        top: "2.5px",
+		top: "2.5px",
+		fontFamily: 'Courier',
         fontSize: 12,
-        height: "20%",
+		height: "20%",
+		letterSpacing: "1.25px",
         userSelect: "none",
         border: "none",
     },

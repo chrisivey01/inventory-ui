@@ -109,12 +109,14 @@ export default (props) => {
                             <Fragment />
                         )}
                     </Typography>
-                    <img
+					{props.item.name != "" ? (<img
                         draggable="false"
                         className={classes.images}
 						src={"./assets/" + props.item.name + ".png"}
 						onError={fallbackSrc}
-                    />
+                    />) : (
+						<img/>
+					)}
                     <Typography className={classes.name}>
                         {props.item.label}
                     </Typography>

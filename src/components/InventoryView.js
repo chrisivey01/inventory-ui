@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignItems: "center",
         flexWrap: "wrap",
-        width: 725,
+        width: 760,
     },
     inventory: {
         display: "flex",
