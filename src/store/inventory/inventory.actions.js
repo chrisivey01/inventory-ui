@@ -562,7 +562,8 @@ const splitItemStandard = (dispatch, data) => {
         dispatch({
             type: SPLIT_ITEM_HANDLER,
             payload: data.personalInventory.inventory,
-        });
+		});
+		Apis.updateInventory(data)
     }
 };
 
@@ -582,7 +583,8 @@ const splitItemMoney = (dispatch, data) => {
         dispatch({
             type: SPLIT_ITEM_HANDLER,
             payload: data.personalInventory.inventory,
-        });
+		});
+		Apis.updateInventory(data)
     }
 };
 
