@@ -155,7 +155,7 @@ export default ({ agreeHandler, disagreeHandler }) => {
     };
 
     const renderConfirmationView = () => {
-        if (confirmation.type === "Store") {
+        if (confirmation.type === "Store" && boughtItem.price != '' ) {
             return (
                 <RenderShopConfirmation
                     quantity={quantity}

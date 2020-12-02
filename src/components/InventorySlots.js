@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         position: "absolute",
         transform: "translate(-50%, 0%)",
         backgroundColor: "rgba(0,0,0,0.6)",
-        fontSize: 11,
+        fontSize: 12,
         letterSpacing: "1px",
         padding: "0px 5px 0px 0px",
     },
@@ -38,9 +38,11 @@ const useStyles = makeStyles((theme) => ({
     countGrid: {
         position: "absolute",
         right: "5px",
-        top: "2.5px",
-        fontSize: 10,
-        height: "20%",
+		top: "2.5px",
+		fontFamily: 'Courier',
+        fontSize: 12,
+		height: "20%",
+		letterSpacing: "1.25px",
         userSelect: "none",
         border: "none",
     },
@@ -54,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
         border: "none",
         backgroundColor: "rgba(34, 49, 63, 1)",
         borderRadius: 3,
-        fontSize: 10,
+        fontSize: 12,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -65,10 +67,11 @@ const useStyles = makeStyles((theme) => ({
         objectFit: "contain",
     },
 }));
-
+function fallbackSrc(ev){
+	ev.target.src =  "./assets/no-item.png"
+}
 export default (props) => {
-    const classes = useStyles();
-
+	const classes = useStyles();
     return (
         <div>
             {(() => {
@@ -142,7 +145,8 @@ export default (props) => {
                                                 "./assets/" +
                                                 props.item.name +
                                                 ".png"
-                                            }
+											}
+											onError={fallbackSrc}
                                         />
                                         <Typography className={classes.name}>
                                             {props.item.label}
@@ -237,7 +241,8 @@ export default (props) => {
                                 <img
                                     draggable="false"
                                     className={classes.images}
-                                    src={"./assets/" + props.item.name + ".png"}
+									src={"./assets/" + props.item.name + ".png"}
+									onError={fallbackSrc}
                                 />
                                 <Typography className={classes.name}>
                                     {props.item.label}
@@ -327,7 +332,8 @@ export default (props) => {
                                 <img
                                     draggable="false"
                                     className={classes.images}
-                                    src={"./assets/" + props.item.name + ".png"}
+									src={"./assets/" + props.item.name + ".png"}
+									onError={fallbackSrc}
                                 />
                                 <Typography className={classes.name}>
                                     {props.item.label}

@@ -1,12 +1,7 @@
 import React, { Fragment } from "react";
 import {
-    ClickAwayListener,
-    Grow,
     Menu,
     MenuItem,
-    MenuList,
-    Paper,
-    Popper,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,8 +46,7 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
     const handleSplit = () => {
         dispatch(inventoryActions.showSplitConfirmation());
     };
-
-    if (openContextMenu) {
+    if (openContextMenu && contextItem.item.type !== undefined) {
         return (
             <Menu
                 anchorEl={anchorEl}
@@ -62,18 +56,19 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
                 autoFocusItem={openContextMenu}
                 id="menu-list-grow"
             >
+				<Fragment />
 				{contextItem.item.type === "item_weapon"  || contextItem.item.usable  ? (
                     <MenuItem onClick={handleUse}>Use</MenuItem>
                 ) : (
                     <Fragment />
                 )}
-                <MenuItem onClick={handleDrop}>Drop</MenuItem>
-                <MenuItem onClick={handleGive}>Give</MenuItem>
+				<MenuItem onClick={handleDrop}>Drop</MenuItem>
+						<MenuItem onClick={handleGive}>Give</MenuItem>
                 {contextItem.item.type === "item_standard" || contextItem.item.type == "item_account" ? (
-                    <MenuItem onClick={handleSplit}>Split</MenuItem>
+						<MenuItem onClick={handleSplit}>Split</MenuItem>
                 ) : (
-                    <Fragment />
-                )}
+					<Fragment />
+				)}
             </Menu>
         );
     } else {
