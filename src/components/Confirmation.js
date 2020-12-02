@@ -1,18 +1,16 @@
 import {
     Button,
-    ButtonGroup,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     IconButton,
-    Input,
     Slide,
     TextField,
     Typography,
 } from "@material-ui/core";
 import { Add, Remove } from "@material-ui/icons";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as inventoryActions from "../store/inventory/inventory.actions";
 
@@ -47,6 +45,7 @@ const RenderShopConfirmation = ({
                 )}
 
                 <TextField
+                    autoFocus
                     style={{ border: "none" }}
                     value={quantity ? quantity : null}
                     onChange={(e) =>
@@ -89,13 +88,22 @@ const RenderShopConfirmation = ({
 const RenderContextConfirmation = ({
     quantity,
     confirmation,
-    inventory,
-    selectedItem,
     closeHandler,
     agreeHandler,
     disagreeHandler,
     dispatch,
 }) => {
+    const inputRef = useRef();
+
+    React.useEffect(() => {
+      const timeout = setTimeout(() => {
+        inputRef.current.focus();
+      }, 100);
+  
+      return () => {
+        clearTimeout(timeout);
+      };
+    }, []);
     return (
         <Dialog
             open={confirmation.show}
@@ -106,6 +114,7 @@ const RenderContextConfirmation = ({
             <DialogTitle>{confirmation.title}</DialogTitle>
             <DialogContent>
                 <TextField
+                    inputRef={inputRef}
                     style={{ border: "none" }}
                     value={quantity ? quantity : null}
                     onChange={(e) =>
@@ -155,7 +164,7 @@ export default ({ agreeHandler, disagreeHandler }) => {
     };
 
     const renderConfirmationView = () => {
-        if (confirmation.type === "Store" && boughtItem.price != '' ) {
+        if (confirmation.type === "Store" && boughtItem.price != "") {
             return (
                 <RenderShopConfirmation
                     quantity={quantity}

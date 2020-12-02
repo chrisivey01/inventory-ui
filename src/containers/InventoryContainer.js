@@ -52,10 +52,6 @@ function InventoryContainer() {
     const confirmation = useSelector((state) => state.inventory.confirmation);
     const contextItem = useSelector((state) => state.inventory.contextItem);
 
-    // useEffect(() => {
-    //     console.log(personalInventory);
-    // }, [personalInventory]);
-
     useEffect(() => {
         window.addEventListener("message", (event) => {
             switch (event.data.inventoryType) {

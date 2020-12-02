@@ -548,7 +548,7 @@ export const splitItemHandler = (data) => {
 
 const splitItemStandard = (dispatch, data) => {
     let splitItem = { ...data.item };
-    if (splitItem.count < data.quantity) {
+    if (splitItem.count <= data.quantity) {
         return;
     }
     splitItem.count = data.quantity;
@@ -569,7 +569,7 @@ const splitItemStandard = (dispatch, data) => {
 
 const splitItemMoney = (dispatch, data) => {
     let splitItem = { ...data.item };
-    if (splitItem.money < data.quantity) {
+    if (splitItem.money <= data.quantity) {
         return;
     }
     splitItem.money = data.quantity;

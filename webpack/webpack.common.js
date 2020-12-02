@@ -19,17 +19,12 @@ module.exports = {
                 ],
             },
             {
-                test: /\.s[ac]ss$/i,
+                test: /\.(sa|sc|c)ss$/,
                 use: ["style-loader", "css-loader", "sass-loader"],
             },
             {
-                // config for images
-                test: /\.(png|svg|jpg|jpeg|gif)$/,
-                use: [
-                    {
-                        loader: "file-loader",
-                    },
-                ],
+                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+                loader: "url-loader?limit=100000",
             },
         ],
     },

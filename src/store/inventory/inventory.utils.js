@@ -84,9 +84,9 @@ export const loadInventory = (inventory, playerInventory) => {
             if (invIndex > -1) {
                 count = 0;
                 indexMap.forEach((index) => {
-                    if (playerInv[index].count && indexMap.length > 1) {
+                    if (playerInv[index].count && indexMap.length >= 1) {
                         count = playerInv[index].count + count;
-                    } else if(playerInv[index].money && indexMap.length > 1) {
+                    } else if(playerInv[index].money && indexMap.length >= 1) {
                         count = playerInv[index].money + count;
                     } else {
                         count = playerInv[index];
@@ -96,6 +96,10 @@ export const loadInventory = (inventory, playerInventory) => {
                     indexMap.forEach((i) => {
                         if (playerInv[i].count === count) {
                             return playerInv[invIndex];
+                        }
+
+                        if(playerInv[i].money === count){
+                            return playerInv[invIndex]
                         }
                     });
                 } else {

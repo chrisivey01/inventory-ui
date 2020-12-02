@@ -21,7 +21,7 @@ const initialState = {
         index: null,
         type: "",
     },
-    quantity: 1,
+    quantity: null,
     boughtItem: {},
     usedItem: {},
     confirmation: {
@@ -205,7 +205,7 @@ const inventoryReducer = (state = initialState, action) => {
                     inventory: action.payload.inventory,
                 },
                 boughtItem: {},
-                quantity: 1,
+                quantity: null,
                 confirmation: {
                     ...state.confirmation,
                     show: false,
@@ -280,7 +280,6 @@ const inventoryReducer = (state = initialState, action) => {
         case types.SHOW_GIVE_CONFIRMATION:
             return {
                 ...state,
-
                 openContextMenu: false,
                 confirmation: {
                     show: true,
@@ -307,6 +306,7 @@ const inventoryReducer = (state = initialState, action) => {
                     title: "",
                     type: "",
                 },
+                quantity: null
             };
         case types.DROP_ITEM_HANDLER:
             return {
