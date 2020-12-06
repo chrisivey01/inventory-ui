@@ -204,12 +204,24 @@ export const moveInventoryItem = (
                         selectedItem.index,
                         1,
                         item
-                    );
-                    inventories.otherInventory.inventory.splice(
-                        index,
-                        1,
-                        moveToSlot[0]
-                    );
+                        );
+
+                    //DEALING WITH SPLITS [PUTS]
+                    const searchIndex = inventories.otherInventory.inventory.findIndex(item => item.name === selectedItem.data.name)
+                    if(searchIndex !== -1) {
+                        if(selectedItem.data.count){
+                            inventories.otherInventory.inventory[searchIndex].count = selectedItem.data.count + inventories.otherInventory.inventory[searchIndex].count
+                        } else if(selectedItem.data.money){
+                            inventories.otherInventory.inventory[searchIndex].money = selectedItem.data.money + inventories.otherInventory.inventory[searchIndex].money
+                        }
+                        inventories.personalInventory.inventory[selectedItem.index] = '{}'
+                    } else {
+                        inventories.otherInventory.inventory.splice(
+                            index,
+                            1,
+                            moveToSlot[0]
+                        );
+                    }
                 } else {
                     //if overweight do this
                     dispatch(showErrorMessage());
@@ -222,11 +234,22 @@ export const moveInventoryItem = (
                         1,
                         item
                     );
-                    inventories.otherInventory.inventory.splice(
-                        index,
-                        1,
-                        moveToSlot[0]
-                    );
+                   //DEALING WITH SPLITS [PUTS]
+                   const searchIndex = inventories.otherInventory.inventory.findIndex(item => item.name === selectedItem.data.name)
+                   if(searchIndex !== -1) {
+                       if(selectedItem.data.count){
+                           inventories.otherInventory.inventory[searchIndex].count = selectedItem.data.count + inventories.otherInventory.inventory[searchIndex].count
+                       } else if(selectedItem.data.money){
+                           inventories.otherInventory.inventory[searchIndex].money = selectedItem.data.money + inventories.otherInventory.inventory[searchIndex].money
+                       }
+                       inventories.otherInventory.inventory[selectedItem.index] = '{}'
+                   } else {
+                       inventories.otherInventory.inventory.splice(
+                           index,
+                           1,
+                           moveToSlot[0]
+                       );
+                   }
                 } else {
                     return;
                 }
@@ -273,11 +296,21 @@ export const moveInventoryItem = (
                         1,
                         item
                     );
-                    inventories.personalInventory.inventory.splice(
-                        index,
-                        1,
-                        moveToSlot[0]
-                    );
+                   //DEALING WITH SPLITS [GETS]
+                   const searchIndex = inventories.personalInventory.inventory.findIndex(item => item.name === selectedItem.data.name)
+                   if(searchIndex !== -1) {
+                       if(selectedItem.data.count){
+                           inventories.personalInventory.inventory[searchIndex].count = selectedItem.data.count + inventories.personalInventory.inventory[searchIndex].count
+                       } else if(selectedItem.data.money){
+                           inventories.personalInventory.inventory[searchIndex].money = selectedItem.data.money + inventories.personalInventory.inventory[searchIndex].money
+                       }
+                   } else {
+                       inventories.personalInventory.inventory.splice(
+                           index,
+                           1,
+                           moveToSlot[0]
+                       );
+                   }
                 } else {
                     //if overweight do this
                     dispatch(showErrorMessage());
