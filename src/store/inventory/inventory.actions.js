@@ -109,6 +109,15 @@ export const selectInventoryItem = (payload) => ({
     payload: payload,
 });
 
+export const useItemHandler = (contextItem, personalInventory) => {
+    return (dispatch) => {
+		contextItem.item.count = --contextItem.item.count;
+        // personalInventory[contextItem.index] = contextItem.item;
+        // dispatch({ type: USE_ITEM_HANDLER, payload: personalInventory });
+        Apis.useItem(contextItem);
+    };
+};
+
 export const moveInventoryItem = (
     item,
     personalInventory,

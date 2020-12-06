@@ -297,28 +297,6 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 openContextMenu: false,
             };
-        case types.SHOW_DROP_CONFIRMATION:
-            return {
-                ...state,
-                openContextMenu: false,
-                confirmation: {
-                    show: true,
-                    title: "How many to drop?",
-                    type: "Drop",
-                },
-                quantity: 1
-            };
-        case types.SHOW_GIVE_CONFIRMATION:
-            return {
-                ...state,
-                openContextMenu: false,
-                confirmation: {
-                    show: true,
-                    title: "How many to give?",
-                    type: "Give",
-                },
-                quantity: 1
-            };
         case types.SHOW_SPLIT_CONFIRMATION:
             return {
                 ...state,
@@ -376,6 +354,11 @@ const inventoryReducer = (state = initialState, action) => {
                 },
                 openContextMenu: false,
             };
+        case types.USE_ITEM_HANDLER:
+            return {
+                ...state,
+                personalInventory: action.payload
+            }
         default:
             return state;
     }

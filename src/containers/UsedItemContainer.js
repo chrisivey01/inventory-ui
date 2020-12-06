@@ -111,13 +111,11 @@ export default () => {
                 <Fade className={classes.grid} timeout={2000} in={show}>
                     <Paper className={classes.slot}>
                         {itemPopupHandler()}
-
                         <img
                             draggable="false"
                             className={classes.img}
                             src={"./assets/" + usedItem.name + ".png"}
                         />
-
                         <Typography className={classes.name}>
                             {usedItem.label}
                         </Typography>
