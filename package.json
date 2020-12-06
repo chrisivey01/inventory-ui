@@ -1,69 +1,67 @@
 {
-  "name": "inventory-ui",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@material-ui/core": "^4.10.2",
-    "@material-ui/icons": "^4.9.1",
-    "axios": "^0.19.2",
-    "fontsource-roboto": "^3.0.3",
-    "react": "^16.13.1",
-    "react-beautiful-dnd": "^13.0.0",
-    "react-dom": "^16.13.1",
-    "react-draggable": "^4.4.3",
-    "react-image": "^4.0.3",
-    "react-redux": "^7.2.0",
-    "react-router-dom": "^5.2.0",
-    "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
-    "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0"
-  },
-  "scripts": {
-    "start": "webpack-dev-server --open --config webpack/webpack.dev.js",
-    "build": "webpack --progress --config  webpack/webpack.prod.js",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/plugin-transform-runtime": "^7.10.5",
-    "@babel/plugin-transform-spread": "^7.10.4",
-    "@babel/polyfill": "^7.10.4",
-    "@babel/preset-env": "^7.10.2",
-    "@babel/preset-react": "^7.10.1",
-    "babel-loader": "^8.1.0",
-    "clean-webpack-plugin": "^3.0.0",
-    "copy-webpack-plugin": "^6.0.3",
-    "cross-env": "^7.0.2",
-    "css-loader": "^3.6.0",
-    "file-loader": "^6.0.0",
-    "html-loader": "^1.1.0",
-    "html-webpack-plugin": "^4.3.0",
-    "node-sass": "^4.14.1",
-    "sass-loader": "^8.0.2",
-    "source-map-loader": "^1.0.1",
-    "style-loader": "^1.2.1",
-    "url-loader": "^4.1.1",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^4.2.2"
-  }
+    "name": "inventory-ui",
+    "version": "0.1.0",
+    "private": true,
+    "author": "Chris Ivey",
+    "description": "Inventory system for GTA.",
+    "dependencies": {
+        "@material-ui/core": "^4.10.2",
+        "@material-ui/icons": "^4.9.1",
+        "@material-ui/lab": "^4.0.0-alpha.57",
+        "axios": "^0.21.0",
+        "fontsource-roboto": "^3.0.3",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
+        "react-image": "^4.0.3",
+        "react-redux": "^7.2.0",
+        "react-router-dom": "^5.2.0",
+        "redux": "^4.0.5",
+        "redux-logger": "^3.0.6",
+        "redux-thunk": "^2.3.0",
+        "reselect": "^4.0.0"
+    },
+    "scripts": {
+        "start": "webpack serve",
+        "build": "webpack",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@babel/core": "^7.10.2",
+        "@babel/plugin-transform-runtime": "^7.10.5",
+        "@babel/plugin-transform-spread": "^7.10.4",
+        "@babel/polyfill": "^7.10.4",
+        "@babel/preset-env": "^7.10.2",
+        "@babel/preset-react": "^7.10.1",
+        "babel-loader": "^8.1.0",
+        "clean-webpack-plugin": "^3.0.0",
+        "copy-webpack-plugin": "^6.0.3",
+        "cross-env": "^7.0.2",
+        "css-loader": "^5.0.1",
+        "html-loader": "^1.1.0",
+        "html-webpack-plugin": "^4.3.0",
+        "node-sass": "^5.0.0",
+        "sass-loader": "^10.1.0",
+        "style-loader": "^2.0.0",
+        "url-loader": "^4.1.1",
+        "webpack": "^5.10.0",
+        "webpack-cli": "^4.2.0",
+        "webpack-dev-server": "^3.11.0",
+        "webpack-merge": "^5.4.0"
+    }
 }

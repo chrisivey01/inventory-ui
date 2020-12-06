@@ -1,4 +1,4 @@
-import Apis from "../../apis/apis";
+import Apis from "../../apis/inventory-apis";
 import { weaponReset } from "../../helpers/weapons";
 import { itemType, weaponType, accountType } from "../../helpers/types";
 
@@ -84,9 +84,9 @@ export const loadInventory = (inventory, playerInventory) => {
             if (invIndex > -1) {
                 count = 0;
                 indexMap.forEach((index) => {
-                    if (playerInv[index].count && indexMap.length >= 1) {
+                    if (playerInv[index].count && indexMap.length > 1) {
                         count = playerInv[index].count + count;
-                    } else if(playerInv[index].money && indexMap.length >= 1) {
+                    } else if(playerInv[index].money && indexMap.length > 1) {
                         count = playerInv[index].money + count;
                     } else {
                         count = playerInv[index];

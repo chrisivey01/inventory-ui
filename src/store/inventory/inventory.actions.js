@@ -1,5 +1,7 @@
-import Apis from "../../apis/apis";
+import Apis from "../../apis/inventory-apis";
+import { showErrorMessage } from "../snackbar/snackbar.actions";
 export const LOAD_INVENTORY = "LOAD_INVENTORY";
+export const QUICK_UPDATE_INVENTORY = "QUICK_UPDATE_INVENTORY"
 export const SHOW_INVENTORY = "SHOW_INVENTORY";
 export const CLOSE_INVENTORY = "CLOSE_INVENTORY";
 export const LOAD_OTHER_INVENTORY = "LOAD_OTHER_INVENTORY";
@@ -24,9 +26,6 @@ export const BUY_STORE_ITEMS = "BUY_STORE_ITEMS";
 
 // Belongs to Confirmation Box
 export const CLOSE_CONFIRMATION = "CLOSE_CONFIRMATION";
-export const DROP_ITEM_CONFIRMATION = "DROP_ITEM_CONFIRMATION";
-export const GIVE_ITEM_CONFIRMATION = "GIVE_ITEM_CONFIRMATION";
-export const SPLIT_ITEM_CONFIRMATION = "SPLIT_ITEM_CONFIRMATION";
 export const STORE_CONFIRMATION = "STORE_CONFIRMATION";
 export const UPDATE_QUANTITY_STORE = "UPDATE_QUANTITY_STORE";
 export const ADD_ITEM_STORE = "ADD_ITEM_STORE";
@@ -36,8 +35,6 @@ export const ADD_ITEM_CONTEXT = "ADD_ITEM_CONTEXT";
 export const SUBTRACT_ITEM_CONTEXT = "SUBTRACT_ITEM_CONTEXT";
 
 export const STORE_CONFIRMATION_HANDLER = "STORE_CONFIRMATION_HANDLER";
-export const SHOW_DROP_CONFIRMATION = "SHOW_DROP_CONFIRMATION";
-export const SHOW_GIVE_CONFIRMATION = "SHOW_GIVE_CONFIRMATION";
 export const SHOW_SPLIT_CONFIRMATION = "SHOW_SPLIT_CONFIRMATION";
 
 export const OPEN_CONTEXT_MENU = "OPEN_CONTEXT_MENU";
@@ -112,10 +109,6 @@ export const selectInventoryItem = (payload) => ({
     payload: payload,
 });
 
-const sleep = (ms) => {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
 export const moveInventoryItem = (
     item,
     personalInventory,
@@ -180,42 +173,22 @@ export const moveInventoryItem = (
         if (selectedItem.type === "Personal" && dropLocation !== "Personal") {
             if (dropLocation === "Trunk") {
                 let trunkWeight = 0;
-                let maxWeight = info.other.max / 1000;
-                //get weight
+                let maxWeight = info.other.max / 750;
+                //get
+                if (selectedItem.data.type === "item_standard") {
+                    trunkWeight +=
+                        selectedItem.data.count * selectedItem.data.weight;
+                } else if (selectedItem.data.type === "item_weapon") {
+                    trunkWeight += trunkWeight + 1;
+                }
+
                 inventories.otherInventory.inventory.forEach((item) => {
                     if (item.count) {
                         trunkWeight += item.count * item.weight;
-                    } else if (item.ammo !== undefined) {
-                        trunkWeight += 1;
+                    } else if (item.ammo) {
+                        trunkWeight += trunkWeight + 1;
                     }
                 });
-
-                //get item selected
-                if (
-                    inventories.personalInventory.inventory[
-                        selectedItem.index
-                    ] !== "{}"
-                ) {
-                    if (
-                        inventories.personalInventory.inventory[
-                            selectedItem.index
-                        ].count
-                    ) {
-                        trunkWeight +=
-                            inventories.personalInventory.inventory[
-                                selectedItem.index
-                            ].count *
-                            inventories.personalInventory.inventory[
-                                selectedItem.index
-                            ].weight;
-                    } else if (
-                        inventories.personalInventory.inventory[
-                            selectedItem.index
-                        ].ammo !== undefined
-                    ) {
-                        trunkWeight += 1;
-                    }
-                }
 
                 if (trunkWeight <= maxWeight) {
                     const moveToSlot = inventories.personalInventory.inventory.splice(
@@ -229,6 +202,8 @@ export const moveInventoryItem = (
                         moveToSlot[0]
                     );
                 } else {
+                    //if overweight do this
+                    dispatch(showErrorMessage());
                     return;
                 }
             } else {
@@ -271,18 +246,34 @@ export const moveInventoryItem = (
         //GETS ITEM FROM OTHER INVENTORY
         if (selectedItem.type !== "Personal" && dropLocation === "Personal") {
             if (inventories.personalInventory.inventory[index] === "{}") {
-                const moveToSlot = inventories.otherInventory.inventory.splice(
-                    selectedItem.index,
-                    1,
-                    item
-                );
-                inventories.personalInventory.inventory.splice(
-                    index,
-                    1,
-                    moveToSlot[0]
-                );
-            } else {
-                return;
+                let calculatedWeight = 0;
+                let maxWeight = info.personal.maxWeight;
+
+                inventories.personalInventory.inventory.forEach((item) => {
+                    if (item.count) {
+                        calculatedWeight +=
+                            item.count * item.weight;
+                    } else if (item.ammo) {
+                        calculatedWeight += 1;
+                    }
+                });
+
+                if (calculatedWeight <= maxWeight) {
+                    const moveToSlot = inventories.otherInventory.inventory.splice(
+                        selectedItem.index,
+                        1,
+                        item
+                    );
+                    inventories.personalInventory.inventory.splice(
+                        index,
+                        1,
+                        moveToSlot[0]
+                    );
+                } else {
+                    //if overweight do this
+                    dispatch(showErrorMessage());
+                    return;
+                }
             }
         }
         Apis.updateInventory(inventories);
@@ -290,10 +281,15 @@ export const moveInventoryItem = (
     };
 };
 
-export const useInventoryItem = (itemIndex) => ({
-    type: USE_INVENTORY_ITEM,
-    payload: itemIndex,
-});
+export const useInventoryItem = (itemIndex) => {
+    return (dispatch) => {
+
+        dispatch({
+            type: USE_INVENTORY_ITEM,
+            payload: itemIndex,
+        })
+    }
+}
 
 export const hideUseInventoryItem = () => ({
     type: HIDE_USE_INVENTORY_ITEM,
@@ -409,6 +405,10 @@ export const storeConfirmationHandler = (
 ) => {
     return (dispatch) => {
         let inventory = [...personalInventory.inventory];
+        if (info.personal.maxWeight < info.personal.weight) {
+            dispatch(showErrorMessage());
+            return;
+        }
         const itemIndex = inventory.findIndex((item) => {
             if (item !== "{}") {
                 return (
@@ -439,6 +439,15 @@ export const storeConfirmationHandler = (
         if (otherInventory.type === "Store") {
             selectedItem.data.type = "item_standard";
         }
+
+        if (selectedItem && quantity) {
+            const weight = info.personal.weight + quantity;
+            if (info.personal.maxWeight < weight) {
+                dispatch(showErrorMessage());
+                return;
+            }
+        }
+
         const updated = {
             inventory,
             otherInventory,
@@ -467,24 +476,6 @@ export const closeContextMenu = () => {
     };
 };
 
-//re-render the inventory to display where the inventory's current state
-
-export const showDropConfirmation = () => {
-    return (dispatch) => {
-        dispatch({
-            type: SHOW_DROP_CONFIRMATION,
-        });
-    };
-};
-
-export const showGiveConfirmation = () => {
-    return (dispatch) => {
-        dispatch({
-            type: SHOW_GIVE_CONFIRMATION,
-        });
-    };
-};
-
 export const showSplitConfirmation = () => {
     return (dispatch) => {
         dispatch({
@@ -493,27 +484,29 @@ export const showSplitConfirmation = () => {
     };
 };
 
-export const useItemHandler = (contextItem, personalInventory) => {
-    return (dispatch) => {
-		contextItem.item.count = --contextItem.item.count;
-        personalInventory[contextItem.index] = contextItem.item;
-        dispatch({ type: USE_ITEM_HANDLER, payload: personalInventory });
-        Apis.useItem(contextItem);
-    };
-};
 
-export const dropItemHandler = (contextItem, personalInventory) => {
+export const dropItemHandler = (contextItem, personalInventory, playerInfo) => {
     return (dispatch) => {
+        playerInfo.weight -= personalInventory[contextItem.index].count;
         personalInventory[contextItem.index] = "{}";
-        dispatch({ type: DROP_ITEM_HANDLER, payload: personalInventory });
+        const data = {
+            personalInventory,
+            playerInfo,
+        };
+        dispatch({ type: DROP_ITEM_HANDLER, payload: data });
         Apis.dropItem(contextItem);
     };
 };
 
-export const giveItemSuccess = (contextItem, personalInventory) => {
+export const giveItemSuccess = (contextItem, personalInventory, playerInfo) => {
     return (dispatch) => {
+        playerInfo.weight -= personalInventory[contextItem.index].count;
         personalInventory[contextItem.index] = "{}";
-        dispatch({ type: GIVE_ITEM_SUCCESS, payload: personalInventory });
+        const data = {
+            personalInventory,
+            playerInfo,
+        };
+        dispatch({ type: GIVE_ITEM_SUCCESS, payload: data });
     };
 };
 
@@ -562,8 +555,8 @@ const splitItemStandard = (dispatch, data) => {
         dispatch({
             type: SPLIT_ITEM_HANDLER,
             payload: data.personalInventory.inventory,
-		});
-		Apis.updateInventory(data)
+        });
+        Apis.updateInventory(data);
     }
 };
 
@@ -583,8 +576,8 @@ const splitItemMoney = (dispatch, data) => {
         dispatch({
             type: SPLIT_ITEM_HANDLER,
             payload: data.personalInventory.inventory,
-		});
-		Apis.updateInventory(data)
+        });
+        Apis.updateInventory(data);
     }
 };
 

@@ -5,6 +5,7 @@ import Confirmation from "../components/Confirmation";
 import InventoryView from "../components/InventoryView";
 import PlayerContextMenu from "../components/PlayerContextMenu";
 import SelectedItem from "../components/SelectedItem";
+import Snackbar from "../components/Snackbar";
 import * as hotbarActions from "../store/hotbar/hotbar.actions";
 import * as inventoryActions from "../store/inventory/inventory.actions";
 import * as itemActions from "../store/item/item.actions";
@@ -47,7 +48,9 @@ function InventoryContainer() {
     const selectedItem = useSelector((state) => state.inventory.selectedItem);
     const boughtItem = useSelector((state) => state.inventory.boughtItem);
     const quantity = useSelector((state) => state.inventory.quantity);
-    const inventoryType = useSelector((state) => state.inventory.otherInventory.type);
+    const inventoryType = useSelector(
+        (state) => state.inventory.otherInventory.type
+    );
     const [anchorEl, setAnchorEl] = React.useState(null);
     const confirmation = useSelector((state) => state.inventory.confirmation);
     const contextItem = useSelector((state) => state.inventory.contextItem);
@@ -59,24 +62,26 @@ function InventoryContainer() {
                     if (process.env.NODE_ENV === "development") {
                         dispatch(inventoryActions.loadPersonalInventory(data));
                     } else {
-						if(!event.data.closeInventory){
-							const data = {
-								inventory: event.data.inventory,
-								playerInventory: event.data.playerInventory,
-								inventoryType: event.data.inventoryType,
-								info: event.data.info,
-							};
-							if (event.data.updateInventory) {
-								dispatch(inventoryActions.updateInventory(data))
-							} else {
-								dispatch(inventoryActions.loadInventory(data));
-							}
-						}
+                        if (!event.data.closeInventory) {
+                            const data = {
+                                inventory: event.data.inventory,
+                                playerInventory: event.data.playerInventory,
+                                inventoryType: event.data.inventoryType,
+                                info: event.data.info,
+                            };
+                            if (event.data.updateInventory) {
+                                dispatch(
+                                    inventoryActions.updateInventory(data)
+                                );
+                            } else {
+                                dispatch(inventoryActions.loadInventory(data));
+                            }
+                        }
                     }
                     break;
                 }
                 case "Hotbar": {
-                    if(event.data.hotbar) {
+                    if (event.data.hotbar) {
                         dispatch(hotbarActions.loadHotbar());
                     } else {
                         dispatch(hotbarActions.closeHotbar());
@@ -124,7 +129,7 @@ function InventoryContainer() {
                         inventoryType: event.data.inventoryType,
                         inventory: event.data.inventory,
                         otherInventory: [],
-                        info: event.data.info
+                        info: event.data.info,
                     };
 
                     dispatch(
@@ -139,10 +144,10 @@ function InventoryContainer() {
     }, []);
 
     useEffect(() => {
-		window.addEventListener("message", closeFunction);
+        window.addEventListener("message", closeFunction);
         return () => {
-			window.removeEventListener("message", closeFunction)
-		};
+            window.removeEventListener("message", closeFunction);
+        };
     }, [personalInventory, selectedItem, otherInventory]);
 
     const onStart = (e, index, type) => {
@@ -223,19 +228,18 @@ function InventoryContainer() {
     };
 
     const closeFunction = (event) => {
-
-		if (event.data.closeInventory){
-			dispatch(
-				inventoryActions.closeInventory(
-					personalInventory,
-					otherInventory,
-					info,
-					inventoryType
-				)
-			);
-			dispatch(inventoryActions.closeContextMenu());
-			dispatch(hotbarActions.closeHotbar());
-		}
+        if (event.data.closeInventory) {
+            dispatch(
+                inventoryActions.closeInventory(
+                    personalInventory,
+                    otherInventory,
+                    info,
+                    inventoryType
+                )
+            );
+            dispatch(inventoryActions.closeContextMenu());
+            dispatch(hotbarActions.closeHotbar());
+        }
     };
 
     const agreeHandlerStore = () => {
@@ -311,6 +315,7 @@ function InventoryContainer() {
 
     return (
         <Fragment>
+            <Snackbar />
             <Grid
                 className={classes.inventoryDisplay}
                 style={{ visibility: inventoryShow ? "visible" : "hidden" }}

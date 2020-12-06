@@ -39,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
         position: "absolute",
         right: "5px",
 		top: "2.5px",
-		// fontFamily: 'Roboto',
         fontSize: 12,
 		height: "20%",
 		letterSpacing: "1.25px",

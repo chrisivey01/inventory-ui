@@ -69,8 +69,8 @@ const inventoryReducer = (state = initialState, action) => {
                 },
                 info: {
                     ...state.info,
-                    other: {}
-                }
+                    other: {},
+                },
             };
         case types.SELECT_INVENTORY_ITEM:
             return {
@@ -101,7 +101,32 @@ const inventoryReducer = (state = initialState, action) => {
                     action.payload,
                     state.usedItem
                 ),
-                show: !state.show,
+                personalInventory: {
+                    ...state.personalInventory,
+                    inventory: state.personalInventory.inventory.map((item) => {
+                        if (item.count) {
+                            item.count - 1;
+                            return item;
+                        } else if (item.count === 0) {
+                            return "{}";
+                        } else {
+                            return item;
+                        }
+                    }),
+                },
+                info: {
+                    ...state.info,
+                    personal: {
+                        ...state.personal,
+                        weight: state.personalInventory.inventory[
+                            action.payload
+                        ].count
+                            ? state.info.personal.weight - 1
+                            : state.personalInventory.inventory[action.payload]
+                                  .count,
+                    },
+                },
+                openContextMenu: false,
             };
         case types.HIDE_USE_INVENTORY_ITEM:
             return {
@@ -136,7 +161,10 @@ const inventoryReducer = (state = initialState, action) => {
                     type: action.payload.inventoryType,
                 },
                 inventoryShow: true,
-                info: action.payload.info
+                info: {
+                    ...state.info,
+                    other: action.payload.info,
+                },
             };
         case types.LOAD_STORE_INVENTORY:
             return {
@@ -167,24 +195,26 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 personalInventory: {
                     ...state.personalInventory,
-                    inventory: state.personalInventory.inventory.map((item) => {
-                        if (
-                            item.name &&
-                            item.name === action.payload.name &&
-                            item.count > 0
-                        ) {
-                            //if item take the new item count
-                            item.count = item.count - 1;
-                            if (item.count > 0) {
-                                return item;
+                    inventory: [...state.personalInventory.inventory].map(
+                        (item) => {
+                            if (
+                                item.name &&
+                                item.name === action.payload.name &&
+                                item.count > 0
+                            ) {
+                                //if item take the new item count
+                                item.count = item.count - 1;
+                                if (item.count > 0) {
+                                    return item;
+                                } else {
+                                    item = "{}";
+                                    return item;
+                                }
                             } else {
-                                item = "{}";
                                 return item;
                             }
-                        } else {
-                            return item;
                         }
-                    }),
+                    ),
                 },
             };
         case types.STORE_CONFIRMATION:
@@ -276,6 +306,7 @@ const inventoryReducer = (state = initialState, action) => {
                     title: "How many to drop?",
                     type: "Drop",
                 },
+                quantity: 1
             };
         case types.SHOW_GIVE_CONFIRMATION:
             return {
@@ -286,6 +317,7 @@ const inventoryReducer = (state = initialState, action) => {
                     title: "How many to give?",
                     type: "Give",
                 },
+                quantity: 1
             };
         case types.SHOW_SPLIT_CONFIRMATION:
             return {
@@ -296,6 +328,7 @@ const inventoryReducer = (state = initialState, action) => {
                     title: "How many to split?",
                     type: "Split",
                 },
+                quantity: 1
             };
         case types.CLOSE_CONFIRMATION:
             return {
@@ -306,15 +339,18 @@ const inventoryReducer = (state = initialState, action) => {
                     title: "",
                     type: "",
                 },
-                quantity: null
+                quantity: null,
             };
         case types.DROP_ITEM_HANDLER:
             return {
                 ...state,
                 personalInventory: {
                     ...state.personalInventory,
-                    //this here needs to be rewrote, if item is split it overwrites both, need index transfered of what item is clicked.
-                    inventory: action.payload,
+                    inventory: action.payload.personalInventory,
+                },
+                info: {
+                    ...state.info,
+                    personal: action.payload.playerInfo,
                 },
                 openContextMenu: false,
             };
@@ -323,7 +359,11 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 personalInventory: {
                     ...state.personalInventory,
-                    inventory: action.payload,
+                    inventory: action.payload.personalInventory,
+                },
+                info: {
+                    ...state.info,
+                    personal: action.payload.playerInfo,
                 },
                 openContextMenu: false,
             };
@@ -334,7 +374,7 @@ const inventoryReducer = (state = initialState, action) => {
                     ...state.personalInventory,
                     inventory: action.payload,
                 },
-                openContextMenu: false
+                openContextMenu: false,
             };
         default:
             return state;

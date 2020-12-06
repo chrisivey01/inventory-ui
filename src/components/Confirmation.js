@@ -7,10 +7,10 @@ import {
     IconButton,
     Slide,
     TextField,
-    Typography,
+    Typography
 } from "@material-ui/core";
 import { Add, Remove } from "@material-ui/icons";
-import React, { Fragment, useEffect, useRef } from "react";
+import React, { Fragment, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as inventoryActions from "../store/inventory/inventory.actions";
 
@@ -160,7 +160,7 @@ export default ({ agreeHandler, disagreeHandler }) => {
     const boughtItem = useSelector((state) => state.inventory.boughtItem);
     const selectedItem = useSelector((state) => state.inventory.selectedItem);
     const closeHandler = () => {
-        dispatch(inventoryActions.closeConfirmationHandler());
+        // dispatch(inventoryActions.closeConfirmationHandler());
     };
 
     const renderConfirmationView = () => {

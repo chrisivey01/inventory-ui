@@ -1,8 +1,5 @@
 import React, { Fragment } from "react";
-import {
-    Menu,
-    MenuItem,
-} from "@material-ui/core";
+import { Menu, MenuItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import * as inventoryActions from "../store/inventory/inventory.actions";
@@ -24,23 +21,30 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
     const personalInventory = useSelector(
         (state) => state.inventory.personalInventory.inventory
     );
+    const playerInfo = useSelector((state) => state.inventory.info.personal);
 
     const dispatch = useDispatch();
 
     const handleClose = () => {
         dispatch(inventoryActions.closeContextMenu());
-	};
-	
-	const handleUse = () => {
-		dispatch(inventoryActions.useItemHandler(contextItem, personalInventory));
-	}
+    };
+
+    const handleUse = () => {
+        dispatch(
+            inventoryActions.useItemHandler(contextItem, personalInventory, playerInfo)
+        );
+    };
 
     const handleDrop = () => {
-		dispatch(inventoryActions.dropItemHandler(contextItem, personalInventory));
+        dispatch(
+            inventoryActions.dropItemHandler(contextItem, personalInventory, playerInfo)
+        );
     };
 
     const handleGive = () => {
-        dispatch(inventoryActions.giveItemHandler(contextItem, personalInventory));
+        dispatch(
+            inventoryActions.giveItemHandler(contextItem, personalInventory, playerInfo)
+        );
     };
 
     const handleSplit = () => {
@@ -56,19 +60,21 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
                 autoFocusItem={openContextMenu}
                 id="menu-list-grow"
             >
-				<Fragment />
-				{contextItem.item.type === "item_weapon"  || contextItem.item.usable  ? (
+                <Fragment />
+                {contextItem.item.type === "item_weapon" ||
+                contextItem.item.usable ? (
                     <MenuItem onClick={handleUse}>Use</MenuItem>
                 ) : (
                     <Fragment />
                 )}
-				<MenuItem onClick={handleDrop}>Drop</MenuItem>
-						<MenuItem onClick={handleGive}>Give</MenuItem>
-                {contextItem.item.type === "item_standard" || contextItem.item.type == "item_account" ? (
-						<MenuItem onClick={handleSplit}>Split</MenuItem>
+                <MenuItem onClick={handleDrop}>Drop</MenuItem>
+                <MenuItem onClick={handleGive}>Give</MenuItem>
+                {contextItem.item.type === "item_standard" ||
+                contextItem.item.type == "item_account" ? (
+                    <MenuItem onClick={handleSplit}>Split</MenuItem>
                 ) : (
-					<Fragment />
-				)}
+                    <Fragment />
+                )}
             </Menu>
         );
     } else {
