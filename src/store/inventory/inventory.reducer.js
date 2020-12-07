@@ -225,6 +225,7 @@ const inventoryReducer = (state = initialState, action) => {
                     title: "How much?",
                     type: "Store",
                 },
+                quantity: parseInt(null),
                 boughtItem: action.payload,
             };
         case types.STORE_CONFIRMATION_HANDLER:
@@ -235,10 +236,12 @@ const inventoryReducer = (state = initialState, action) => {
                     inventory: action.payload.inventory,
                 },
                 boughtItem: {},
-                quantity: null,
+                quantity: parseInt(null),
                 confirmation: {
                     ...state.confirmation,
                     show: false,
+                    title: "",
+                    type: "",
                 },
             };
         case types.UPDATE_QUANTITY_STORE:
@@ -317,7 +320,7 @@ const inventoryReducer = (state = initialState, action) => {
                     title: "",
                     type: "",
                 },
-                quantity: null,
+                quantity: parseInt(null),
             };
         case types.DROP_ITEM_HANDLER:
             return {
