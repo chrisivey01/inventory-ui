@@ -242,7 +242,7 @@ export const moveInventoryItem = (
                        } else if(selectedItem.data.money){
                            inventories.otherInventory.inventory[searchIndex].money = selectedItem.data.money + inventories.otherInventory.inventory[searchIndex].money
                        }
-                       inventories.otherInventory.inventory[selectedItem.index] = '{}'
+                       inventories.otherInventory.inventory[index] = '{}'
                    } else {
                        inventories.otherInventory.inventory.splice(
                            index,
@@ -304,6 +304,7 @@ export const moveInventoryItem = (
                        } else if(selectedItem.data.money){
                            inventories.personalInventory.inventory[searchIndex].money = selectedItem.data.money + inventories.personalInventory.inventory[searchIndex].money
                        }
+                       inventories.otherInventory.inventory[selectedItem.index] = '{}'
                    } else {
                        inventories.personalInventory.inventory.splice(
                            index,
@@ -315,6 +316,22 @@ export const moveInventoryItem = (
                     //if overweight do this
                     dispatch(showErrorMessage());
                     return;
+                }
+            } else {
+                const searchIndex = inventories.personalInventory.inventory.findIndex(item => item.name === selectedItem.data.name)
+                if(searchIndex !== -1) {
+                    if(selectedItem.data.count){
+                        inventories.personalInventory.inventory[searchIndex].count = selectedItem.data.count + inventories.personalInventory.inventory[searchIndex].count
+                    } else if(selectedItem.data.money){
+                        inventories.personalInventory.inventory[searchIndex].money = selectedItem.data.money + inventories.personalInventory.inventory[searchIndex].money
+                    }
+                    inventories.otherInventory.inventory[selectedItem.index] = '{}'
+                } else {
+                    inventories.personalInventory.inventory.splice(
+                        index,
+                        1,
+                        moveToSlot[0]
+                    );
                 }
             }
         }
