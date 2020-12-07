@@ -7,7 +7,7 @@ import {
     IconButton,
     Slide,
     TextField,
-    Typography
+    Typography,
 } from "@material-ui/core";
 import { Add, Remove } from "@material-ui/icons";
 import React, { Fragment, useRef } from "react";
@@ -96,13 +96,13 @@ const RenderContextConfirmation = ({
     const inputRef = useRef();
 
     React.useEffect(() => {
-      const timeout = setTimeout(() => {
-        inputRef.current.focus();
-      }, 100);
-  
-      return () => {
-        clearTimeout(timeout);
-      };
+        const timeout = setTimeout(() => {
+            inputRef.current.focus();
+        }, 100);
+
+        return () => {
+            clearTimeout(timeout);
+        };
     }, []);
     return (
         <Dialog
@@ -143,7 +143,11 @@ const RenderContextConfirmation = ({
                 </IconButton>
             </DialogContent>
             <DialogActions>
-                <Button onClick={agreeHandler}>Agree</Button>
+                {quantity > 0 ? (
+                    <Button onClick={agreeHandler}>Agree</Button>
+                ) : (
+                    <Fragment />
+                )}
                 <Button onClick={disagreeHandler}>Disagree</Button>
             </DialogActions>
         </Dialog>

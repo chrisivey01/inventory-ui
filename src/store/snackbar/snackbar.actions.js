@@ -1,10 +1,11 @@
 export const SHOW_ERROR = "SHOW_ERROR";
 export const HIDE_ERROR = "HIDE_ERROR";
 
-export const showErrorMessage = () => {
+export const showErrorMessage = (data) => {
     return (dispatch) => {
         dispatch({
             type: SHOW_ERROR,
+            payload: data
         });
     };
 };

@@ -309,7 +309,7 @@ const inventoryReducer = (state = initialState, action) => {
                     title: "How many to split?",
                     type: "Split",
                 },
-                quantity: 1
+                quantity: parseInt(null),
             };
         case types.CLOSE_CONFIRMATION:
             return {
@@ -360,8 +360,8 @@ const inventoryReducer = (state = initialState, action) => {
         case types.USE_ITEM_HANDLER:
             return {
                 ...state,
-                personalInventory: action.payload
-            }
+                personalInventory: action.payload,
+            };
         default:
             return state;
     }

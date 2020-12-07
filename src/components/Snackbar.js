@@ -11,7 +11,7 @@ function Alert(props) {
 export default () => {
     const dispatch = useDispatch();
     const showMessage = useSelector((state) => state.snackbar.showMessage);
-
+    const message = useSelector((state) => state.snackbar.message);
     const handleClose = () => {
         dispatch(hideErrorMessage());
     };
@@ -24,7 +24,7 @@ export default () => {
             onClose={handleClose}
         >
             <Alert onClose={handleClose} severity="error">
-                Over capacity!
+                {message}
             </Alert>
         </Snackbar>
     );
