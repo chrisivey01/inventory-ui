@@ -35,7 +35,6 @@ module.exports = {
     },
     plugins: [
         new webpack.ProgressPlugin(),
-        // new webpack.HotModuleReplacementPlugin(),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             inject: true,
@@ -54,9 +53,7 @@ module.exports = {
     ],
     devtool: "eval-source-map",
     devServer: {
-        compress: true,
-        open: {
-            app: ["chrome", "--incognito", "--other-flag"],
-        },
+        contentBase: path.join(__dirname, 'public'),
+        hot: true,
     },
 };
