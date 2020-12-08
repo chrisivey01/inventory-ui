@@ -21,8 +21,8 @@
         "reselect": "^4.0.0"
     },
     "scripts": {
-        "start": "webpack serve",
-        "build": "webpack",
+        "start": "env NODE_ENV=development webpack serve",
+        "build": "env NODE_ENV=production webpack",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
