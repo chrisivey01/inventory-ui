@@ -211,7 +211,7 @@ export const moveInventoryItem = (
                         (item) => item.name === selectedItem.data.name
                     );
                     const searchBrackets = inventories.otherInventory.inventory.findIndex(
-                        (item) => item.name === "{}"
+                        (item) => item === "{}"
                     );
                     if (searchIndex !== -1) {
                         if (selectedItem.data.count) {
