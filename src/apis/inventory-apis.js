@@ -48,8 +48,8 @@ const Apis = {
         return axios.post(dropItemUrl, item);
     },
 
-    givePlayerItem(item) {
-        return axios.post(givePlayerItemUrl, item)
+    givePlayerItem(item, personalInventory) {
+        return axios.post(givePlayerItemUrl, {item, personalInventory})
     }
 };
 

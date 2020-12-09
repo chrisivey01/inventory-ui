@@ -613,7 +613,7 @@ export const giveItemFailure = () => {};
 
 export const giveItemHandler = (contextItem, personalInventory, playerInfo) => {
     return (dispatch) => {
-        Apis.givePlayerItem(contextItem)
+        Apis.givePlayerItem(contextItem, personalInventory)
             .then((res) => {
                 if (res.data === "true") {
                     dispatch(giveItemSuccess(contextItem, personalInventory, playerInfo));
