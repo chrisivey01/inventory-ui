@@ -599,7 +599,7 @@ export const dropItemHandler = (contextItem, personalInventory, playerInfo) => {
 
 export const giveItemSuccess = (contextItem, personalInventory, playerInfo) => {
     return (dispatch) => {
-        playerInfo.weight -= personalInventory[contextItem.index].count;
+        playerInfo.weight = playerInfo.weight - personalInventory[contextItem.index].count;
         personalInventory[contextItem.index] = "{}";
         const data = {
             personalInventory,
@@ -611,12 +611,12 @@ export const giveItemSuccess = (contextItem, personalInventory, playerInfo) => {
 
 export const giveItemFailure = () => {};
 
-export const giveItemHandler = (contextItem, personalInventory) => {
+export const giveItemHandler = (contextItem, personalInventory, playerInfo) => {
     return (dispatch) => {
         Apis.givePlayerItem(contextItem)
             .then((res) => {
                 if (res.data === "true") {
-                    dispatch(giveItemSuccess(contextItem, personalInventory));
+                    dispatch(giveItemSuccess(contextItem, personalInventory, playerInfo));
                 } else {
                     console.log("Error");
                 }
