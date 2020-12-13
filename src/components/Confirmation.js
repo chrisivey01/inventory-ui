@@ -78,7 +78,11 @@ const RenderShopConfirmation = ({
                 </IconButton>
             </DialogContent>
             <DialogActions>
-                <Button onClick={agreeHandler}>Agree</Button>
+                {quantity > 0 ? (
+                    <Button onClick={agreeHandler}>Agree</Button>
+                ) : (
+                    <Fragment />
+                )}
                 <Button onClick={disagreeHandler}>Disagree</Button>
             </DialogActions>
         </Dialog>

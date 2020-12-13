@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
         userSelect: "none",
         backgroundColor: "rgba(0,0,0,0.4)",
         color: "#F2F2F2",
-        margin: "5px"
+        margin: "5px",
     },
     menu: {
         padding: theme.spacing(1),
@@ -62,8 +62,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function fallbackSrc(ev){
-	ev.target.src =  "./assets/no-item.png"
+function fallbackSrc(ev) {
+    ev.target.src = "./assets/no-item.png";
 }
 
 export default (props) => {
@@ -109,14 +109,16 @@ export default (props) => {
                             <Fragment />
                         )}
                     </Typography>
-					{props.item.name != "" ? (<img
-                        draggable="false"
-                        className={classes.images}
-						src={"./assets/" + props.item.name + ".png"}
-						onError={fallbackSrc}
-                    />) : (
-						<img/>
-					)}
+                    {props.item.name != "" ? (
+                        <img
+                            draggable="false"
+                            className={classes.images}
+                            src={"./assets/" + props.item.name + ".png"}
+                            onError={fallbackSrc}
+                        />
+                    ) : (
+                        <img />
+                    )}
                     <Typography className={classes.name}>
                         {props.item.label}
                     </Typography>

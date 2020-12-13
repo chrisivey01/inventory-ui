@@ -31,19 +31,31 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
 
     const handleUse = () => {
         dispatch(
-            inventoryActions.useItemHandler(contextItem, personalInventory, playerInfo)
+            inventoryActions.useItemHandler(
+                contextItem,
+                personalInventory,
+                playerInfo
+            )
         );
     };
 
     const handleDrop = () => {
         dispatch(
-            inventoryActions.dropItemHandler(contextItem, personalInventory, playerInfo)
+            inventoryActions.dropItemHandler(
+                contextItem,
+                personalInventory,
+                playerInfo
+            )
         );
     };
 
     const handleGive = () => {
         dispatch(
-            inventoryActions.giveItemHandler(contextItem, personalInventory, playerInfo)
+            inventoryActions.giveItemHandler(
+                contextItem,
+                personalInventory,
+                playerInfo
+            )
         );
     };
 

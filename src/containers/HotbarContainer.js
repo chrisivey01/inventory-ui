@@ -82,8 +82,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function fallbackSrc(ev){
-	ev.target.src =  "./assets/no-item.png"
+function fallbackSrc(ev) {
+    ev.target.src = "./assets/no-item.png";
 }
 
 function HotbarContainer() {
@@ -94,7 +94,7 @@ function HotbarContainer() {
     const hotbarShow = useSelector((state) => state.hotbar.hotbarShow);
     const dispatch = useDispatch();
 
-    const [inUse,setInUse] = React.useState(false);
+    const [inUse, setInUse] = React.useState(false);
     const [useIndex, setUseIndex] = React.useState();
 
     useEffect(() => {
@@ -112,40 +112,39 @@ function HotbarContainer() {
                     dispatch(inventoryActions.useInventoryItem(0));
                     setInUse(true);
                     setUseIndex(0);
-                    setTimeout(() => setUseIndex(5), 500)
+                    setTimeout(() => setUseIndex(5), 500);
                     break;
                 }
                 case "useItemTwo": {
                     dispatch(inventoryActions.useInventoryItem(1));
                     setInUse(true);
                     setUseIndex(1);
-                    setTimeout(() => setUseIndex(5), 500)
+                    setTimeout(() => setUseIndex(5), 500);
                     break;
                 }
                 case "useItemThree": {
                     dispatch(inventoryActions.useInventoryItem(2));
                     setInUse(true);
                     setUseIndex(2);
-                    setTimeout(() => setUseIndex(5), 500)
+                    setTimeout(() => setUseIndex(5), 500);
                     break;
                 }
                 case "useItemFour": {
                     dispatch(inventoryActions.useInventoryItem(3));
                     setInUse(true);
                     setUseIndex(3);
-                    setTimeout(() => setUseIndex(5), 500)
+                    setTimeout(() => setUseIndex(5), 500);
                     break;
                 }
                 case "useItemFive": {
                     dispatch(inventoryActions.useInventoryItem(4));
                     setInUse(true);
                     setUseIndex(4);
-                    setTimeout(() => setUseIndex(5), 500)
+                    setTimeout(() => setUseIndex(5), 500);
                     break;
                 }
                 default:
                     return null;
-
             }
         } else {
             //UPDATE WEAPON AMMO for inventory display for client side.
@@ -175,7 +174,14 @@ function HotbarContainer() {
                 personalInventory.inventory.map((item, i) => {
                     if (i < 5) {
                         return (
-                            <Paper elevation={3} className={ inUse === true && i === useIndex ? classes.slotSelected : classes.slot } >
+                            <Paper
+                                elevation={3}
+                                className={
+                                    inUse === true && i === useIndex
+                                        ? classes.slotSelected
+                                        : classes.slot
+                                }
+                            >
                                 <Typography
                                     className={classes.slotNumberGrid}
                                     variant="outlined"
@@ -202,17 +208,19 @@ function HotbarContainer() {
                                         <Fragment />
                                     )}
                                 </Typography>
-								{item.count !== undefined || item.ammo !== undefined || item.money !== undefined ?
-								(<img
-                                    draggable="false"
-                                    className={classes.images}
-									src={"./assets/" + item.name + ".png"}
-									onError={fallbackSrc}
-								/>
-								):(
-									<Fragment />
-								)}
-                                
+                                {item.count !== undefined ||
+                                item.ammo !== undefined ||
+                                item.money !== undefined ? (
+                                    <img
+                                        draggable="false"
+                                        className={classes.images}
+                                        src={"./assets/" + item.name + ".png"}
+                                        onError={fallbackSrc}
+                                    />
+                                ) : (
+                                    <Fragment />
+                                )}
+
                                 <Typography className={classes.name}>
                                     {item.label}
                                 </Typography>
