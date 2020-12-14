@@ -173,13 +173,11 @@ function InventoryContainer() {
         }
 
         if (e.button === 2) {
-            //right click actions
             if (type === "Personal") {
                 setAnchorEl(e.currentTarget);
                 dispatch(inventoryActions.openContextMenu(payload));
             }
         } else {
-            //left click actions
             dispatch(inventoryActions.selectInventoryItem(payload));
             dispatch(itemActions.setInfo(payload));
         }
@@ -188,6 +186,10 @@ function InventoryContainer() {
     //selectedItem.data is the full item object
     const onStop = (e, index, dropLocation) => {
         if (e.button !== 2 && index !== null) {
+            if (index === selectedItem.index) {
+                dispatch(itemActions.clearInfo());
+                return;
+            }
             if (dropLocation === "Personal") {
                 const item = personalInventory.inventory[index];
                 if (selectedItem.type === "Store") {
