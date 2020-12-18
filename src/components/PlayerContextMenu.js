@@ -62,6 +62,43 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
     const handleSplit = () => {
         dispatch(inventoryActions.showSplitConfirmation());
     };
+
+    const contextMenuHandler = () => {
+        if (contextItem.type === "Personal") {
+            if (
+                contextItem.item.type === "item_weapon" 
+            ) {
+                return (
+                    <Fragment>
+                        <MenuItem onClick={handleUse}>Use</MenuItem>
+                        <MenuItem onClick={handleDrop}>Drop</MenuItem>
+                        <MenuItem onClick={handleGive}>Give</MenuItem>
+                    </Fragment>
+                );
+            } else {
+                return (
+                    <Fragment>
+                        <MenuItem onClick={handleUse}>Use</MenuItem>
+                        <MenuItem onClick={handleDrop}>Drop</MenuItem>
+                        <MenuItem onClick={handleGive}>Give</MenuItem>
+                        <MenuItem onClick={handleSplit}>Split</MenuItem>
+                    </Fragment>
+                );
+            }
+        }
+
+        if (
+            contextItem.type === "Trunk" ||
+            contextItem.type === "Property" ||
+            contextItem.type === "Player"
+        ) {
+            return (
+                <Fragment>
+                    <MenuItem onClick={handleSplit}>Split</MenuItem>
+                </Fragment>
+            );
+        }
+    };
     if (openContextMenu && contextItem.item.type !== undefined) {
         return (
             <Menu
@@ -72,21 +109,7 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
                 autoFocusItem={openContextMenu}
                 id="menu-list-grow"
             >
-                <Fragment />
-                {contextItem.item.type === "item_weapon" ||
-                contextItem.item.usable ? (
-                    <MenuItem onClick={handleUse}>Use</MenuItem>
-                ) : (
-                    <Fragment />
-                )}
-                <MenuItem onClick={handleDrop}>Drop</MenuItem>
-                <MenuItem onClick={handleGive}>Give</MenuItem>
-                {contextItem.item.type === "item_standard" ||
-                contextItem.item.type == "item_account" ? (
-                    <MenuItem onClick={handleSplit}>Split</MenuItem>
-                ) : (
-                    <Fragment />
-                )}
+                {contextMenuHandler()}
             </Menu>
         );
     } else {

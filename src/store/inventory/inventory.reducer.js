@@ -81,6 +81,15 @@ const inventoryReducer = (state = initialState, action) => {
                     type: action.payload.type,
                 },
             };
+        case types.REMOVED_SELECTED_ITEM:
+            return {
+                ...state,
+                selectedItem: {
+                    data: {},
+                    index: null,
+                    type: "",
+                },
+            }
         case types.MOVE_INVENTORY_ITEM:
             return {
                 ...state,
@@ -357,6 +366,15 @@ const inventoryReducer = (state = initialState, action) => {
                 },
                 openContextMenu: false,
             };
+        case types.SPLIT_OTHER_ITEM_HANDLER:
+            return {
+                ...state,
+                otherInventory: {
+                    ...state.otherInventory,
+                    inventory: action.payload,
+                },
+                openConextMenu: false
+            }
         case types.USE_ITEM_HANDLER:
             return {
                 ...state,

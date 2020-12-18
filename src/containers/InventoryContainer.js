@@ -3,12 +3,14 @@ import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Confirmation from "../components/Confirmation";
 import InventoryView from "../components/InventoryView";
+import Pause from "../components/Pause";
 import PlayerContextMenu from "../components/PlayerContextMenu";
 import SelectedItem from "../components/SelectedItem";
 import Snackbar from "../components/Snackbar";
 import * as hotbarActions from "../store/hotbar/hotbar.actions";
 import * as inventoryActions from "../store/inventory/inventory.actions";
 import * as itemActions from "../store/item/item.actions";
+import { showPause, removePause } from "../store/pause/pause.actions";
 
 const useStyles = makeStyles((theme) => ({
     "@global": {
@@ -37,6 +39,7 @@ function InventoryContainer() {
     const classes = useStyles();
     const dispatch = useDispatch();
 
+    const pause = useSelector((state) => state.pause.show)
     const personalInventory = useSelector(
         (state) => state.inventory.personalInventory
     );
@@ -176,6 +179,8 @@ function InventoryContainer() {
             if (type === "Personal") {
                 setAnchorEl(e.currentTarget);
                 dispatch(inventoryActions.openContextMenu(payload));
+            // } else {
+            //     setAnchorEl(e.currentTarget);
             }
         } else {
             dispatch(inventoryActions.selectInventoryItem(payload));
@@ -186,6 +191,7 @@ function InventoryContainer() {
     //selectedItem.data is the full item object
     const onStop = (e, index, dropLocation) => {
         if (e.button !== 2 && index !== null) {
+            console.log(index, selectedItem.index);
             if (index === selectedItem.index) {
                 dispatch(itemActions.clearInfo());
                 return;
@@ -226,6 +232,9 @@ function InventoryContainer() {
                     )
                 );
             }
+            dispatch(showPause());
+        
+            setTimeout(() =>dispatch(removePause()),450)
         }
     };
 
@@ -258,12 +267,13 @@ function InventoryContainer() {
     };
 
     const agreeHandlerSplit = () => {
-        const item = contextItem.item;
+        // const item = contextItem.item;
         dispatch(
             inventoryActions.splitItemHandler({
-                item,
+                contextItem,
                 quantity,
                 personalInventory,
+                otherInventory,
             })
         );
     };
@@ -317,6 +327,7 @@ function InventoryContainer() {
 
     return (
         <Fragment>
+            {pause ? <Pause /> : <Fragment />}
             <Snackbar />
             <Grid
                 className={classes.inventoryDisplay}
