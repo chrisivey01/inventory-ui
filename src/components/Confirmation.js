@@ -10,9 +10,16 @@ import {
     Typography,
 } from "@material-ui/core";
 import { Add, Remove } from "@material-ui/icons";
-import React, { Fragment, useRef } from "react";
+import React, { Fragment, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as inventoryActions from "../store/inventory/inventory.actions";
+import {
+    addItemContext,
+    addItemStore,
+    subtractItemContext,
+    subtractItemStore,
+    updateQuantityContext,
+    updateQuantityStore,
+} from "../store/inventory/inventory.actions";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -49,16 +56,14 @@ const RenderShopConfirmation = ({
                     style={{ border: "none" }}
                     value={quantity ? quantity : null}
                     onChange={(e) =>
-                        dispatch(
-                            inventoryActions.updateQuantityStore(e.target.value)
-                        )
+                        dispatch(updateQuantityStore(e.target.value))
                     }
                     variant="outlined"
                     size="small"
                 />
                 <IconButton
                     style={{ border: "none" }}
-                    onClick={() => dispatch(inventoryActions.addItemStore())}
+                    onClick={() => dispatch(addItemStore())}
                 >
                     <Add />
                 </IconButton>
@@ -66,7 +71,7 @@ const RenderShopConfirmation = ({
                     style={{ border: "none" }}
                     onClick={() =>
                         dispatch(
-                            inventoryActions.subtractItemStore(
+                            subtractItemStore(
                                 inventory,
                                 boughtItem,
                                 selectedItem
@@ -99,7 +104,7 @@ const RenderContextConfirmation = ({
 }) => {
     const inputRef = useRef();
 
-    React.useEffect(() => {
+    useEffect(() => {
         const timeout = setTimeout(() => {
             inputRef.current.focus();
         }, 100);
@@ -122,26 +127,20 @@ const RenderContextConfirmation = ({
                     style={{ border: "none" }}
                     value={quantity ? quantity : null}
                     onChange={(e) =>
-                        dispatch(
-                            inventoryActions.updateQuantityContext(
-                                e.target.value
-                            )
-                        )
+                        dispatch(updateQuantityContext(e.target.value))
                     }
                     variant="outlined"
                     size="small"
                 />
                 <IconButton
                     style={{ border: "none" }}
-                    onClick={() => dispatch(inventoryActions.addItemContext())}
+                    onClick={() => dispatch(addItemContext())}
                 >
                     <Add />
                 </IconButton>
                 <IconButton
                     style={{ border: "none" }}
-                    onClick={() =>
-                        dispatch(inventoryActions.subtractItemContext())
-                    }
+                    onClick={() => dispatch(subtractItemContext())}
                 >
                     <Remove />
                 </IconButton>

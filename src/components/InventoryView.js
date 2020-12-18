@@ -30,21 +30,26 @@ const store = "Store";
 const property = "Property";
 const player = "Player";
 
-
-const PersonalInventory = (props) => {
+const PersonalInventory = ({
+    inventory,
+    anchorEl,
+    onStart,
+    onStop,
+    isSecondInventory,
+}) => {
     return (
         <Fragment>
-            {props.inventory.inventory.map((item, i) => {
+            {inventory.inventory.map((item, i) => {
                 return (
                     <InventorySlots
-                        anchorEl={props.anchorEl}
+                        anchorEl={anchorEl}
                         key={i}
-                        onStart={props.onStart}
-                        onStop={props.onStop}
+                        onStart={onStart}
+                        onStop={onStop}
                         i={i}
                         item={item}
-                        inventoryType={props.inventory.type}
-                        isSecondInventory={props.isSecondInventory}
+                        inventoryType={inventory.type}
+                        isSecondInventory={isSecondInventory}
                     />
                 );
             })}
@@ -52,19 +57,19 @@ const PersonalInventory = (props) => {
     );
 };
 
-const LargeInventory = (props) => {
+const LargeInventory = ({inventory, onStart, onStop, isSecondInventory}) => {
     return (
         <Fragment>
-            {props.inventory.inventory.map((item, i) => {
+            {inventory.inventory.map((item, i) => {
                 return (
                     <InventorySlots
                         key={i}
-                        onStart={props.onStart}
-                        onStop={props.onStop}
+                        onStart={onStart}
+                        onStop={onStop}
                         i={i}
                         item={item}
-                        inventoryType={props.inventory.type}
-                        isSecondInventory={props.isSecondInventory}
+                        inventoryType={inventory.type}
+                        isSecondInventory={isSecondInventory}
                     />
                 );
             })}
@@ -72,18 +77,18 @@ const LargeInventory = (props) => {
     );
 };
 
-const Shop = (props) => {
+const Shop = ({ inventory, onStart, onStop }) => {
     return (
         <Fragment>
-            {props.inventory.inventory.map((item, i) => {
+            {inventory.inventory.map((item, i) => {
                 return (
                     <ShopSlots
                         key={i}
-                        onStart={props.onStart}
-                        onStop={props.onStop}
+                        onStart={onStart}
+                        onStop={onStop}
                         i={i}
                         item={item}
-                        inventoryType={props.inventory.type}
+                        inventoryType={inventory.type}
                     />
                 );
             })}
@@ -91,29 +96,53 @@ const Shop = (props) => {
     );
 };
 
-export default (props) => {
+export default ({
+    inventory,
+    anchorEl,
+    onStart,
+    onStop,
+    isSecondInventory,
+}) => {
     const classes = useStyles();
 
     return (
         <Grid container className={classes.container}>
             <Grid item>
-                <Typography variant="h4">{props.inventory.type}</Typography>
+                <Typography variant="h4">{inventory.type}</Typography>
             </Grid>
             <Grid item className={classes.inventory}>
-                {props.inventory.type === personal ? (
-                    <PersonalInventory {...props} />
+                {inventory.type === personal ? (
+                    <PersonalInventory
+                        inventory={inventory}
+                        anchorEl={anchorEl}
+                        onStart={onStart}
+                        onStop={onStop}
+                        isSecondInventory={isSecondInventory}
+                    />
                 ) : (
                     <Fragment />
                 )}
 
-                {props.inventory.type === trunk ||  props.inventory.type === property || props.inventory.type === player ? (
-                    <LargeInventory {...props} />
+                {inventory.type === trunk ||
+                inventory.type === property ||
+                inventory.type === player ? (
+                    <LargeInventory
+                        inventory={inventory}
+                        onStart={onStart}
+                        onStop={onStop}
+                        isSecondInventory={isSecondInventory}
+                    />
                 ) : (
                     <Fragment />
                 )}
 
-                {props.inventory.type === store ? (
-                    <Shop {...props} />
+                {inventory.type === store ? (
+                    <Shop
+                        inventory={inventory}
+                        onStart={onStart}
+                        onStop={onStop}
+                        isSecondInventory={isSecondInventory}
+                    />
                 ) : (
                     <Fragment />
                 )}

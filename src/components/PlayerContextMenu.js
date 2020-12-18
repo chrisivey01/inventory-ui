@@ -4,15 +4,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import * as inventoryActions from "../store/inventory/inventory.actions";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        position: "relative",
-    },
-    paper: {
-        marginRight: theme.spacing(2),
-    },
-}));
-
 export default function PlayerContextMenu({ anchorEl, dropHandler }) {
     const openContextMenu = useSelector(
         (state) => state.inventory.openContextMenu
@@ -65,9 +56,7 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
 
     const contextMenuHandler = () => {
         if (contextItem.type === "Personal") {
-            if (
-                contextItem.item.type === "item_weapon" 
-            ) {
+            if (contextItem.item.type === "item_weapon") {
                 return (
                     <Fragment>
                         <MenuItem onClick={handleUse}>Use</MenuItem>

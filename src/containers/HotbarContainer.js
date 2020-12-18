@@ -1,8 +1,6 @@
 import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
-import { Translate } from "@material-ui/icons";
-import React, { Fragment, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import * as inventoryActions from "../store/inventory/inventory.actions";
+import React, { Fragment } from "react";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     hotkeyBar: {
@@ -91,78 +89,8 @@ function HotbarContainer() {
     const personalInventory = useSelector(
         (state) => state.inventory.personalInventory
     );
+    const useIndex = useSelector((state) => state.inventory.useIndex);
     const hotbarShow = useSelector((state) => state.hotbar.hotbarShow);
-    const dispatch = useDispatch();
-
-    const [inUse, setInUse] = React.useState(false);
-    const [useIndex, setUseIndex] = React.useState();
-
-    useEffect(() => {
-        window.addEventListener("message", (e) => onMessage(e));
-        return () => {
-            window.removeEventListener("message", (e) => onMessage(e));
-        };
-    }, []);
-
-    const onMessage = (e) => {
-        if (e.data.useItem) {
-            //USE ITEM section
-            switch (e.data.useItem) {
-                case "useItemOne": {
-                    dispatch(inventoryActions.useInventoryItem(0));
-                    setInUse(true);
-                    setUseIndex(0);
-                    setTimeout(() => setUseIndex(5), 500);
-                    break;
-                }
-                case "useItemTwo": {
-                    dispatch(inventoryActions.useInventoryItem(1));
-                    setInUse(true);
-                    setUseIndex(1);
-                    setTimeout(() => setUseIndex(5), 500);
-                    break;
-                }
-                case "useItemThree": {
-                    dispatch(inventoryActions.useInventoryItem(2));
-                    setInUse(true);
-                    setUseIndex(2);
-                    setTimeout(() => setUseIndex(5), 500);
-                    break;
-                }
-                case "useItemFour": {
-                    dispatch(inventoryActions.useInventoryItem(3));
-                    setInUse(true);
-                    setUseIndex(3);
-                    setTimeout(() => setUseIndex(5), 500);
-                    break;
-                }
-                case "useItemFive": {
-                    dispatch(inventoryActions.useInventoryItem(4));
-                    setInUse(true);
-                    setUseIndex(4);
-                    setTimeout(() => setUseIndex(5), 500);
-                    break;
-                }
-                default:
-                    return null;
-            }
-        } else {
-            //UPDATE WEAPON AMMO for inventory display for client side.
-            if (e.data.updateWeapon) {
-                dispatch(inventoryActions.updateWeapon(e.data.weaponData));
-            }
-
-            if (e.data.updateItem) {
-                //item
-                dispatch(
-                    inventoryActions.updateItem(
-                        e.data.itemData,
-                        personalInventory.sorted
-                    )
-                );
-            }
-        }
-    };
 
     return (
         <Grid
@@ -177,7 +105,7 @@ function HotbarContainer() {
                             <Paper
                                 elevation={3}
                                 className={
-                                    inUse === true && i === useIndex
+                                    i === useIndex
                                         ? classes.slotSelected
                                         : classes.slot
                                 }

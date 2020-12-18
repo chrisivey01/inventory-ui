@@ -29,9 +29,9 @@ const initialState = {
         title: "",
         type: "",
     },
-    // showConfirmation: false,
     openContextMenu: false,
     contextItem: {},
+    useIndex: null
 };
 
 const inventoryReducer = (state = initialState, action) => {
@@ -136,11 +136,12 @@ const inventoryReducer = (state = initialState, action) => {
                     },
                 },
                 openContextMenu: false,
+                useIndex: action.payload
             };
         case types.HIDE_USE_INVENTORY_ITEM:
             return {
                 ...state,
-                show: false,
+                useIndex: null,
             };
         case types.LOAD_OTHER_INVENTORY:
             return {

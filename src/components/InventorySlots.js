@@ -38,10 +38,10 @@ const useStyles = makeStyles((theme) => ({
     countGrid: {
         position: "absolute",
         right: "5px",
-		top: "2.5px",
+        top: "2.5px",
         fontSize: 12,
-		height: "20%",
-		letterSpacing: "1.25px",
+        height: "20%",
+        letterSpacing: "1.25px",
         userSelect: "none",
         border: "none",
     },
@@ -66,307 +66,300 @@ const useStyles = makeStyles((theme) => ({
         objectFit: "contain",
     },
 }));
-function fallbackSrc(ev){
-	ev.target.src =  "./assets/no-item.png"
+function fallbackSrc(ev) {
+    ev.target.src = "./assets/no-item.png";
 }
-export default (props) => {
-	const classes = useStyles();
+export default ({
+    isSecondInventory,
+    inventoryType,
+    i,
+    item,
+    onStart,
+    onStop,
+    selectedType,
+}) => {
+    const classes = useStyles();
+
+    const renderSlots = () => {
+        if (!isSecondInventory) {
+            if (i < 5 && inventoryType === "Personal") {
+                return (
+                    <React.Fragment>
+                        {item !== "{}" ? (
+                            <Paper
+                                elevation={3}
+                                className={classes.slot}
+                                onMouseDown={(e) =>
+                                    onStart(
+                                        e,
+                                        i,
+                                        inventoryType,
+                                        selectedType,
+                                        item.type
+                                    )
+                                }
+                                onMouseUp={(e) =>
+                                    onStop(
+                                        e,
+                                        i,
+                                        inventoryType,
+                                        selectedType,
+                                        item.type
+                                    )
+                                }
+                            >
+                                <Typography
+                                    className={classes.slotNumberGrid}
+                                    variant="outlined"
+                                >
+                                    {i + 1}
+                                </Typography>
+                                <Typography
+                                    className={classes.countGrid}
+                                    variant="outlined"
+                                >
+                                    {item.ammo ? (
+                                        item.ammo
+                                    ) : (
+                                        <Fragment />
+                                    )}
+                                    {item.count ? (
+                                        item.count
+                                    ) : (
+                                        <Fragment />
+                                    )}
+                                    {item.money ? (
+                                        <span
+                                            style={{ color: "green" }}
+                                        >
+                                            $
+                                            {item.money
+                                                .toString()
+                                                .replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ","
+                                                )}
+                                        </span>
+                                    ) : (
+                                        <Fragment />
+                                    )}
+                                </Typography>
+                                <img
+                                    draggable="false"
+                                    className={classes.images}
+                                    src={
+                                        "./assets/" + item.name + ".png"
+                                    }
+                                    onError={fallbackSrc}
+                                />
+                                <Typography className={classes.name}>
+                                    {item.label}
+                                </Typography>
+                            </Paper>
+                        ) : (
+                            <Paper
+                                elevation={3}
+                                className={classes.slot}
+                                onMouseDown={(e) =>
+                                    onStart(
+                                        e,
+                                        i,
+                                        inventoryType,
+                                        selectedType,
+                                        item.type
+                                    )
+                                }
+                                onMouseUp={(e) =>
+                                    onStop(
+                                        e,
+                                        i,
+                                        inventoryType,
+                                        selectedType,
+                                        item.type
+                                    )
+                                }
+                            >
+                                <Typography
+                                    className={classes.slotNumberGrid}
+                                    variant="outlined"
+                                >
+                                    {i + 1}
+                                </Typography>
+                            </Paper>
+                        )}
+                    </React.Fragment>
+                );
+            } else if (item !== "{}") {
+                return (
+                    <Paper
+                        elevation={3}
+                        className={classes.slot}
+                        onMouseDown={(e) =>
+                            onStart(
+                                e,
+                                i,
+                                inventoryType,
+                                selectedType,
+                                item.type
+                            )
+                        }
+                        onMouseUp={(e) =>
+                            onStop(
+                                e,
+                                i,
+                                inventoryType,
+                                selectedType,
+                                item.type
+                            )
+                        }
+                    >
+                        <Typography
+                            className={classes.countGrid}
+                            variant="outlined"
+                        >
+                            {item.ammo ? item.ammo : <Fragment />}
+                            {item.count ? item.count : <Fragment />}
+                            {item.money ? (
+                                <span style={{ color: "green" }}>
+                                    {" "}
+                                    $
+                                    {item.money
+                                        .toString()
+                                        .replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ","
+                                        )}
+                                </span>
+                            ) : (
+                                <Fragment />
+                            )}
+                        </Typography>
+                        <img
+                            draggable="false"
+                            className={classes.images}
+                            src={"./assets/" + item.name + ".png"}
+                            onError={fallbackSrc}
+                        />
+                        <Typography className={classes.name}>
+                            {item.label}
+                        </Typography>
+                    </Paper>
+                );
+            } else {
+                return (
+                    <Paper
+                        elevation={3}
+                        className={classes.slot}
+                        onMouseDown={(e) =>
+                            onStart(
+                                e,
+                                i,
+                                inventoryType,
+                                selectedType,
+                                item.type
+                            )
+                        }
+                        onMouseUp={(e) =>
+                            onStop(
+                                e,
+                                i,
+                                inventoryType,
+                                selectedType,
+                                item.type
+                            )
+                        }
+                    />
+                );
+            }
+        } else {
+            if (item !== "{}") {
+                return (
+                    <Paper
+                        elevation={3}
+                        className={classes.slot}
+                        onMouseDown={(e) =>
+                            onStart(
+                                e,
+                                i,
+                                inventoryType,
+                                selectedType,
+                                item.type
+                            )
+                        }
+                        onMouseUp={(e) =>
+                            onStop(
+                                e,
+                                i,
+                                inventoryType,
+                                selectedType,
+                                item.type
+                            )
+                        }
+                    >
+                        <Typography
+                            className={classes.countGrid}
+                            variant="outlined"
+                        >
+                            {item.ammo ? item.ammo : <Fragment />}
+                            {item.count ? item.count : <Fragment />}
+                            {item.money ? (
+                                <span style={{ color: "green" }}>
+                                    {" "}
+                                    $
+                                    {item.money
+                                        .toString()
+                                        .replace(
+                                            /\B(?=(\d{3})+(?!\d))/g,
+                                            ","
+                                        )}
+                                </span>
+                            ) : (
+                                <Fragment />
+                            )}
+                        </Typography>
+                        <img
+                            draggable="false"
+                            className={classes.images}
+                            src={"./assets/" + item.name + ".png"}
+                            onError={fallbackSrc}
+                        />
+                        <Typography className={classes.name}>
+                            {item.label}
+                        </Typography>
+                    </Paper>
+                );
+            } else {
+                return (
+                    <Paper
+                        elevation={3}
+                        className={classes.slot}
+                        onMouseDown={(e) =>
+                            onStart(
+                                e,
+                                i,
+                                inventoryType,
+                                selectedType,
+                                item.type
+                            )
+                        }
+                        onMouseUp={(e) =>
+                            onStop(
+                                e,
+                                i,
+                                inventoryType,
+                                selectedType,
+                                item.type
+                            )
+                        }
+                    />
+                );
+            }
+        }
+    }
+
     return (
         <div>
-            {(() => {
-                if (!props.isSecondInventory) {
-                    if (props.i < 5 && props.inventoryType === "Personal") {
-                        return (
-                            <React.Fragment>
-                                {props.item !== "{}" ? (
-                                    <Paper
-                                        elevation={3}
-                                        className={classes.slot}
-                                        onMouseDown={(e) =>
-                                            props.onStart(
-                                                e,
-                                                props.i,
-                                                props.inventoryType,
-                                                props.selectedType,
-                                                props.item.type
-                                            )
-                                        }
-                                        onMouseUp={(e) =>
-                                            props.onStop(
-                                                e,
-                                                props.i,
-                                                props.inventoryType,
-                                                props.selectedType,
-                                                props.item.type
-                                            )
-                                        }
-                                    >
-                                        <Typography
-                                            className={classes.slotNumberGrid}
-                                            variant="outlined"
-                                        >
-                                            {props.i + 1}
-                                        </Typography>
-                                        <Typography
-                                            className={classes.countGrid}
-                                            variant="outlined"
-                                        >
-                                            {props.item.ammo ? (
-                                                props.item.ammo
-                                            ) : (
-                                                <Fragment />
-                                            )}
-                                            {props.item.count ? (
-                                                props.item.count
-                                            ) : (
-                                                <Fragment />
-                                            )}
-                                            {props.item.money ? (
-                                                <span
-                                                    style={{ color: "green" }}
-                                                >
-                                                    $
-                                                    {props.item.money
-                                                        .toString()
-                                                        .replace(
-                                                            /\B(?=(\d{3})+(?!\d))/g,
-                                                            ","
-                                                        )}
-                                                </span>
-                                            ) : (
-                                                <Fragment />
-                                            )}
-                                        </Typography>
-                                        <img
-                                            draggable="false"
-                                            className={classes.images}
-                                            src={
-                                                "./assets/" +
-                                                props.item.name +
-                                                ".png"
-											}
-											onError={fallbackSrc}
-                                        />
-                                        <Typography className={classes.name}>
-                                            {props.item.label}
-                                        </Typography>
-                                    </Paper>
-                                ) : (
-                                    <Paper
-                                        elevation={3}
-                                        className={classes.slot}
-                                        onMouseDown={(e) =>
-                                            props.onStart(
-                                                e,
-                                                props.i,
-                                                props.inventoryType,
-                                                props.selectedType,
-                                                props.item.type
-                                            )
-                                        }
-                                        onMouseUp={(e) =>
-                                            props.onStop(
-                                                e,
-                                                props.i,
-                                                props.inventoryType,
-                                                props.selectedType,
-                                                props.item.type
-                                            )
-                                        }
-                                    >
-                                        <Typography
-                                            className={classes.slotNumberGrid}
-                                            variant="outlined"
-                                        >
-                                            {props.i + 1}
-                                        </Typography>
-                                    </Paper>
-                                )}
-                            </React.Fragment>
-                        );
-                    } else if (props.item !== "{}") {
-                        return (
-                            <Paper
-                                elevation={3}
-                                className={classes.slot}
-                                onMouseDown={(e) =>
-                                    props.onStart(
-                                        e,
-                                        props.i,
-                                        props.inventoryType,
-                                        props.selectedType,
-                                        props.item.type
-                                    )
-                                }
-                                onMouseUp={(e) =>
-                                    props.onStop(
-                                        e,
-                                        props.i,
-                                        props.inventoryType,
-                                        props.selectedType,
-                                        props.item.type
-                                    )
-                                }
-                            >
-                                <Typography
-                                    className={classes.countGrid}
-                                    variant="outlined"
-                                >
-                                    {props.item.ammo ? (
-                                        props.item.ammo
-                                    ) : (
-                                        <Fragment />
-                                    )}
-                                    {props.item.count ? (
-                                        props.item.count
-                                    ) : (
-                                        <Fragment />
-                                    )}
-                                    {props.item.money ? (
-                                        <span style={{ color: "green" }}>
-                                            {" "}
-                                            $
-                                            {props.item.money
-                                                .toString()
-                                                .replace(
-                                                    /\B(?=(\d{3})+(?!\d))/g,
-                                                    ","
-                                                )}
-                                        </span>
-                                    ) : (
-                                        <Fragment />
-                                    )}
-                                </Typography>
-                                <img
-                                    draggable="false"
-                                    className={classes.images}
-									src={"./assets/" + props.item.name + ".png"}
-									onError={fallbackSrc}
-                                />
-                                <Typography className={classes.name}>
-                                    {props.item.label}
-                                </Typography>
-                            </Paper>
-                        );
-                    } else {
-                        return (
-                            <Paper
-                                elevation={3}
-                                className={classes.slot}
-                                onMouseDown={(e) =>
-                                    props.onStart(
-                                        e,
-                                        props.i,
-                                        props.inventoryType,
-                                        props.selectedType,
-                                        props.item.type
-                                    )
-                                }
-                                onMouseUp={(e) =>
-                                    props.onStop(
-                                        e,
-                                        props.i,
-                                        props.inventoryType,
-                                        props.selectedType,
-                                        props.item.type
-                                    )
-                                }
-                            />
-                        );
-                    }
-                } else {
-                    if (props.item !== "{}") {
-                        return (
-                            <Paper
-                                elevation={3}
-                                className={classes.slot}
-                                onMouseDown={(e) =>
-                                    props.onStart(
-                                        e,
-                                        props.i,
-                                        props.inventoryType,
-                                        props.selectedType,
-                                        props.item.type
-                                    )
-                                }
-                                onMouseUp={(e) =>
-                                    props.onStop(
-                                        e,
-                                        props.i,
-                                        props.inventoryType,
-                                        props.selectedType,
-                                        props.item.type
-                                    )
-                                }
-                            >
-                                <Typography
-                                    className={classes.countGrid}
-                                    variant="outlined"
-                                >
-                                    {props.item.ammo ? (
-                                        props.item.ammo
-                                    ) : (
-                                        <Fragment />
-                                    )}
-                                    {props.item.count ? (
-                                        props.item.count
-                                    ) : (
-                                        <Fragment />
-                                    )}
-                                    {props.item.money ? (
-                                        <span style={{ color: "green" }}>
-                                            {" "}
-                                            $
-                                            {props.item.money
-                                                .toString()
-                                                .replace(
-                                                    /\B(?=(\d{3})+(?!\d))/g,
-                                                    ","
-                                                )}
-                                        </span>
-                                    ) : (
-                                        <Fragment />
-                                    )}
-                                </Typography>
-                                <img
-                                    draggable="false"
-                                    className={classes.images}
-									src={"./assets/" + props.item.name + ".png"}
-									onError={fallbackSrc}
-                                />
-                                <Typography className={classes.name}>
-                                    {props.item.label}
-                                </Typography>
-                            </Paper>
-                        );
-                    } else {
-                        return (
-                            <Paper
-                                elevation={3}
-                                className={classes.slot}
-                                onMouseDown={(e) =>
-                                    props.onStart(
-                                        e,
-                                        props.i,
-                                        props.inventoryType,
-                                        props.selectedType,
-                                        props.item.type
-                                    )
-                                }
-                                onMouseUp={(e) =>
-                                    props.onStop(
-                                        e,
-                                        props.i,
-                                        props.inventoryType,
-                                        props.selectedType,
-                                        props.item.type
-                                    )
-                                }
-                            />
-                        );
-                    }
-                }
-            })()}
+            {renderSlots()}
         </div>
     );
 };

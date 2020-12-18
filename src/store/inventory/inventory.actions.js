@@ -323,6 +323,8 @@ export const useInventoryItem = (itemIndex) => {
             type: USE_INVENTORY_ITEM,
             payload: itemIndex,
         });
+
+        setTimeout(() => dispatch(hideUseInventoryItem()), 500);
     };
 };
 

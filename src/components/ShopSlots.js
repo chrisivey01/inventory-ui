@@ -66,7 +66,7 @@ function fallbackSrc(ev) {
     ev.target.src = "./assets/no-item.png";
 }
 
-export default (props) => {
+export default ({ onStart, onStop, i, inventoryType, selectedType, item }) => {
     const classes = useStyles();
 
     return (
@@ -76,32 +76,20 @@ export default (props) => {
                     elevation={3}
                     className={classes.slot}
                     onMouseDown={(e) =>
-                        props.onStart(
-                            e,
-                            props.i,
-                            props.inventoryType,
-                            props.selectedType,
-                            props.item.type
-                        )
+                        onStart(e, i, inventoryType, selectedType, item.type)
                     }
                     onMouseUp={(e) =>
-                        props.onStop(
-                            e,
-                            props.i,
-                            props.inventoryType,
-                            props.selectedType,
-                            props.item.type
-                        )
+                        onStop(e, i, inventoryType, selectedType, item.type)
                     }
                 >
                     <Typography
                         className={classes.countGrid}
                         variant="outlined"
                     >
-                        {props.item.price ? (
+                        {item.price ? (
                             <span style={{ color: "green" }}>
                                 $
-                                {props.item.price
+                                {item.price
                                     .toString()
                                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                             </span>
@@ -109,18 +97,18 @@ export default (props) => {
                             <Fragment />
                         )}
                     </Typography>
-                    {props.item.name != "" ? (
+                    {item.name != "" ? (
                         <img
                             draggable="false"
                             className={classes.images}
-                            src={"./assets/" + props.item.name + ".png"}
+                            src={"./assets/" + item.name + ".png"}
                             onError={fallbackSrc}
                         />
                     ) : (
                         <img />
                     )}
                     <Typography className={classes.name}>
-                        {props.item.label}
+                        {item.label}
                     </Typography>
                 </Paper>
             }
