@@ -120,8 +120,6 @@ export const removeSelectedItem = (payload) => ({
 export const useItemHandler = (contextItem, personalInventory) => {
     return (dispatch) => {
         contextItem.item.count = --contextItem.item.count;
-        // personalInventory[contextItem.index] = contextItem.item;
-        // dispatch({ type: USE_ITEM_HANDLER, payload: personalInventory });
         Apis.useItem(contextItem);
     };
 };
@@ -251,6 +249,20 @@ export const moveInventoryItem = (
         //SWAPS BETWEEN PERSONAL AND PLAYER TO PREVENT DUPING, THIS NEEDS TO REMAIN BEFORE OTHERS
         if (selectedItem.type === "Player" && dropLocation === "Player") {
             return null;
+        }
+
+        if (selectedItem.type !== "Personal" && dropLocation !== "Personal") {
+            const moveToSlot = inventories.otherInventory.inventory.splice(
+                selectedItem.index,
+                1,
+                item
+            );
+
+            inventories.otherInventory.inventory.splice(
+                index,
+                1,
+                moveToSlot[0]
+            );
         }
 
         //GETS ITEM FROM OTHER INVENTORY
