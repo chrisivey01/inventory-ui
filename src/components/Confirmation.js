@@ -29,9 +29,9 @@ const RenderShopConfirmation = ({
     quantity,
     confirmation,
     inventory,
+    storeItem,
     boughtItem,
     selectedItem,
-    closeHandler,
     agreeHandler,
     disagreeHandler,
     dispatch,
@@ -39,14 +39,14 @@ const RenderShopConfirmation = ({
     return (
         <Dialog
             open={confirmation.show}
-            onClose={closeHandler}
+            // onClose={closeHandler}
             TransitionComponent={Transition}
             keepMounted
         >
             <DialogTitle>{confirmation.title}</DialogTitle>
             <DialogContent>
-                {boughtItem ? (
-                    <Typography>Cost: {boughtItem.price} </Typography>
+                {storeItem ? (
+                    <Typography>Cost: {storeItem.price} </Typography>
                 ) : (
                     <Fragment />
                 )}
@@ -56,7 +56,13 @@ const RenderShopConfirmation = ({
                     style={{ border: "none" }}
                     value={quantity ? quantity : null}
                     onChange={(e) =>
-                        dispatch(updateQuantityStore(e.target.value))
+                        dispatch(
+                            updateQuantityStore(
+                                e.target.value,
+                                storeItem,
+                                boughtItem
+                            )
+                        )
                     }
                     variant="outlined"
                     size="small"
@@ -73,7 +79,7 @@ const RenderShopConfirmation = ({
                         dispatch(
                             subtractItemStore(
                                 inventory,
-                                boughtItem,
+                                storeItem,
                                 selectedItem
                             )
                         )
@@ -113,6 +119,7 @@ const RenderContextConfirmation = ({
             clearTimeout(timeout);
         };
     }, []);
+
     return (
         <Dialog
             open={confirmation.show}
@@ -165,18 +172,20 @@ export default ({ agreeHandler, disagreeHandler }) => {
         (state) => state.inventory.personalInventory.inventory
     );
     const boughtItem = useSelector((state) => state.inventory.boughtItem);
+    const storeItem = useSelector((state) => state.inventory.storeItem);
     const selectedItem = useSelector((state) => state.inventory.selectedItem);
     const closeHandler = () => {
         // dispatch(inventoryActions.closeConfirmationHandler());
     };
 
     const renderConfirmationView = () => {
-        if (confirmation.type === "Store" && boughtItem.price != "") {
+        if (confirmation.type === "Store") {
             return (
                 <RenderShopConfirmation
                     quantity={quantity}
                     confirmation={confirmation}
                     inventory={inventory}
+                    storeItem={storeItem}
                     boughtItem={boughtItem}
                     selectedItem={selectedItem}
                     closeHandler={closeHandler}

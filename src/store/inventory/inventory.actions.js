@@ -1,3 +1,4 @@
+import { IsoOutlined } from "@material-ui/icons";
 import Apis from "../../apis/inventory-apis";
 import { showErrorMessage } from "../snackbar/snackbar.actions";
 export const LOAD_INVENTORY = "LOAD_INVENTORY";
@@ -46,7 +47,7 @@ export const GIVE_ITEM_SUCCESS = "GIVE_ITEM_SUCCESS";
 export const SPLIT_ITEM_HANDLER = "SPLIT_ITEM_HANDLER";
 export const SPLIT_OTHER_ITEM_HANDLER = "SPLIT_OTHER_ITEM_HANDLER";
 
-export const REMOVED_SELECTED_ITEM = "REMOVED_SELECTED_ITEM"
+export const REMOVED_SELECTED_ITEM = "REMOVED_SELECTED_ITEM";
 
 export const loadInventory = (data) => {
     return (dispatch) => {
@@ -392,13 +393,25 @@ export const subtractItemStore = () => {
     };
 };
 
-export const updateQuantityStore = (value) => {
+export const updateQuantityStore = (quantity, storeItem, boughtItem) => {
     return (dispatch) => {
-        const regExp = /^[0-9\b]+$/;
-        if (regExp.test(parseInt(value)) || value === "") {
+        const regExp = /^\d+$/;
+        if (regExp.test(quantity) || quantity === "") {
+            let item = { ...storeItem };
+            if (item.price === 0) {
+                item.price = boughtItem.price;
+                item.price = item.price * quantity;
+            }
+            if (quantity === "") {
+                quantity = 0;
+                item.price = 0;
+            } else {
+                item.price = boughtItem.price * quantity;
+            }
+
             dispatch({
                 type: UPDATE_QUANTITY_STORE,
-                payload: value,
+                payload: { quantity, item },
             });
         }
     };
@@ -442,10 +455,15 @@ export const storeConfirmationHandler = (
 ) => {
     return (dispatch) => {
         let inventory = [...personalInventory.inventory];
-        if (info.personal.maxWeight < info.personal.weight) {
-            dispatch(showErrorMessage("Over capacity."));
-            return;
+
+        if (selectedItem && quantity) {
+            const weight = info.personal.weight + parseInt(quantity);
+            if (info.personal.maxWeight < weight) {
+                dispatch(showErrorMessage("Over capacity."));
+                return;
+            }
         }
+
         const itemIndex = inventory.findIndex((item) => {
             if (item !== "{}") {
                 return (
@@ -475,14 +493,6 @@ export const storeConfirmationHandler = (
 
         if (otherInventory.type === "Store") {
             selectedItem.data.type = "item_standard";
-        }
-
-        if (selectedItem && quantity) {
-            const weight = info.personal.weight + quantity;
-            if (info.personal.maxWeight < weight) {
-                dispatch(showErrorMessage("Over capacity."));
-                return;
-            }
         }
 
         const updated = {
@@ -568,22 +578,24 @@ export const giveItemHandler = (contextItem, personalInventory, playerInfo) => {
             .catch((error) => console.log(error));
     };
 };
-// { item, quantity, personalInventory }
 
 const returnUpdatedArray = (splitContext, data, inventoryString) => {
-    
     if (splitContext.item.count) {
         if (splitContext.item.count <= data.quantity) {
             return;
         }
-        data[inventoryString].inventory[splitContext.index].count = data[inventoryString].inventory[splitContext.index].count - data.quantity
+        data[inventoryString].inventory[splitContext.index].count =
+            data[inventoryString].inventory[splitContext.index].count -
+            data.quantity;
     }
 
     if (splitContext.item.money) {
         if (splitContext.item.money <= data.quantity) {
             return;
         }
-        data[inventoryString].inventory[splitContext.index].money =  data[inventoryString].inventory[splitContext.index].money - data.quantity
+        data[inventoryString].inventory[splitContext.index].money =
+            data[inventoryString].inventory[splitContext.index].money -
+            data.quantity;
     }
 
     return data;
@@ -594,16 +606,16 @@ const handleUpdateOfSplit = (data, splitItem, inventoryString) => {
         const newLocation = data[inventoryString].inventory.findIndex(
             (item) => item === "{}"
         );
-        let copyItem = {...splitItem}
+        let copyItem = { ...splitItem };
         if (newLocation !== -1) {
-            if(copyItem.type === "item_standard"){
-                copyItem.count = data.quantity
+            if (copyItem.type === "item_standard") {
+                copyItem.count = parseInt(data.quantity);
             } else {
-                copyItem.money = data.quantity
+                copyItem.money = parseInt(data.quantity);
             }
 
             data[inventoryString].inventory[newLocation] = copyItem;
-            if(inventoryString === "personalInventory"){
+            if (inventoryString === "personalInventory") {
                 dispatch({
                     type: SPLIT_ITEM_HANDLER,
                     payload: data[inventoryString].inventory,
@@ -623,95 +635,26 @@ const handleUpdateOfSplit = (data, splitItem, inventoryString) => {
 export const splitItemHandler = (data) => {
     return (dispatch) => {
         if (data.contextItem.type === "Personal") {
-            let splitContext = { ...data.contextItem};
+            let splitContext = { ...data.contextItem };
             data = returnUpdatedArray(splitContext, data, "personalInventory");
 
-            dispatch(handleUpdateOfSplit(data, splitContext.item, "personalInventory"));
+            dispatch(
+                handleUpdateOfSplit(
+                    data,
+                    splitContext.item,
+                    "personalInventory"
+                )
+            );
         } else {
             let splitContext = { ...data.contextItem };
             data = returnUpdatedArray(splitContext, data, "otherInventory");
 
-            dispatch(handleUpdateOfSplit(data, splitContext.item, "otherInventory"));
+            dispatch(
+                handleUpdateOfSplit(data, splitContext.item, "otherInventory")
+            );
         }
     };
 };
-
-// const splitItemStandard = (dispatch, data) => {
-//     if (data.contextItem.type === "Personal") {
-//         let splitItem = { ...data.contextItem.item };
-
-//         if (splitItem.count) {
-//             if (splitItem.count <= data.quantity) {
-//                 return;
-//             } else {
-//                 splitItem.count = data.quantity;
-//             }
-//             splitItem.count = splitItem.count - data.quantity;
-//         }
-
-//         if (splitItem.money) {
-//             if (splitItem.money <= data.quantity) {
-//                 return;
-//             } else {
-//                 splitItem.money = data.quantity;
-//             }
-//             splitItem.money = splitItem.money - data.quantity;
-//         }
-
-//         const newLocation = data.personalInventory.inventory.findIndex(
-//             (item) => item === "{}"
-//         );
-//         if (newLocation !== -1) {
-//             data.personalInventory.inventory[newLocation] = splitItem;
-//             dispatch({
-//                 type: SPLIT_ITEM_HANDLER,
-//                 payload: data.personalInventory.inventory,
-//             });
-//             Apis.updateInventory(data);
-//         }
-//     } else {
-//         let splitItem = { ...data.contextItem.item };
-//         if (splitItem.count <= data.quantity) {
-//             return;
-//         }
-//         splitItem.count = data.quantity;
-//         data.item.count = data.item.count - data.quantity;
-
-//         if (data.contextItem)
-//             const newLocation = data.otherInventory.inventory.findIndex(
-//                 (item) => item === "{}"
-//             );
-//         if (newLocation !== -1) {
-//             data.otherInventory.inventory[newLocation] = splitItem;
-//             dispatch({
-//                 type: SPLIT_ITEM_OTHER_HANDLER,
-//                 payload: data.otherInventory.inventory,
-//             });
-//             Apis.updateInventory(data);
-//         }
-//     }
-// };
-
-// const splitItemMoney = (dispatch, data) => {
-//     let splitItem = { ...data.item };
-//     if (splitItem.money <= data.quantity) {
-//         return;
-//     }
-//     splitItem.money = data.quantity;
-//     data.item.money = data.item.money - data.quantity;
-
-//     const newLocation = data.personalInventory.inventory.findIndex(
-//         (item) => item === "{}"
-//     );
-//     if (newLocation !== -1) {
-//         data.personalInventory.inventory[newLocation] = splitItem;
-//         dispatch({
-//             type: SPLIT_ITEM_HANDLER,
-//             payload: data.personalInventory.inventory,
-//         });
-//         Apis.updateInventory(data);
-//     }
-// };
 
 export const loadOtherPlayerInventory = (data) => {
     return (dispatch) => {

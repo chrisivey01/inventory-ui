@@ -1,5 +1,5 @@
 import { Grid, makeStyles } from "@material-ui/core";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Confirmation from "../components/Confirmation";
 import InventoryView from "../components/InventoryView";
@@ -50,7 +50,7 @@ function InventoryContainer() {
     const selectedItem = useSelector((state) => state.inventory.selectedItem);
     const boughtItem = useSelector((state) => state.inventory.boughtItem);
     const quantity = useSelector((state) => state.inventory.quantity);
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
     const confirmation = useSelector((state) => state.inventory.confirmation);
     const contextItem = useSelector((state) => state.inventory.contextItem);
 

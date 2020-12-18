@@ -8,10 +8,12 @@ import {
     loadOtherInventory,
     loadOtherPlayerInventory,
     loadStoreInventory,
+    splitItemHandler,
+    storeConfirmationHandler,
     updateInventory,
     updateItem,
     updateWeapon,
-    useInventoryItem
+    useInventoryItem,
 } from "../store/inventory/inventory.actions";
 
 export default () => {
@@ -25,6 +27,10 @@ export default () => {
     );
     const info = useSelector((state) => state.inventory.info);
     const inventoryType = useSelector((state) => state.inventory.inventoryType);
+    const confirmation = useSelector((state) => state.inventory.confirmation);
+    const quantity = useSelector((state) => state.inventory.quantity);
+    const boughtItem = useSelector((state) => state.inventory.boughtItem);
+    const contextItem = useSelector((state) => state.inventory.contextItem);
 
     useEffect(() => {
         window.addEventListener("message", (e) => onMessage(e));
@@ -174,6 +180,33 @@ export default () => {
             dispatch(closeHotbar());
         }
     };
+
+    useEffect(() => {
+        function onKeyup(e) {
+            if (e.key === "Enter" && confirmation.show && selectedItem.type === "Store"){
+                dispatch(
+                    storeConfirmationHandler(
+                        personalInventory,
+                        otherInventory,
+                        selectedItem,
+                        quantity,
+                        info,
+                        boughtItem
+                    )
+                );
+            } else if(e.key === "Enter" && confirmation.show && selectedItem.type === "Personal" ) {
+                dispatch(
+                    splitItemHandler({
+                        contextItem,
+                        quantity,
+                        personalInventory,
+                    })
+                );
+            }
+        }
+        window.addEventListener("keyup", onKeyup);
+        return () => window.removeEventListener("keyup", onKeyup);
+    }, [confirmation, quantity, personalInventory, selectedItem, contextItem]);
 
     return <Fragment />;
 };

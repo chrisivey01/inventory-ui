@@ -21,8 +21,9 @@ const initialState = {
         index: null,
         type: "",
     },
-    quantity: null,
+    quantity: 1,
     boughtItem: {},
+    storeItem: {},
     usedItem: {},
     confirmation: {
         show: false,
@@ -31,7 +32,7 @@ const initialState = {
     },
     openContextMenu: false,
     contextItem: {},
-    useIndex: null
+    useIndex: null,
 };
 
 const inventoryReducer = (state = initialState, action) => {
@@ -89,7 +90,7 @@ const inventoryReducer = (state = initialState, action) => {
                     index: null,
                     type: "",
                 },
-            }
+            };
         case types.MOVE_INVENTORY_ITEM:
             return {
                 ...state,
@@ -136,7 +137,7 @@ const inventoryReducer = (state = initialState, action) => {
                     },
                 },
                 openContextMenu: false,
-                useIndex: action.payload
+                useIndex: action.payload,
             };
         case types.HIDE_USE_INVENTORY_ITEM:
             return {
@@ -235,8 +236,9 @@ const inventoryReducer = (state = initialState, action) => {
                     title: "How much?",
                     type: "Store",
                 },
-                quantity: parseInt(null),
+                quantity: 1,
                 boughtItem: action.payload,
+                storeItem: action.payload,
             };
         case types.STORE_CONFIRMATION_HANDLER:
             return {
@@ -246,7 +248,7 @@ const inventoryReducer = (state = initialState, action) => {
                     inventory: action.payload.inventory,
                 },
                 boughtItem: {},
-                quantity: parseInt(null),
+                quantity: 1,
                 confirmation: {
                     ...state.confirmation,
                     show: false,
@@ -257,47 +259,41 @@ const inventoryReducer = (state = initialState, action) => {
         case types.UPDATE_QUANTITY_STORE:
             return {
                 ...state,
-                quantity: parseInt(action.payload),
-                boughtItem: {
-                    ...state.boughtItem,
-                    price: action.payload * state.selectedItem.data.price,
-                },
+                quantity: action.payload.quantity,
+                storeItem: action.payload.item,
             };
         case types.UPDATE_QUANTITY_CONTEXT:
             return {
                 ...state,
-                quantity: parseInt(action.payload),
+                quantity: action.payload,
             };
         case types.ADD_ITEM_STORE:
             return {
                 ...state,
-                quantity: (state.quantity += 1),
-                boughtItem: {
-                    price:
-                        state.boughtItem.price + state.selectedItem.data.price,
+                quantity: state.quantity + 1,
+                storeItem: {
+                    ...state.storeItem,
+                    price: state.storeItem.price + state.boughtItem.price,
                 },
             };
         case types.SUBTRACT_ITEM_STORE:
             return {
                 ...state,
-                quantity: state.quantity !== 0 ? (state.quantity -= 1) : 0,
-                boughtItem: {
-                    price:
-                        state.boughtItem.price !== 0
-                            ? state.boughtItem.price -
-                              state.selectedItem.data.price
-                            : 0,
+                quantity: state.quantity - 1,
+                storeItem: {
+                    ...state.storeItem,
+                    price: state.storeItem.price - state.boughtItem.price,
                 },
             };
         case types.ADD_ITEM_CONTEXT:
             return {
                 ...state,
-                quantity: (state.quantity += 1),
+                quantity: state.quantity + 1,
             };
         case types.SUBTRACT_ITEM_CONTEXT:
             return {
                 ...state,
-                quantity: state.quantity !== 0 ? (state.quantity -= 1) : 0,
+                quantity: state.quantity !== 0 ? state.quantity - 1 : 0,
             };
         case types.OPEN_CONTEXT_MENU:
             return {
@@ -319,7 +315,7 @@ const inventoryReducer = (state = initialState, action) => {
                     title: "How many to split?",
                     type: "Split",
                 },
-                quantity: parseInt(null),
+                quantity: 1,
             };
         case types.CLOSE_CONFIRMATION:
             return {
@@ -330,7 +326,7 @@ const inventoryReducer = (state = initialState, action) => {
                     title: "",
                     type: "",
                 },
-                quantity: parseInt(null),
+                quantity: 1,
             };
         case types.DROP_ITEM_HANDLER:
             return {
@@ -374,8 +370,8 @@ const inventoryReducer = (state = initialState, action) => {
                     ...state.otherInventory,
                     inventory: action.payload,
                 },
-                openConextMenu: false
-            }
+                openContextMenu: false,
+            };
         case types.USE_ITEM_HANDLER:
             return {
                 ...state,
