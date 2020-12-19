@@ -1,6 +1,5 @@
-import React, { Fragment } from "react";
 import { Menu, MenuItem } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as inventoryActions from "../store/inventory/inventory.actions";
 
@@ -79,7 +78,8 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
         if (
             contextItem.type === "Trunk" ||
             contextItem.type === "Property" ||
-            contextItem.type === "Player"
+            contextItem.type === "Player" ||
+            contextItem.type === "Gundealer"
         ) {
             return (
                 <Fragment>

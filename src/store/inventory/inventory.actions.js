@@ -49,6 +49,8 @@ export const SPLIT_OTHER_ITEM_HANDLER = "SPLIT_OTHER_ITEM_HANDLER";
 
 export const REMOVED_SELECTED_ITEM = "REMOVED_SELECTED_ITEM";
 
+export const LOAD_GUN_INVENTORY = "LOAD_GUN_INVENTORY";
+
 export const loadInventory = (data) => {
     return (dispatch) => {
         dispatch({
@@ -676,3 +678,13 @@ export const loadOtherPlayerInventory = (data) => {
         });
     };
 };
+
+
+export const loadGunInventory = (data) => {
+    return (dispatch) => {
+        dispatch({
+            type: LOAD_GUN_INVENTORY,
+            payload: data
+        })
+    }
+}

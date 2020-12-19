@@ -377,6 +377,16 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 personalInventory: action.payload,
             };
+        case types.LOAD_GUN_INVENTORY:
+            return {
+                ...state,
+                otherInventory: {
+                    inventory: action.payload,
+                    type: "Gundealer",
+                },
+                inventoryShow: true,
+            }
+        
         default:
             return state;
     }

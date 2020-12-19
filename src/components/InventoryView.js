@@ -29,6 +29,7 @@ const trunk = "Trunk";
 const store = "Store";
 const property = "Property";
 const player = "Player";
+const gundealer = "Gundealer";
 
 const PersonalInventory = ({
     inventory,
@@ -57,7 +58,7 @@ const PersonalInventory = ({
     );
 };
 
-const LargeInventory = ({inventory, onStart, onStop, isSecondInventory}) => {
+const LargeInventory = ({ inventory, onStart, onStop, isSecondInventory }) => {
     return (
         <Fragment>
             {inventory.inventory.map((item, i) => {
@@ -125,7 +126,8 @@ export default ({
 
                 {inventory.type === trunk ||
                 inventory.type === property ||
-                inventory.type === player ? (
+                inventory.type === player || 
+                inventory.type === gundealer ? (
                     <LargeInventory
                         inventory={inventory}
                         onStart={onStart}

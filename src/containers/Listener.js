@@ -14,6 +14,7 @@ import {
     updateItem,
     updateWeapon,
     useInventoryItem,
+    loadGunInventory,
 } from "../store/inventory/inventory.actions";
 
 export default () => {
@@ -109,9 +110,7 @@ export default () => {
                     break;
                 }
                 case "Trunk": {
-                    let payload = {};
-
-                    payload = {
+                    const payload = {
                         inventoryType: event.data.inventoryType,
                         inventory: event.data.inventory,
                         otherInventory: event.data.otherInventory,
@@ -121,14 +120,16 @@ export default () => {
                     dispatch(loadOtherInventory(payload));
                     break;
                 }
+                case "Gundealer": {
+                    dispatch(loadGunInventory(event.data.guns));
+                    break;
+                }
                 case "Store": {
                     dispatch(loadStoreInventory(event.data.items));
                     break;
                 }
                 case "Property": {
-                    let payload = {};
-
-                    payload = {
+                    const payload = {
                         inventoryType: event.data.inventoryType,
                         inventory: event.data.inventory,
                         otherInventory: event.data.otherInventory,
@@ -141,9 +142,7 @@ export default () => {
                 }
 
                 case "Player": {
-                    let payload = {};
-
-                    payload = {
+                    const payload = {
                         inventoryType: event.data.inventoryType,
                         inventory: event.data.inventory,
                         otherInventory: [],
@@ -183,7 +182,11 @@ export default () => {
 
     useEffect(() => {
         function onKeyup(e) {
-            if (e.key === "Enter" && confirmation.show && selectedItem.type === "Store"){
+            if (
+                e.key === "Enter" &&
+                confirmation.show &&
+                selectedItem.type === "Store"
+            ) {
                 dispatch(
                     storeConfirmationHandler(
                         personalInventory,
@@ -194,7 +197,11 @@ export default () => {
                         boughtItem
                     )
                 );
-            } else if(e.key === "Enter" && confirmation.show && selectedItem.type === "Personal" ) {
+            } else if (
+                e.key === "Enter" &&
+                confirmation.show &&
+                selectedItem.type === "Personal"
+            ) {
                 dispatch(
                     splitItemHandler({
                         contextItem,

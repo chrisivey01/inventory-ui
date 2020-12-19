@@ -67,7 +67,8 @@ function InventoryContainer() {
             type === "Trunk" ||
             type === "Store" ||
             type === "Property" ||
-            type === "Player"
+            type === "Player" ||
+            type === "Gundealer"
         ) {
             payload = {
                 item: otherInventory.inventory[index],
