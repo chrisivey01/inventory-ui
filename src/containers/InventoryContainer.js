@@ -133,7 +133,7 @@ function InventoryContainer() {
             }
 
             dispatch(showPause());
-            setTimeout(() => dispatch(removePause()), 450);
+            setTimeout(() => dispatch(removePause()), 500);
         }
     };
 

@@ -1,4 +1,3 @@
-import { IsoOutlined } from "@material-ui/icons";
 import Apis from "../../apis/inventory-apis";
 import { showErrorMessage } from "../snackbar/snackbar.actions";
 export const LOAD_INVENTORY = "LOAD_INVENTORY";
@@ -85,8 +84,8 @@ export const closeInventory = (
     info,
     inventoryType
 ) => {
-    return async (dispatch) => {
-        await Apis.closeInventory({
+    return  (dispatch) => {
+         Apis.closeInventory({
             personalInventory,
             otherInventory,
             info,
@@ -611,7 +610,6 @@ const returnUpdatedArray = (splitContext, data, inventoryString) => {
             data[inventoryString].inventory[splitContext.index].money -
             data.quantity;
     }
-
     return data;
 };
 
@@ -646,6 +644,7 @@ const handleUpdateOfSplit = (data, splitItem, inventoryString) => {
         }
     };
 };
+
 export const splitItemHandler = (data) => {
     return (dispatch) => {
         if (data.contextItem.type === "Personal") {
@@ -678,7 +677,6 @@ export const loadOtherPlayerInventory = (data) => {
         });
     };
 };
-
 
 export const loadGunInventory = (data) => {
     return (dispatch) => {
