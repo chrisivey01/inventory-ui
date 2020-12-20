@@ -516,11 +516,12 @@ export const storeConfirmationHandler = (
             info,
             boughtItem,
         };
+
+        Apis.buyItem(updated);
         dispatch({
             type: STORE_CONFIRMATION_HANDLER,
             payload: updated,
         });
-        Apis.buyItem(updated)
     };
 };
 
