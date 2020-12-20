@@ -6,7 +6,7 @@ import thunk from "redux-thunk";
 import App from './App';
 import combineReducers from "./store/index";
 import logger from 'redux-logger'
-const middle = [thunk, logger]
+const middle = [thunk]
 const store = createStore(combineReducers, applyMiddleware(...middle));
 
 ReactDOM.render(

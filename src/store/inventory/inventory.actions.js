@@ -84,8 +84,8 @@ export const closeInventory = (
     info,
     inventoryType
 ) => {
-    return  (dispatch) => {
-         Apis.closeInventory({
+    return (dispatch) => {
+        Apis.closeInventory({
             personalInventory,
             otherInventory,
             info,
@@ -466,7 +466,7 @@ export const storeConfirmationHandler = (
     info,
     boughtItem
 ) => {
-    return (dispatch) => {
+    return async (dispatch) => {
         let inventory = [...personalInventory.inventory];
 
         if (selectedItem && quantity) {
@@ -516,11 +516,11 @@ export const storeConfirmationHandler = (
             info,
             boughtItem,
         };
-        Apis.buyItem(updated);
         dispatch({
             type: STORE_CONFIRMATION_HANDLER,
             payload: updated,
         });
+        Apis.buyItem(updated)
     };
 };
 
@@ -682,7 +682,7 @@ export const loadGunInventory = (data) => {
     return (dispatch) => {
         dispatch({
             type: LOAD_GUN_INVENTORY,
-            payload: data
-        })
-    }
-}
+            payload: data,
+        });
+    };
+};
