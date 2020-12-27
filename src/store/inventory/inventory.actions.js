@@ -672,15 +672,18 @@ export const loadOtherPlayerInventory = (data) => {
 export const loadStorage = (data) => {
     return (dispatch) => {
         
-        if(data.inventory.length !== 50 && data.inventoryType !== "Store" && data.inventoryTitle !== "Evidence Locker"){
-            while(data.inventory.length !== 50){
-                data.inventory.push('{}')
-            }
-        } else {
-            while(data.inventory.length !== 100){
-                data.inventory.push('{}')
+        if (data.inventory.length !== 50 && data.inventoryType !== "Store" && data.title === "Evidence Locker") {
+            while (data.inventory.length !== 50) {
+                data.inventory.push("{}");
             }
         }
+        
+        if(data.title === "Evidence Locker") {
+            while (data.inventory.length !== 100) {
+                data.inventory.push("{}");
+            }
+        }
+
         dispatch({
             type: LOAD_STORAGE,
             payload: data,
