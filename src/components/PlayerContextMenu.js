@@ -64,14 +64,24 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
                     </Fragment>
                 );
             } else {
-                return (
-                    <Fragment>
-                        <MenuItem onClick={handleUse}>Use</MenuItem>
-                        <MenuItem onClick={handleDrop}>Drop</MenuItem>
-                        <MenuItem onClick={handleGive}>Give</MenuItem>
-                        <MenuItem onClick={handleSplit}>Split</MenuItem>
-                    </Fragment>
-                );
+                if (contextItem.item.usable === true) {
+                    return (
+                        <Fragment>
+                            <MenuItem onClick={handleUse}>Use</MenuItem>
+                            <MenuItem onClick={handleDrop}>Drop</MenuItem>
+                            <MenuItem onClick={handleGive}>Give</MenuItem>
+                            <MenuItem onClick={handleSplit}>Split</MenuItem>
+                        </Fragment>
+                    );
+                } else {
+                    return (
+                        <Fragment>
+                            <MenuItem onClick={handleDrop}>Drop</MenuItem>
+                            <MenuItem onClick={handleGive}>Give</MenuItem>
+                            <MenuItem onClick={handleSplit}>Split</MenuItem>
+                        </Fragment>
+                    ); 
+                }
             }
         }
 
