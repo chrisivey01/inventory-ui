@@ -63,13 +63,7 @@ function InventoryContainer() {
                 index: index,
                 type: type,
             };
-        } else if (
-            type === "Trunk" ||
-            type === "Store" ||
-            type === "Property" ||
-            type === "Player" ||
-            type === "Gundealer"
-        ) {
+        } else {
             payload = {
                 item: otherInventory.inventory[index],
                 index: index,

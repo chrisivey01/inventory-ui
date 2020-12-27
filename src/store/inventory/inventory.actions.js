@@ -21,7 +21,6 @@ export const USE_ITEM_SLOT_FIVE = "USE_ITEM_SLOT_FIVE";
 export const UPDATE_WEAPON_INFO = "UPDATE_WEAPON_INFO";
 export const UPDATE_ITEM_INFO = "UPDATE_ITEM_INFO";
 
-export const LOAD_STORE_INVENTORY = "LOAD_STORE_INVENTORY";
 export const BUY_STORE_ITEMS = "BUY_STORE_ITEMS";
 
 // Belongs to Confirmation Box
@@ -48,7 +47,7 @@ export const SPLIT_OTHER_ITEM_HANDLER = "SPLIT_OTHER_ITEM_HANDLER";
 
 export const REMOVED_SELECTED_ITEM = "REMOVED_SELECTED_ITEM";
 
-export const LOAD_GUN_INVENTORY = "LOAD_GUN_INVENTORY";
+export const LOAD_STORAGE = "LOAD_STORAGE";
 
 export const loadInventory = (data) => {
     return (dispatch) => {
@@ -364,15 +363,6 @@ export const updateItem = (itemData) => {
     };
 };
 
-export const loadStoreInventory = (items) => {
-    return (dispatch) => {
-        dispatch({
-            type: LOAD_STORE_INVENTORY,
-            payload: items,
-        });
-    };
-};
-
 export const closeConfirmation = () => {
     return (dispatch) => {
         dispatch({
@@ -679,10 +669,16 @@ export const loadOtherPlayerInventory = (data) => {
     };
 };
 
-export const loadGunInventory = (data) => {
+export const loadStorage = (data) => {
     return (dispatch) => {
+        
+        if(data.inventory.length !== 50 && data.inventoryType !== "Store"){
+            while(data.inventory.length !== 50){
+                data.inventory.push('{}')
+            }
+        }
         dispatch({
-            type: LOAD_GUN_INVENTORY,
+            type: LOAD_STORAGE,
             payload: data,
         });
     };

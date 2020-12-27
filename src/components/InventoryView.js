@@ -29,7 +29,7 @@ const trunk = "Trunk";
 const store = "Store";
 const property = "Property";
 const player = "Player";
-const gundealer = "Gundealer";
+const job = "Job";
 
 const PersonalInventory = ({
     inventory,
@@ -109,7 +109,7 @@ export default ({
     return (
         <Grid container className={classes.container}>
             <Grid item>
-                <Typography variant="h4">{inventory.type}</Typography>
+                <Typography variant="h4">{inventory.title}</Typography>
             </Grid>
             <Grid item className={classes.inventory}>
                 {inventory.type === personal ? (
@@ -126,8 +126,8 @@ export default ({
 
                 {inventory.type === trunk ||
                 inventory.type === property ||
-                inventory.type === player || 
-                inventory.type === gundealer ? (
+                inventory.type === player ||
+                inventory.type === job ? (
                     <LargeInventory
                         inventory={inventory}
                         onStart={onStart}

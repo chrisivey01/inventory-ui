@@ -54,6 +54,51 @@ const inventoryReducer = (state = initialState, action) => {
                     personal: action.payload.info,
                 },
             };
+        case types.LOAD_OTHER_INVENTORY:
+            return {
+                ...state,
+                otherInventory: {
+                    ...state.otherInventory,
+                    inventory: utils.loadOtherInventory(
+                        action.payload.inventory,
+                        action.payload.otherInventory
+                    ),
+                    type: action.payload.inventoryType,
+                    title: action.payload.title,
+                },
+                inventoryShow: true,
+                info: {
+                    ...state.info,
+                    other: action.payload.info,
+                },
+            };
+        case types.LOAD_OTHER_PLAYER_INVENTORY:
+            return {
+                ...state,
+                otherInventory: {
+                    inventory: utils.loadOtherPlayerInventory(
+                        action.payload.inventory,
+                        action.payload.otherInventory
+                    ),
+                    type: action.payload.inventoryType,
+                    title: action.payload.title,
+                },
+                inventoryShow: true,
+                info: {
+                    ...state.info,
+                    other: action.payload.info,
+                },
+            };
+        case types.LOAD_STORAGE:
+            return {
+                ...state,
+                otherInventory: {
+                    inventory: action.payload.inventory,
+                    type: action.payload.inventoryType,
+                    title: action.payload.title,
+                },
+                inventoryShow: true,
+            };
         case types.SHOW_INVENTORY:
             return {
                 ...state,
@@ -67,6 +112,7 @@ const inventoryReducer = (state = initialState, action) => {
                     ...state.otherInventory,
                     type: "",
                     inventory: [],
+                    title: "",
                 },
                 info: {
                     ...state.info,
@@ -143,48 +189,6 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 useIndex: null,
-            };
-        case types.LOAD_OTHER_INVENTORY:
-            return {
-                ...state,
-                otherInventory: {
-                    ...state.otherInventory,
-                    inventory: utils.loadOtherInventory(
-                        action.payload.inventory,
-                        action.payload.otherInventory
-                    ),
-                    type: action.payload.inventoryType,
-                },
-                inventoryShow: true,
-                info: {
-                    ...state.info,
-                    other: action.payload.info,
-                },
-            };
-        case types.LOAD_OTHER_PLAYER_INVENTORY:
-            return {
-                ...state,
-                otherInventory: {
-                    inventory: utils.loadOtherPlayerInventory(
-                        action.payload.inventory,
-                        action.payload.otherInventory
-                    ),
-                    type: action.payload.inventoryType,
-                },
-                inventoryShow: true,
-                info: {
-                    ...state.info,
-                    other: action.payload.info,
-                },
-            };
-        case types.LOAD_STORE_INVENTORY:
-            return {
-                ...state,
-                otherInventory: {
-                    inventory: action.payload,
-                    type: "Store",
-                },
-                inventoryShow: true,
             };
         case types.UPDATE_WEAPON_INFO:
             return {
@@ -377,16 +381,7 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 personalInventory: action.payload,
             };
-        case types.LOAD_GUN_INVENTORY:
-            return {
-                ...state,
-                otherInventory: {
-                    inventory: action.payload,
-                    type: "Gundealer",
-                },
-                inventoryShow: true,
-            }
-        
+
         default:
             return state;
     }

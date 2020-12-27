@@ -7,14 +7,13 @@ import {
     loadInventory,
     loadOtherInventory,
     loadOtherPlayerInventory,
-    loadStoreInventory,
     splitItemHandler,
     storeConfirmationHandler,
     updateInventory,
     updateItem,
     updateWeapon,
     useInventoryItem,
-    loadGunInventory,
+    loadStorage,
 } from "../store/inventory/inventory.actions";
 
 export default () => {
@@ -91,6 +90,7 @@ export default () => {
                                 playerInventory: event.data.playerInventory,
                                 inventoryType: event.data.inventoryType,
                                 info: event.data.info,
+                                inventoryTitle: event.data.inventoryTitle,
                             };
                             if (event.data.updateInventory) {
                                 dispatch(updateInventory(data));
@@ -101,6 +101,7 @@ export default () => {
                     }
                     break;
                 }
+
                 case "Hotbar": {
                     if (event.data.hotbar) {
                         dispatch(loadHotbar());
@@ -109,35 +110,30 @@ export default () => {
                     }
                     break;
                 }
+
                 case "Trunk": {
                     const payload = {
                         inventoryType: event.data.inventoryType,
                         inventory: event.data.inventory,
                         otherInventory: event.data.otherInventory,
                         info: event.data.carData,
+                        title: event.data.inventoryTitle,
                     };
 
                     dispatch(loadOtherInventory(payload));
                     break;
                 }
-                case "Gundealer": {
-                    dispatch(loadGunInventory(event.data.guns));
-                    break;
-                }
-                case "Store": {
-                    dispatch(loadStoreInventory(event.data.items));
-                    break;
-                }
+
                 case "Property": {
                     const payload = {
                         inventoryType: event.data.inventoryType,
                         inventory: event.data.inventory,
                         otherInventory: event.data.otherInventory,
                         info: event.data.property,
+                        title: event.data.inventoryTitle,
                     };
 
                     dispatch(loadOtherInventory(payload));
-
                     break;
                 }
 
@@ -147,11 +143,43 @@ export default () => {
                         inventory: event.data.inventory,
                         otherInventory: [],
                         info: event.data.info,
+                        title: event.data.inventoryTitle,
                     };
 
                     dispatch(loadOtherPlayerInventory(payload));
                     break;
                 }
+
+                case "Gundealer": {
+                    const data = {
+                        inventoryType: event.data.inventoryType,
+                        inventory: event.data.inventory,
+                        title: event.data.inventoryTitle,
+                    };
+                    dispatch(loadStorage(data));
+                    break;
+                }
+
+                case "Store": {
+                    const data = {
+                        inventoryType: event.data.inventoryType,
+                        inventory: event.data.inventory,
+                        title: event.data.inventoryTitle,
+                    };
+                    dispatch(loadStorage(data));
+                    break;
+                }
+
+                case "Job": {
+                    const data = {
+                        inventoryType: event.data.inventoryType,
+                        inventory: event.data.inventory,
+                        title: event.data.inventoryTitle,
+                    };
+                    dispatch(loadStorage(data));
+                    break;
+                }
+
                 default:
                     return null;
             }
