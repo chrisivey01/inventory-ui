@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         transition: "250ms ease-in-out",
     },
     slotSelected: {
-        transform: ["translate(0, -10px)"],
+        transform: ["translate(0, -30px)"],
         width: "100px",
         height: "100px",
         padding: theme.spacing(1),
