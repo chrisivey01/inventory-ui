@@ -439,7 +439,7 @@ export const subtractItemContext = () => {
 export const updateQuantityContext = (quantity) => {
     return (dispatch) => {
         const regExp = /^\d+$/;
-        if (regExp.test(parseInt(quantity)) || value === "") {
+        if (regExp.test(parseInt(quantity)) || quantity === "") {
             const value = parseInt(quantity)
             dispatch({
                 type: UPDATE_QUANTITY_CONTEXT,

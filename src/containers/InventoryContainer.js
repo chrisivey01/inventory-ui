@@ -72,10 +72,10 @@ function InventoryContainer() {
         }
 
         if (e.button === 2) {
-            if (type === "Personal") {
-                setAnchorEl(e.currentTarget);
-                dispatch(inventoryActions.openContextMenu(payload));
-            }
+            // if (type === "Personal") {
+            setAnchorEl(e.currentTarget);
+            dispatch(inventoryActions.openContextMenu(payload));
+            // }
         } else {
             dispatch(inventoryActions.selectInventoryItem(payload));
             dispatch(itemActions.setInfo(payload));

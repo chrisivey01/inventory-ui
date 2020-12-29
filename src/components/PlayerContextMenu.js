@@ -89,7 +89,8 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
             contextItem.type === "Trunk" ||
             contextItem.type === "Property" ||
             contextItem.type === "Player" ||
-            contextItem.type === "Gundealer"
+            contextItem.type === "Job" 
+
         ) {
             return (
                 <Fragment>

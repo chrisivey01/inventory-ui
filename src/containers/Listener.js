@@ -237,6 +237,18 @@ export default () => {
                         personalInventory,
                     })
                 );
+            } else if (
+                e.key === "Enter" &&
+                confirmation.show &&
+                contextItem.type !== "Personal"
+            ) {
+                dispatch(
+                    splitItemHandler({
+                        contextItem,
+                        quantity,
+                        otherInventory,
+                    })
+                );
             }
         }
         window.addEventListener("keyup", onKeyup);
