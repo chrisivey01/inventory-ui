@@ -436,10 +436,11 @@ export const subtractItemContext = () => {
     };
 };
 
-export const updateQuantityContext = (value) => {
+export const updateQuantityContext = (quantity) => {
     return (dispatch) => {
-        const regExp = /^[0-9\b]+$/;
-        if (regExp.test(parseInt(value)) || value === "") {
+        const regExp = /^\d+$/;
+        if (regExp.test(parseInt(quantity)) || value === "") {
+            const value = parseInt(quantity)
             dispatch({
                 type: UPDATE_QUANTITY_CONTEXT,
                 payload: value,

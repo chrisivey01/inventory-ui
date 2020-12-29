@@ -228,7 +228,7 @@ export default () => {
             } else if (
                 e.key === "Enter" &&
                 confirmation.show &&
-                selectedItem.type === "Personal"
+                contextItem.type === "Personal"
             ) {
                 dispatch(
                     splitItemHandler({
