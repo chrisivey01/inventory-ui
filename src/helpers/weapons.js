@@ -31,11 +31,10 @@ const reset = [
 ];
 
 export const weaponReset = (weapon) => {
-    if (reset.findIndex(item => item === weapon.name) !== -1) {
-        weapon.ammo = 0;
+    if (reset.findIndex((item) => item === weapon.name) !== -1) {
+        weapon.ammo = 0
         return weapon;
     } else {
-        weapon.ammo = 48;
         return weapon;
     }
 };

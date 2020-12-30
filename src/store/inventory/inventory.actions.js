@@ -533,7 +533,7 @@ export const storeConfirmationHandler = (
             const bracketIndex = inventory.findIndex((item) => item === "{}");
             const moneyIndex = inventory.findIndex((item) => item.name === "money");
     
-            if (itemIndex > 0) {
+            if (itemIndex > 0 && selectedItem.data.name !== "clip") {
                 dispatch(showErrorMessage("You already have this weapon."));
                 return;
             }
