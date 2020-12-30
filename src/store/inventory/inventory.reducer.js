@@ -381,6 +381,24 @@ const inventoryReducer = (state = initialState, action) => {
                 ...state,
                 personalInventory: action.payload,
             };
+        case types.UPDATE_WEAPON_CLIP:
+            return {
+                ...state,
+                personalInventory: {
+                    ...state.personalInventory,
+                    inventory: state.personalInventory.inventory.map((item) => {
+                        if (
+                            item !== "{}" &&
+                            item.name === action.payload.weapon.name
+                        ) {
+                            item.ammo = action.payload.ammoCount;
+
+                            return item;
+                        }
+                        return item;
+                    }),
+                },
+            };
 
         default:
             return state;

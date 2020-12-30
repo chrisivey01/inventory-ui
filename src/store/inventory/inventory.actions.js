@@ -1,5 +1,7 @@
 import Apis from "../../apis/inventory-apis";
 import { showErrorMessage } from "../snackbar/snackbar.actions";
+import { weaponReset } from "../../helpers/weapons";
+
 export const LOAD_INVENTORY = "LOAD_INVENTORY";
 export const QUICK_UPDATE_INVENTORY = "QUICK_UPDATE_INVENTORY";
 export const SHOW_INVENTORY = "SHOW_INVENTORY";
@@ -48,6 +50,8 @@ export const SPLIT_OTHER_ITEM_HANDLER = "SPLIT_OTHER_ITEM_HANDLER";
 export const REMOVED_SELECTED_ITEM = "REMOVED_SELECTED_ITEM";
 
 export const LOAD_STORAGE = "LOAD_STORAGE";
+
+export const UPDATE_WEAPON_CLIP = "UPDATE_WEAPON_CLIP";
 
 export const loadInventory = (data) => {
     return (dispatch) => {
@@ -459,54 +463,102 @@ export const storeConfirmationHandler = (
 ) => {
     return async (dispatch) => {
         let inventory = [...personalInventory.inventory];
+        let updated = {}
+        if(otherInventory.title !== "Gun Store"){
 
-        if (selectedItem && quantity) {
-            const weight = info.personal.weight + parseInt(quantity);
-            if (info.personal.maxWeight < weight) {
-                dispatch(showErrorMessage("Over capacity."));
+            if (selectedItem && quantity) {
+                const weight = info.personal.weight + parseInt(quantity);
+                if (info.personal.maxWeight < weight) {
+                    dispatch(showErrorMessage("Over capacity."));
+                    return;
+                }
+            }
+    
+            const itemIndex = inventory.findIndex((item) => {
+                if (item !== "{}") {
+                    return (
+                        item.name.toLowerCase() ===
+                        selectedItem.data.name.toLowerCase()
+                    );
+                }
+            });
+            const bracketIndex = inventory.findIndex((item) => item === "{}");
+            const moneyIndex = inventory.findIndex((item) => item.name === "money");
+    
+            if (itemIndex > 0) {
+                inventory[itemIndex].price =
+                    inventory[itemIndex].count * selectedItem.data.price;
+                inventory[itemIndex].count = inventory[itemIndex].count + quantity;
+                inventory[itemIndex].type = "item_standard";
+            }
+            inventory[moneyIndex].money =
+                inventory[moneyIndex].money - selectedItem.data.price * quantity;
+    
+            if (bracketIndex && itemIndex < 0) {
+                inventory[bracketIndex] = {};
+                inventory[bracketIndex].name = selectedItem.data.name;
+                inventory[bracketIndex].count = quantity;
+                inventory[bracketIndex].type = "item_standard";
+            }
+    
+            if (otherInventory.type === "Store") {
+                selectedItem.data.type = "item_standard";
+            }
+    
+            updated = {
+                inventory,
+                otherInventory,
+                selectedItem,
+                quantity,
+                info,
+                boughtItem,
+            };
+        } else {
+            if (selectedItem && quantity) {
+                const weight = info.personal.weight + 1;
+                if (info.personal.maxWeight < weight) {
+                    dispatch(showErrorMessage("Over capacity."));
+                    return;
+                }
+            }
+    
+            const itemIndex = inventory.findIndex((item) => {
+                if (item !== "{}") {
+                    return (
+                        item.name.toLowerCase() ===
+                        selectedItem.data.name.toLowerCase()
+                    );
+                }
+            });
+            const bracketIndex = inventory.findIndex((item) => item === "{}");
+            const moneyIndex = inventory.findIndex((item) => item.name === "money");
+    
+            if (itemIndex > 0) {
+                dispatch(showErrorMessage("You already have this weapon."));
                 return;
             }
-        }
 
-        const itemIndex = inventory.findIndex((item) => {
-            if (item !== "{}") {
-                return (
-                    item.name.toLowerCase() ===
-                    selectedItem.data.name.toLowerCase()
-                );
+            inventory[moneyIndex].money =
+                inventory[moneyIndex].money - selectedItem.data.price;
+    
+            if (bracketIndex && itemIndex < 0) {
+                const weapon = weaponReset(selectedItem.data)
+                inventory[bracketIndex] = {};
+                inventory[bracketIndex].name = weapon.name;
+                inventory[bracketIndex].label = weapon.label;
+                inventory[bracketIndex].ammo = weapon.ammo;
+                inventory[bracketIndex].type = "item_weapon";
             }
-        });
-        const bracketIndex = inventory.findIndex((item) => item === "{}");
-        const moneyIndex = inventory.findIndex((item) => item.name === "money");
-
-        if (itemIndex > 0) {
-            inventory[itemIndex].price =
-                inventory[itemIndex].count * selectedItem.data.price;
-            inventory[itemIndex].count = inventory[itemIndex].count + quantity;
-            inventory[itemIndex].type = "item_standard";
+  
+            updated = {
+                inventory,
+                otherInventory,
+                selectedItem,
+                quantity,
+                info,
+                boughtItem,
+            };
         }
-        inventory[moneyIndex].money =
-            inventory[moneyIndex].money - selectedItem.data.price * quantity;
-
-        if (bracketIndex && itemIndex < 0) {
-            inventory[bracketIndex] = {};
-            inventory[bracketIndex].name = selectedItem.data.name;
-            inventory[bracketIndex].count = quantity;
-            inventory[bracketIndex].type = "item_standard";
-        }
-
-        if (otherInventory.type === "Store") {
-            selectedItem.data.type = "item_standard";
-        }
-
-        const updated = {
-            inventory,
-            otherInventory,
-            selectedItem,
-            quantity,
-            info,
-            boughtItem,
-        };
 
         Apis.buyItem(updated);
         dispatch({
@@ -691,3 +743,9 @@ export const loadStorage = (data) => {
         });
     };
 };
+
+export const updateWeaponClip = (data) => {
+    return (dispatch) => {
+        dispatch({type: UPDATE_WEAPON_CLIP, payload: data})
+    }
+}

@@ -12,16 +12,19 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         flexWrap: "wrap",
         width: 760,
+        borderRadius: 5
     },
     inventory: {
-        display: "flex",
         height: 695,
-        flexWrap: "wrap",
         overflow: "auto",
-        position: "relative",
         left: 30,
         width: 695,
     },
+    inventoryWrapper: {
+        display: "flex",
+        flexWrap: "wrap",
+        marginTop: 10
+    }
 }));
 
 const personal = "Personal";
@@ -38,8 +41,10 @@ const PersonalInventory = ({
     onStop,
     isSecondInventory,
 }) => {
+    const classes = useStyles();
+
     return (
-        <Fragment>
+        <div className={classes.inventoryWrapper}>
             {inventory.inventory.map((item, i) => {
                 return (
                     <InventorySlots
@@ -54,13 +59,15 @@ const PersonalInventory = ({
                     />
                 );
             })}
-        </Fragment>
+        </div>
     );
 };
 
 const LargeInventory = ({ inventory, onStart, onStop, isSecondInventory }) => {
+    const classes = useStyles();
+
     return (
-        <Fragment>
+        <div className={classes.inventoryWrapper}>
             {inventory.inventory.map((item, i) => {
                 return (
                     <InventorySlots
@@ -74,13 +81,15 @@ const LargeInventory = ({ inventory, onStart, onStop, isSecondInventory }) => {
                     />
                 );
             })}
-        </Fragment>
+        </div>
     );
 };
 
 const Shop = ({ inventory, onStart, onStop }) => {
+    const classes = useStyles();
+
     return (
-        <Fragment>
+        <div className={classes.inventoryWrapper}>
             {inventory.inventory.map((item, i) => {
                 return (
                     <ShopSlots
@@ -93,7 +102,7 @@ const Shop = ({ inventory, onStart, onStop }) => {
                     />
                 );
             })}
-        </Fragment>
+        </div>
     );
 };
 

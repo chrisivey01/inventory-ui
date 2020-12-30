@@ -54,7 +54,9 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
     };
 
     const contextMenuHandler = () => {
+
         if (contextItem.type === "Personal") {
+
             if (contextItem.item.type === "item_weapon") {
                 return (
                     <Fragment>
@@ -73,25 +75,24 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
                             <MenuItem onClick={handleSplit}>Split</MenuItem>
                         </Fragment>
                     );
-                } else {
+                } else if (contextItem.item.count === 1) {
+                    return (
+                        <Fragment>
+                            <MenuItem onClick={handleDrop}>Drop</MenuItem>
+                            <MenuItem onClick={handleGive}>Give</MenuItem>
+                        </Fragment>
+                    );
+                } else if (contextItem.item.count > 1 || contextItem.item.type === "item_account") {
                     return (
                         <Fragment>
                             <MenuItem onClick={handleDrop}>Drop</MenuItem>
                             <MenuItem onClick={handleGive}>Give</MenuItem>
                             <MenuItem onClick={handleSplit}>Split</MenuItem>
                         </Fragment>
-                    ); 
+                    );
                 }
             }
-        }
-
-        if (
-            contextItem.type === "Trunk" ||
-            contextItem.type === "Property" ||
-            contextItem.type === "Player" ||
-            contextItem.type === "Job" 
-
-        ) {
+        } else if ( contextItem.item.count > 1 || contextItem.item.type === "item_account") {
             return (
                 <Fragment>
                     <MenuItem onClick={handleSplit}>Split</MenuItem>
@@ -99,7 +100,21 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
             );
         }
     };
-    if (openContextMenu && contextItem.item.type !== undefined) {
+
+    if (openContextMenu && contextItem.item.type !== undefined && contextItem.type === "Personal") {
+        return (
+            <Menu
+                anchorEl={anchorEl}
+                open={openContextMenu}
+                onClose={handleClose}
+                keepMounted
+                autoFocusItem={openContextMenu}
+                id="menu-list-grow"
+            >
+                {contextMenuHandler()}
+            </Menu>
+        );
+    } else if (openContextMenu && contextItem.item.type !== undefined && contextItem.type !== "Personal" && contextItem.item.type !== "item_weapon") {
         return (
             <Menu
                 anchorEl={anchorEl}

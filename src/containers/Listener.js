@@ -14,6 +14,7 @@ import {
     updateWeapon,
     useInventoryItem,
     loadStorage,
+    updateWeaponClip
 } from "../store/inventory/inventory.actions";
 
 export default () => {
@@ -177,6 +178,15 @@ export default () => {
                         title: event.data.inventoryTitle,
                     };
                     dispatch(loadStorage(data));
+                    break;
+                }
+
+                case "UpdateAmmo": {
+                    const data = {
+                        weapon: event.data.weapon,
+                        ammoCount: event.data.ammoCount
+                    }
+                    dispatch(updateWeaponClip(data));
                     break;
                 }
 

@@ -35,6 +35,7 @@ export const weaponReset = (weapon) => {
         weapon.ammo = 0;
         return weapon;
     } else {
+        weapon.ammo = 48;
         return weapon;
     }
 };

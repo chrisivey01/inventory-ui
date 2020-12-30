@@ -14,12 +14,13 @@ import { removePause, showPause } from "../store/pause/pause.actions";
 const useStyles = makeStyles((theme) => ({
     "@global": {
         "*::-webkit-scrollbar": {
-            width: "0.45em",
+            width: "0.60em",
         },
         "*::-webkit-scrollbar-track": {
             "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
         },
         "*::-webkit-scrollbar-thumb": {
+            borderRadius:"5px",
             backgroundColor: "rgba(44, 62, 80, 1)",
             outline: "1px solid slategrey",
         },
@@ -72,10 +73,8 @@ function InventoryContainer() {
         }
 
         if (e.button === 2) {
-            // if (type === "Personal") {
             setAnchorEl(e.currentTarget);
             dispatch(inventoryActions.openContextMenu(payload));
-            // }
         } else {
             dispatch(inventoryActions.selectInventoryItem(payload));
             dispatch(itemActions.setInfo(payload));
@@ -93,9 +92,14 @@ function InventoryContainer() {
                 const item = personalInventory.inventory[index];
                 if (selectedItem.type === "Store") {
                     dispatch(itemActions.clearInfo());
-                    dispatch(
-                        inventoryActions.storeConfirmation(selectedItem.data)
-                    );
+                    if(selectedItem.data.type !== "item_weapon"){
+                        dispatch(
+                            inventoryActions.storeConfirmation(selectedItem.data)
+                        );
+                    } else {
+                        //if this is a weapons store just go right to buy
+                        agreeHandlerStore()
+                    }
                 } else {
                     dispatch(itemActions.clearInfo());
                     dispatch(
