@@ -200,18 +200,16 @@ export const moveInventoryItem = (
                 }
 
                 if (selectedItem.data.type === "item_standard") {
-                    trunkWeight +=
+                    trunkWeight =
                         selectedItem.data.count * selectedItem.data.weight;
                 } else if (selectedItem.data.type === "item_weapon") {
-                    trunkWeight += trunkWeight + 1;
+                    trunkWeight = trunkWeight + 1;
                 }
 
                 inventories.otherInventory.inventory.forEach((item) => {
                     if (item.count) {
-                        trunkWeight += item.count * item.weight;
-                    } else if (item.ammo) {
-                        trunkWeight += trunkWeight + 1;
-                    }
+                        trunkWeight = item.count * item.weight;
+                    } 
                 });
 
                 if (trunkWeight <= maxWeight) {
@@ -232,13 +230,7 @@ export const moveInventoryItem = (
                     return null;
                 }
             } else {
-                if (selectedItem && quantity) {
-                    const weight = info.personal.weight + 1;
-                    if (info.personal.maxWeight < weight) {
-                        dispatch(showErrorMessage("Over capacity."));
-                        return;
-                    }
-                }
+
                 if (inventories.otherInventory.inventory[index] !== "{}") {
                     return null;
                 }
@@ -283,9 +275,7 @@ export const moveInventoryItem = (
 
             if(selectedItem.data.count){
                 weight = selectedItem.data.count + weight
-            } else if(selectedItem.data.ammo){
-                weight = weight + 1
-            }
+            } 
 
             
             if (inventories.personalInventory.inventory[index] !== "{}") {
