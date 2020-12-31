@@ -232,6 +232,13 @@ export const moveInventoryItem = (
                     return null;
                 }
             } else {
+                if (selectedItem && quantity) {
+                    const weight = info.personal.weight + 1;
+                    if (info.personal.maxWeight < weight) {
+                        dispatch(showErrorMessage("Over capacity."));
+                        return;
+                    }
+                }
                 if (inventories.otherInventory.inventory[index] !== "{}") {
                     return null;
                 }
@@ -271,14 +278,21 @@ export const moveInventoryItem = (
 
         //GETS ITEM FROM OTHER INVENTORY
         if (selectedItem.type !== "Personal" && dropLocation === "Personal") {
-            let calculatedWeight = 0;
             let maxWeight = info.personal.maxWeight;
+            let weight = info.personal.weight;
 
+            if(selectedItem.data.count){
+                weight = selectedItem.data.count + weight
+            } else if(selectedItem.data.ammo){
+                weight = weight + 1
+            }
+
+            
             if (inventories.personalInventory.inventory[index] !== "{}") {
                 return null;
             }
 
-            if (calculatedWeight <= maxWeight) {
+            if (checkWeight(weight, maxWeight)) {
                 //DEALING WITH SPLITS [GETS]
                 const searchIndex = inventories.personalInventory.inventory.findIndex(
                     (item) => item.name === selectedItem.data.name
@@ -333,6 +347,14 @@ export const moveInventoryItem = (
         Apis.updateInventory(inventories);
     };
 };
+
+const checkWeight = (weight, maxWeight) => {
+    if(weight <= maxWeight){
+        return true;
+    } else {
+        return false;
+    }
+}
 
 export const useInventoryItem = (itemIndex) => {
     return (dispatch) => {

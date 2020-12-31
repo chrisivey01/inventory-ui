@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         flexWrap: "wrap",
         width: 760,
-        borderRadius: 5
+        borderRadius: 5,
     },
     inventory: {
         height: 695,
@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
     inventoryWrapper: {
         display: "flex",
         flexWrap: "wrap",
-        marginTop: 10
-    }
+        marginTop: 10,
+    },
 }));
 
 const personal = "Personal";
@@ -112,13 +112,20 @@ export default ({
     onStart,
     onStop,
     isSecondInventory,
+    info,
 }) => {
     const classes = useStyles();
 
     return (
         <Grid container className={classes.container}>
             <Grid item>
-                <Typography variant="h4">{inventory.title}</Typography>
+                {inventory.type === personal ? (
+                    <Typography variant="h5">
+                        Capacity: {info.personal.weight}/{info.personal.maxWeight}
+                    </Typography>
+                ) : (
+                    <Typography variant="h4">{inventory.title}</Typography>
+                )}
             </Grid>
             <Grid item className={classes.inventory}>
                 {inventory.type === personal ? (
