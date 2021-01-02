@@ -191,6 +191,10 @@ export const moveInventoryItem = (
 
         //PUTS ITEMS INTO OTHER INVENTORY
         if (selectedItem.type === "Personal" && dropLocation !== "Personal") {
+            const searchIndex = inventories.otherInventory.inventory.findIndex(
+                (item) => item.name === selectedItem.data.name
+            );
+
             if (dropLocation === "Trunk") {
                 let trunkWeight = 0;
                 let maxWeight = info.other.max / 750;
@@ -208,8 +212,8 @@ export const moveInventoryItem = (
 
                 inventories.otherInventory.inventory.forEach((item) => {
                     if (item.count) {
-                        trunkWeight = item.count * item.weight;
-                    } 
+                        trunkWeight += item.count * item.weight;
+                    }
                 });
 
                 if (trunkWeight <= maxWeight) {
@@ -219,33 +223,87 @@ export const moveInventoryItem = (
                         item
                     );
 
-                    inventories.otherInventory.inventory.splice(
-                        index,
-                        1,
-                        moveToSlot[0]
-                    );
+                    if (searchIndex !== -1) {
+                        if (selectedItem.data.count) {
+                            inventories.otherInventory.inventory[
+                                searchIndex
+                            ].count =
+                                selectedItem.data.count +
+                                inventories.otherInventory.inventory[
+                                    searchIndex
+                                ].count;
+                        } else if (selectedItem.data.money) {
+                            inventories.otherInventory.inventory[
+                                searchIndex
+                            ].money =
+                                selectedItem.data.money +
+                                inventories.otherInventory.inventory[
+                                    searchIndex
+                                ].money;
+                        } else {
+                            inventories.otherInventory.inventory.splice(
+                                index,
+                                1,
+                                moveToSlot[0]
+                            );
+                        }
+                        inventories.personalInventory.inventory[
+                            selectedItem.index
+                        ] = "{}";
+                    } else {
+                        inventories.otherInventory.inventory.splice(
+                            index,
+                            1,
+                            moveToSlot[0]
+                        );
+                    }
                 } else {
                     //if overweight do this
                     dispatch(showErrorMessage("Over capacity."));
                     return null;
                 }
             } else {
-
                 if (inventories.otherInventory.inventory[index] !== "{}") {
                     return null;
                 }
-
                 const moveToSlot = inventories.personalInventory.inventory.splice(
                     selectedItem.index,
                     1,
                     item
                 );
 
-                inventories.otherInventory.inventory.splice(
-                    index,
-                    1,
-                    moveToSlot[0]
-                );
+                if (searchIndex !== -1) {
+                    if (selectedItem.data.count) {
+                        inventories.otherInventory.inventory[
+                            searchIndex
+                        ].count =
+                            selectedItem.data.count +
+                            inventories.otherInventory.inventory[searchIndex]
+                                .count;
+                    } else if (selectedItem.data.money) {
+                        inventories.otherInventory.inventory[
+                            searchIndex
+                        ].money =
+                            selectedItem.data.money +
+                            inventories.otherInventory.inventory[searchIndex]
+                                .money;
+                    } else {
+                        inventories.otherInventory.inventory.splice(
+                            index,
+                            1,
+                            moveToSlot[0]
+                        );
+                    }
+                    inventories.personalInventory.inventory[
+                        selectedItem.index
+                    ] = "{}";
+                } else {
+                    inventories.otherInventory.inventory.splice(
+                        index,
+                        1,
+                        moveToSlot[0]
+                    );
+                }
             }
         }
 
@@ -273,11 +331,10 @@ export const moveInventoryItem = (
             let maxWeight = info.personal.maxWeight;
             let weight = info.personal.weight;
 
-            if(selectedItem.data.count){
-                weight = selectedItem.data.count + weight
-            } 
+            if (selectedItem.data.count) {
+                weight = selectedItem.data.count + weight;
+            }
 
-            
             if (inventories.personalInventory.inventory[index] !== "{}") {
                 return null;
             }
@@ -316,6 +373,12 @@ export const moveInventoryItem = (
                             selectedItem.data.money +
                             inventories.personalInventory.inventory[searchIndex]
                                 .money;
+                    } else {
+                        inventories.otherInventory.inventory.splice(
+                            index,
+                            1,
+                            moveToSlot[0]
+                        );
                     }
                     inventories.otherInventory.inventory[selectedItem.index] =
                         "{}";
@@ -339,12 +402,12 @@ export const moveInventoryItem = (
 };
 
 const checkWeight = (weight, maxWeight) => {
-    if(weight <= maxWeight){
+    if (weight <= maxWeight) {
         return true;
     } else {
         return false;
     }
-}
+};
 
 export const useInventoryItem = (itemIndex) => {
     return (dispatch) => {
@@ -456,7 +519,7 @@ export const updateQuantityContext = (quantity) => {
     return (dispatch) => {
         const regExp = /^\d+$/;
         if (regExp.test(parseInt(quantity)) || quantity === "") {
-            const value = parseInt(quantity)
+            const value = parseInt(quantity);
             dispatch({
                 type: UPDATE_QUANTITY_CONTEXT,
                 payload: value,
@@ -475,9 +538,8 @@ export const storeConfirmationHandler = (
 ) => {
     return async (dispatch) => {
         let inventory = [...personalInventory.inventory];
-        let updated = {}
-        if(otherInventory.title !== "Gun Store"){
-
+        let updated = {};
+        if (otherInventory.title !== "Gun Store") {
             if (selectedItem && quantity) {
                 const weight = info.personal.weight + parseInt(quantity);
                 if (info.personal.maxWeight < weight) {
@@ -485,7 +547,7 @@ export const storeConfirmationHandler = (
                     return;
                 }
             }
-    
+
             const itemIndex = inventory.findIndex((item) => {
                 if (item !== "{}") {
                     return (
@@ -495,28 +557,32 @@ export const storeConfirmationHandler = (
                 }
             });
             const bracketIndex = inventory.findIndex((item) => item === "{}");
-            const moneyIndex = inventory.findIndex((item) => item.name === "money");
-    
+            const moneyIndex = inventory.findIndex(
+                (item) => item.name === "money"
+            );
+
             if (itemIndex > 0) {
                 inventory[itemIndex].price =
                     inventory[itemIndex].count * selectedItem.data.price;
-                inventory[itemIndex].count = inventory[itemIndex].count + quantity;
+                inventory[itemIndex].count =
+                    inventory[itemIndex].count + quantity;
                 inventory[itemIndex].type = "item_standard";
             }
             inventory[moneyIndex].money =
-                inventory[moneyIndex].money - selectedItem.data.price * quantity;
-    
+                inventory[moneyIndex].money -
+                selectedItem.data.price * quantity;
+
             if (bracketIndex && itemIndex < 0) {
                 inventory[bracketIndex] = {};
                 inventory[bracketIndex].name = selectedItem.data.name;
                 inventory[bracketIndex].count = quantity;
                 inventory[bracketIndex].type = "item_standard";
             }
-    
+
             if (otherInventory.type === "Store") {
                 selectedItem.data.type = "item_standard";
             }
-    
+
             updated = {
                 inventory,
                 otherInventory,
@@ -533,7 +599,7 @@ export const storeConfirmationHandler = (
                     return;
                 }
             }
-    
+
             const itemIndex = inventory.findIndex((item) => {
                 if (item !== "{}") {
                     return (
@@ -543,8 +609,10 @@ export const storeConfirmationHandler = (
                 }
             });
             const bracketIndex = inventory.findIndex((item) => item === "{}");
-            const moneyIndex = inventory.findIndex((item) => item.name === "money");
-    
+            const moneyIndex = inventory.findIndex(
+                (item) => item.name === "money"
+            );
+
             if (itemIndex > 0 && selectedItem.data.name !== "clip") {
                 dispatch(showErrorMessage("You already have this weapon."));
                 return;
@@ -552,16 +620,16 @@ export const storeConfirmationHandler = (
 
             inventory[moneyIndex].money =
                 inventory[moneyIndex].money - selectedItem.data.price;
-    
+
             if (bracketIndex && itemIndex < 0) {
-                const weapon = weaponReset(selectedItem.data)
+                const weapon = weaponReset(selectedItem.data);
                 inventory[bracketIndex] = {};
                 inventory[bracketIndex].name = weapon.name;
                 inventory[bracketIndex].label = weapon.label;
                 inventory[bracketIndex].ammo = weapon.ammo;
                 inventory[bracketIndex].type = "item_weapon";
             }
-  
+
             updated = {
                 inventory,
                 otherInventory,
@@ -615,8 +683,10 @@ export const dropItemHandler = (contextItem, personalInventory, playerInfo) => {
 
 export const giveItemSuccess = (contextItem, personalInventory, playerInfo) => {
     return (dispatch) => {
-        playerInfo.weight =
-            playerInfo.weight - personalInventory[contextItem.index].count;
+        if (personalInventory[contextItem.index].count) {
+            playerInfo.weight =
+                playerInfo.weight - personalInventory[contextItem.index].count;
+        }
         personalInventory[contextItem.index] = "{}";
         const data = {
             personalInventory,
@@ -736,15 +806,24 @@ export const loadOtherPlayerInventory = (data) => {
 
 export const loadStorage = (data) => {
     return (dispatch) => {
-        
-        if (data.inventory.length !== 50 && data.inventoryType !== "Store" && data.title !== "Evidence Locker") {
-            while (data.inventory.length !== 50 && data.inventory.length <= 50) {
+        if (
+            data.inventory.length !== 50 &&
+            data.inventoryType !== "Store" &&
+            data.title !== "Evidence Locker"
+        ) {
+            while (
+                data.inventory.length !== 50 &&
+                data.inventory.length <= 50
+            ) {
                 data.inventory.push("{}");
             }
         }
-        
-        if(data.title === "Evidence Locker") {
-            while (data.inventory.length !== 100 && data.inventory.length <= 100) {
+
+        if (data.title === "Evidence Locker") {
+            while (
+                data.inventory.length !== 200 &&
+                data.inventory.length <= 200
+            ) {
                 data.inventory.push("{}");
             }
         }
@@ -758,6 +837,6 @@ export const loadStorage = (data) => {
 
 export const updateWeaponClip = (data) => {
     return (dispatch) => {
-        dispatch({type: UPDATE_WEAPON_CLIP, payload: data})
-    }
-}
+        dispatch({ type: UPDATE_WEAPON_CLIP, payload: data });
+    };
+};
