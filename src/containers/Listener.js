@@ -223,7 +223,7 @@ export default () => {
             if (
                 e.key === "Enter" &&
                 confirmation.show &&
-                selectedItem.type === "Store"
+                Object.keys(boughtItem).length !== 0
             ) {
                 dispatch(
                     storeConfirmationHandler(

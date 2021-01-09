@@ -539,112 +539,118 @@ export const storeConfirmationHandler = (
     return async (dispatch) => {
         let inventory = [...personalInventory.inventory];
         let updated = {};
-        if (otherInventory.title !== "Gun Store") {
-            if (selectedItem && quantity) {
-                const weight = info.personal.weight + parseInt(quantity);
-                if (info.personal.maxWeight < weight) {
-                    dispatch(showErrorMessage("Over capacity."));
+        if (otherInventory.inventory.length !== 0) {
+            if (otherInventory.title !== "Gun Store") {
+                if (selectedItem && quantity) {
+                    const weight = info.personal.weight + parseInt(quantity);
+                    if (info.personal.maxWeight < weight) {
+                        dispatch(showErrorMessage("Over capacity."));
+                        return;
+                    }
+                }
+
+                const itemIndex = inventory.findIndex((item) => {
+                    if (item !== "{}") {
+                        return (
+                            item.name.toLowerCase() ===
+                            selectedItem.data.name.toLowerCase()
+                        );
+                    }
+                });
+                const bracketIndex = inventory.findIndex(
+                    (item) => item === "{}"
+                );
+                const moneyIndex = inventory.findIndex(
+                    (item) => item.name === "money"
+                );
+
+                if (itemIndex > 0) {
+                    inventory[itemIndex].price =
+                        inventory[itemIndex].count * selectedItem.data.price;
+                    inventory[itemIndex].count =
+                        inventory[itemIndex].count + quantity;
+                    inventory[itemIndex].type = "item_standard";
+                }
+                inventory[moneyIndex].money =
+                    inventory[moneyIndex].money -
+                    selectedItem.data.price * quantity;
+
+                if (bracketIndex && itemIndex < 0) {
+                    inventory[bracketIndex] = {};
+                    inventory[bracketIndex].name = selectedItem.data.name;
+                    inventory[bracketIndex].count = quantity;
+                    inventory[bracketIndex].type = "item_standard";
+                }
+
+                if (otherInventory.type === "Store") {
+                    selectedItem.data.type = "item_standard";
+                }
+
+                updated = {
+                    inventory,
+                    otherInventory,
+                    selectedItem,
+                    quantity,
+                    info,
+                    boughtItem,
+                };
+            } else {
+                if (selectedItem && quantity) {
+                    const weight = info.personal.weight + 1;
+                    if (info.personal.maxWeight < weight) {
+                        dispatch(showErrorMessage("Over capacity."));
+                        return;
+                    }
+                }
+
+                const itemIndex = inventory.findIndex((item) => {
+                    if (item !== "{}") {
+                        return (
+                            item.name.toLowerCase() ===
+                            selectedItem.data.name.toLowerCase()
+                        );
+                    }
+                });
+                const bracketIndex = inventory.findIndex(
+                    (item) => item === "{}"
+                );
+                const moneyIndex = inventory.findIndex(
+                    (item) => item.name === "money"
+                );
+
+                if (itemIndex > 0 && selectedItem.data.name !== "clip") {
+                    dispatch(showErrorMessage("You already have this weapon."));
                     return;
                 }
+
+                inventory[moneyIndex].money =
+                    inventory[moneyIndex].money - selectedItem.data.price;
+
+                if (bracketIndex && itemIndex < 0) {
+                    const weapon = weaponReset(selectedItem.data);
+                    inventory[bracketIndex] = {};
+                    inventory[bracketIndex].name = weapon.name;
+                    inventory[bracketIndex].label = weapon.label;
+                    inventory[bracketIndex].ammo = weapon.ammo;
+                    inventory[bracketIndex].type = "item_weapon";
+                }
+
+                updated = {
+                    inventory,
+                    otherInventory,
+                    selectedItem,
+                    quantity,
+                    info,
+                    boughtItem,
+                };
             }
 
-            const itemIndex = inventory.findIndex((item) => {
-                if (item !== "{}") {
-                    return (
-                        item.name.toLowerCase() ===
-                        selectedItem.data.name.toLowerCase()
-                    );
-                }
+            Apis.buyItem(updated);
+            dispatch({
+                type: STORE_CONFIRMATION_HANDLER,
+                payload: updated,
             });
-            const bracketIndex = inventory.findIndex((item) => item === "{}");
-            const moneyIndex = inventory.findIndex(
-                (item) => item.name === "money"
-            );
-
-            if (itemIndex > 0) {
-                inventory[itemIndex].price =
-                    inventory[itemIndex].count * selectedItem.data.price;
-                inventory[itemIndex].count =
-                    inventory[itemIndex].count + quantity;
-                inventory[itemIndex].type = "item_standard";
-            }
-            inventory[moneyIndex].money =
-                inventory[moneyIndex].money -
-                selectedItem.data.price * quantity;
-
-            if (bracketIndex && itemIndex < 0) {
-                inventory[bracketIndex] = {};
-                inventory[bracketIndex].name = selectedItem.data.name;
-                inventory[bracketIndex].count = quantity;
-                inventory[bracketIndex].type = "item_standard";
-            }
-
-            if (otherInventory.type === "Store") {
-                selectedItem.data.type = "item_standard";
-            }
-
-            updated = {
-                inventory,
-                otherInventory,
-                selectedItem,
-                quantity,
-                info,
-                boughtItem,
-            };
-        } else {
-            if (selectedItem && quantity) {
-                const weight = info.personal.weight + 1;
-                if (info.personal.maxWeight < weight) {
-                    dispatch(showErrorMessage("Over capacity."));
-                    return;
-                }
-            }
-
-            const itemIndex = inventory.findIndex((item) => {
-                if (item !== "{}") {
-                    return (
-                        item.name.toLowerCase() ===
-                        selectedItem.data.name.toLowerCase()
-                    );
-                }
-            });
-            const bracketIndex = inventory.findIndex((item) => item === "{}");
-            const moneyIndex = inventory.findIndex(
-                (item) => item.name === "money"
-            );
-
-            if (itemIndex > 0 && selectedItem.data.name !== "clip") {
-                dispatch(showErrorMessage("You already have this weapon."));
-                return;
-            }
-
-            inventory[moneyIndex].money =
-                inventory[moneyIndex].money - selectedItem.data.price;
-
-            if (bracketIndex && itemIndex < 0) {
-                const weapon = weaponReset(selectedItem.data);
-                inventory[bracketIndex] = {};
-                inventory[bracketIndex].name = weapon.name;
-                inventory[bracketIndex].label = weapon.label;
-                inventory[bracketIndex].ammo = weapon.ammo;
-                inventory[bracketIndex].type = "item_weapon";
-            }
-
-            updated = {
-                inventory,
-                otherInventory,
-                selectedItem,
-                quantity,
-                info,
-                boughtItem,
-            };
         }
-
-        Apis.buyItem(updated);
-        dispatch({
-            type: STORE_CONFIRMATION_HANDLER,
-            payload: updated,
-        });
     };
 };
 
@@ -720,7 +726,10 @@ export const giveItemHandler = (contextItem, personalInventory, playerInfo) => {
 
 const returnUpdatedArray = (splitContext, data, inventoryString) => {
     if (splitContext.item.count) {
-        if (splitContext.item.count <= data.quantity) {
+        if (
+            splitContext.item.count <= data.quantity ||
+            data.quantity === null
+        ) {
             return;
         }
         data[inventoryString].inventory[splitContext.index].count =
