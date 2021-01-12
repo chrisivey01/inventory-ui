@@ -252,14 +252,16 @@ export const useInventoryItem = (
                 return item;
                 break;
             case "item_weapon":
-                if (previousItem.unequip === undefined || previousItem.unequip) {
-                    item.unequip = false;
-                    return item;
-                    break;
-                } else if (previousItem.unequip === false) {
-                    item.unequip = true;
-                    return item;
-                    break;
+                if(previousItem){
+                    if (previousItem.unequip === undefined || previousItem.unequip) {
+                        item.unequip = false;
+                        return item;
+                        break;
+                    } else if (previousItem.unequip === false) {
+                        item.unequip = true;
+                        return item;
+                        break;
+                    }
                 }
             default:
                 return;

@@ -676,7 +676,9 @@ export const showSplitConfirmation = () => {
 
 export const dropItemHandler = (contextItem, personalInventory, playerInfo) => {
     return (dispatch) => {
-        playerInfo.weight -= personalInventory[contextItem.index].count;
+        if(personalInventory[contextItem.index].count){
+            playerInfo.weight -= personalInventory[contextItem.index].count;
+        }
         personalInventory[contextItem.index] = "{}";
         const data = {
             personalInventory,
