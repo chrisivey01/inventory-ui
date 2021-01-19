@@ -1,5 +1,4 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const paths = require('./paths')
 
 module.exports = {
@@ -7,15 +6,19 @@ module.exports = {
 
     plugins: [
         new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            inject: true,
-            template: "public/index.html",
-        }),
     ],
 
     module: {
         rules: [
-
+            {
+                test: /\.(js|jsx)$/,
+                exclude: /(node_modules)/,
+                use: 'babel-loader'
+            },
+            {
+                test: /\.html$/,
+                use: 'html-loader'
+            },
             {
                 test: /\.(sa|sc|c)ss$/,
                 use: ["style-loader", "css-loader", "sass-loader"],

@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import HotbarContainer from "./containers/HotbarContainer";
 import InventoryContainer from "./containers/InventoryContainer";
 import Listener from "./containers/Listener";
-import "fontsource-roboto"
+import "@fontsource/roboto"
 
 function App() {
     return (

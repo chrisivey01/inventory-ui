@@ -5,11 +5,11 @@
     "author": "Chris Ivey",
     "description": "Inventory system for GTA.",
     "dependencies": {
+        "@fontsource/roboto": "^4.1.0",
         "@material-ui/core": "^4.10.2",
         "@material-ui/icons": "^4.9.1",
         "@material-ui/lab": "^4.0.0-alpha.57",
         "axios": "^0.21.1",
-        "fontsource-roboto": "^3.0.3",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
         "react-image": "^4.0.3",
@@ -21,8 +21,8 @@
         "reselect": "^4.0.0"
     },
     "scripts": {
-        "start": "env NODE_ENV=development webpack serve",
-        "build": "env NODE_ENV=production webpack",
+        "start": "cross-env NODE_ENV=development webpack serve --config ./webpack/webpack.dev.js",
+        "build": "cross-env NODE_ENV=production webpack --config ./webpack/webpack.prod.js",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
