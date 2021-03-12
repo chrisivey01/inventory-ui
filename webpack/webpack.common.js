@@ -1,11 +1,23 @@
+const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const paths = require('./paths')
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = {
-    entry: [paths.src + '/index.js'],
-
+    entry: path.resolve(__dirname, "..", "./src/index.js"),
+    output: {
+        path: path.resolve(__dirname, "..", "..", "./gta/dist"),
+        filename: "bundle.js",
+    },
     plugins: [
         new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            inject: true,
+            template: path.resolve(__dirname, "..", "./public/index.html"),
+        }),
+        new webpack.ProvidePlugin({
+            process: "process/browser",
+        }),
     ],
 
     module: {
@@ -13,19 +25,19 @@ module.exports = {
             {
                 test: /\.(js|jsx)$/,
                 exclude: /(node_modules)/,
-                use: 'babel-loader'
+                use: "babel-loader",
             },
             {
                 test: /\.html$/,
-                use: 'html-loader'
+                use: "html-loader",
             },
             {
                 test: /\.(sa|sc|c)ss$/,
                 use: ["style-loader", "css-loader", "sass-loader"],
             },
             {
-                test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-                use: "url-loader?limit=100000",
+                test: /\.(svg|woff|woff2|eot|ttf|png)$/,
+                use: ["@svgr/webpack", "url-loader"],
             },
         ],
     },
