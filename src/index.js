@@ -5,6 +5,8 @@ import { applyMiddleware, createStore } from 'redux';
 import thunk from "redux-thunk";
 import App from './App';
 import combineReducers from "./store/index";
+import "@fontsource/roboto";
+
 import logger from 'redux-logger'
 const middle = [thunk]
 const store = createStore(combineReducers, applyMiddleware(...middle));

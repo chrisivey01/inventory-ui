@@ -6,7 +6,7 @@ const webpack = require("webpack");
 module.exports = {
     entry: path.resolve(__dirname, "..", "./src/index.js"),
     output: {
-        path: path.resolve(__dirname, "..", "..", "./gta/dist"),
+        path: path.resolve(__dirname, "..", "..", "./dist"),
         filename: "bundle.js",
     },
     plugins: [
@@ -15,9 +15,7 @@ module.exports = {
             inject: true,
             template: path.resolve(__dirname, "..", "./public/index.html"),
         }),
-        new webpack.ProvidePlugin({
-            process: "process/browser",
-        }),
+
     ],
 
     module: {
@@ -35,9 +33,10 @@ module.exports = {
                 test: /\.(sa|sc|c)ss$/,
                 use: ["style-loader", "css-loader", "sass-loader"],
             },
+
             {
-                test: /\.(svg|woff|woff2|eot|ttf|png)$/,
-                use: ["@svgr/webpack", "url-loader"],
+                test: /\.(png|jp(e*)g|svg|gif|woff|woff2|eot|ttf)$/,
+                use: "file-loader",
             },
         ],
     },

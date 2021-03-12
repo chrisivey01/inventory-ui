@@ -215,6 +215,7 @@ export default () => {
             );
             dispatch(closeContextMenu());
             dispatch(closeHotbar());
+
         }
     };
 
