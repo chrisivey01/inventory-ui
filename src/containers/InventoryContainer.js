@@ -83,10 +83,7 @@ function InventoryContainer() {
     //selectedItem.data is the full item object
     const onStop = (e, index, dropLocation) => {
         if (e.button !== 2 && index !== null) {
-            if (index === selectedItem.index) {
-                dispatch(itemActions.clearInfo());
-                return;
-            }
+
             if (dropLocation === "Personal") {
                 const item = personalInventory.inventory[index];
                 if (selectedItem.type === "Store") {

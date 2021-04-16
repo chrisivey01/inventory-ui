@@ -191,9 +191,13 @@ export const moveInventoryItem = (
 
         //PUTS ITEMS INTO OTHER INVENTORY
         if (selectedItem.type === "Personal" && dropLocation !== "Personal") {
-            const searchIndex = inventories.otherInventory.inventory.findIndex(
+            let searchIndex = inventories.otherInventory.inventory.findIndex(
                 (item) => item.name === selectedItem.data.name
             );
+
+            if(searchIndex === -1) {
+                searchIndex = index
+            }
 
             if (dropLocation === "Trunk") {
                 let trunkWeight = 0;
@@ -223,7 +227,7 @@ export const moveInventoryItem = (
                         item
                     );
 
-                    if (searchIndex !== -1) {
+                    if (searchIndex !== -1 && inventories.otherInventory.inventory[searchIndex] !== "{}") {
                         if (selectedItem.data.count) {
                             inventories.otherInventory.inventory[
                                 searchIndex
@@ -272,7 +276,7 @@ export const moveInventoryItem = (
                     item
                 );
 
-                if (searchIndex !== -1) {
+                if (searchIndex !== -1 && inventories.otherInventory.inventory[searchIndex] !== "{}") {
                     if (selectedItem.data.count) {
                         inventories.otherInventory.inventory[
                             searchIndex
@@ -676,7 +680,7 @@ export const showSplitConfirmation = () => {
 
 export const dropItemHandler = (contextItem, personalInventory, playerInfo) => {
     return (dispatch) => {
-        if(personalInventory[contextItem.index].count){
+        if (personalInventory[contextItem.index].count) {
             playerInfo.weight -= personalInventory[contextItem.index].count;
         }
         personalInventory[contextItem.index] = "{}";
@@ -752,32 +756,34 @@ const returnUpdatedArray = (splitContext, data, inventoryString) => {
 
 const handleUpdateOfSplit = (data, splitItem, inventoryString) => {
     return (dispatch) => {
-        const newLocation = data[inventoryString].inventory.findIndex(
-            (item) => item === "{}"
-        );
-        let copyItem = { ...splitItem };
-        if (newLocation !== -1) {
-            if (copyItem.type === "item_standard") {
-                copyItem.count = parseInt(data.quantity);
-            } else {
-                copyItem.money = parseInt(data.quantity);
-            }
+        if (data.quantity > 0) {
+            const newLocation = data[inventoryString].inventory.findIndex(
+                (item) => item === "{}"
+            );
+            let copyItem = { ...splitItem };
+            if (newLocation !== -1) {
+                if (copyItem.type === "item_standard") {
+                    copyItem.count = parseInt(data.quantity);
+                } else {
+                    copyItem.money = parseInt(data.quantity);
+                }
 
-            data[inventoryString].inventory[newLocation] = copyItem;
-            if (inventoryString === "personalInventory") {
-                dispatch({
-                    type: SPLIT_ITEM_HANDLER,
-                    payload: data[inventoryString].inventory,
-                });
-            } else {
-                dispatch({
-                    type: SPLIT_OTHER_ITEM_HANDLER,
-                    payload: data[inventoryString].inventory,
-                });
+                data[inventoryString].inventory[newLocation] = copyItem;
+                if (inventoryString === "personalInventory") {
+                    dispatch({
+                        type: SPLIT_ITEM_HANDLER,
+                        payload: data[inventoryString].inventory,
+                    });
+                } else {
+                    dispatch({
+                        type: SPLIT_OTHER_ITEM_HANDLER,
+                        payload: data[inventoryString].inventory,
+                    });
+                }
+                Apis.updateInventory(data);
             }
-
+        } else {
             dispatch(closeConfirmation());
-            Apis.updateInventory(data);
         }
     };
 };
