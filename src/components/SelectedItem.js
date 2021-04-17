@@ -92,7 +92,7 @@ export default () => {
                         ? {
                               top: state.mouseY,
                               left: state.mouseX,
-                              transform: "translate(-2vw, -5vh)",
+                              transform: "translate(-4vw, -12vh)",
                           }
                         : undefined
                 }

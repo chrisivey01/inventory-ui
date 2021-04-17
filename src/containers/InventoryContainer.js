@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     inventoryDisplay: {
         justifyContent: "center",
         marginTop: "5%",
+        position: "fixed"
     },
     inventoryHide: {
         display: "none",

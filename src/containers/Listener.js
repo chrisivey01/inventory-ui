@@ -14,7 +14,7 @@ import {
     updateWeapon,
     useInventoryItem,
     loadStorage,
-    updateWeaponClip
+    updateWeaponClip,
 } from "../store/inventory/inventory.actions";
 
 export default () => {
@@ -97,6 +97,8 @@ export default () => {
                                 dispatch(updateInventory(data));
                             } else {
                                 dispatch(loadInventory(data));
+                                document.querySelector("#blur").style =
+                                    "position: absolute; height: 100%;width: 100%;background-color: rgba(0, 0, 0, 0.8);bottom: 0;left: 0; display:block;";
                             }
                         }
                     }
@@ -184,8 +186,8 @@ export default () => {
                 case "UpdateAmmo": {
                     const data = {
                         weapon: event.data.weapon,
-                        ammoCount: event.data.ammoCount
-                    }
+                        ammoCount: event.data.ammoCount,
+                    };
                     dispatch(updateWeaponClip(data));
                     break;
                 }
@@ -215,6 +217,7 @@ export default () => {
             );
             dispatch(closeContextMenu());
             dispatch(closeHotbar());
+            document.querySelector("#blur").style = "display:none";
 
         }
     };
