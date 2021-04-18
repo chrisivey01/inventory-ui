@@ -16,6 +16,7 @@ import {
     loadStorage,
     updateWeaponClip,
 } from "../store/inventory/inventory.actions";
+import personalInventoryJson from '../helpers/personalInventory.json';
 
 export default () => {
     const dispatch = useDispatch();
@@ -39,6 +40,10 @@ export default () => {
             window.removeEventListener("message", (e) => onMessage(e));
         };
     }, []);
+
+    useEffect(() => {
+        window.postMessage({inventoryType: "Personal"})
+    }, [])
 
     const onMessage = (e) => {
         if (e.data.useItem) {
@@ -83,7 +88,7 @@ export default () => {
             switch (event.data.inventoryType) {
                 case "Personal": {
                     if (process.env.NODE_ENV === "development") {
-                        dispatch(loadPersonalInventory(data));
+                        dispatch(loadInventory(personalInventoryJson));
                     } else {
                         if (!event.data.closeInventory) {
                             const data = {

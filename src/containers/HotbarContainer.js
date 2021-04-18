@@ -103,6 +103,7 @@ function HotbarContainer() {
                     if (i < 5) {
                         return (
                             <Paper
+                                key={i}
                                 elevation={3}
                                 className={
                                     i === useIndex
@@ -112,13 +113,11 @@ function HotbarContainer() {
                             >
                                 <Typography
                                     className={classes.slotNumberGrid}
-                                    variant="outlined"
                                 >
                                     {i + 1}
                                 </Typography>
                                 <Typography
                                     className={classes.countGrid}
-                                    variant="outlined"
                                 >
                                     {item.ammo ? item.ammo : <Fragment />}
                                     {item.count ? item.count : <Fragment />}

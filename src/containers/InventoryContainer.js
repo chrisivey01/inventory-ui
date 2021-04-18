@@ -57,7 +57,7 @@ function InventoryContainer() {
 
     const onStart = (e, index, type) => {
         let payload;
-        if ((personalInventory.inventory[index] !== "{}")) {
+
             if (type === "Personal") {
                 payload = {
                     item: personalInventory.inventory[index],
@@ -79,12 +79,11 @@ function InventoryContainer() {
                 dispatch(inventoryActions.selectInventoryItem(payload));
                 dispatch(itemActions.setInfo(payload));
             }
-        }
     };
 
     //selectedItem.data is the full item object
     const onStop = (e, index, dropLocation) => {
-        if (e.button !== 2 && index !== null && selectedItem.data !== "{}") {
+        if (e.button !== 2 && index !== null) {
             if (dropLocation === "Personal") {
                 const item = personalInventory.inventory[index];
                 if (selectedItem.type === "Store") {
@@ -128,6 +127,7 @@ function InventoryContainer() {
                         info
                     )
                 );
+                
                 dispatch(inventoryActions.removeSelectedItem());
             }
 

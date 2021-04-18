@@ -84,7 +84,6 @@ export default ({ onStart, onStop, i, inventoryType, selectedType, item }) => {
                 >
                     <Typography
                         className={classes.countGrid}
-                        variant="outlined"
                     >
                         {item.price ? (
                             <span style={{ color: "green" }}>

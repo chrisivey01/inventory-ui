@@ -1,0 +1,2477 @@
+{
+    "inventory": {
+      "accounts": [
+        {
+          "label": "Dirty Money",
+          "money": 0,
+          "name": "black_money",
+          "type": "item_account"
+        },
+        {
+          "label": "Bank",
+          "money": 9079118,
+          "name": "bank",
+          "type": "item_account"
+        },
+        {
+          "label": "Cash",
+          "money": 5000,
+          "name": "money",
+          "type": "item_account"
+        }
+      ],
+      "money": 0,
+      "weapons": [
+        {
+          "components": [],
+          "tintIndex": 0,
+          "type": "item_weapon",
+          "label": "Pistol",
+          "ammo": 439,
+          "name": "WEAPON_PISTOL"
+        },
+        {
+          "components": [],
+          "tintIndex": 0,
+          "type": "item_weapon",
+          "label": "Sniper rifle",
+          "ammo": 25,
+          "name": "WEAPON_SNIPERRIFLE"
+        },
+        {
+          "components": [],
+          "tintIndex": 0,
+          "type": "item_weapon",
+          "label": "Snow ball",
+          "ammo": 10,
+          "name": "WEAPON_SNOWBALL"
+        }
+      ],
+      "items": [
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "accesscard",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Access Card",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "acetone",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Acetone",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "adderall",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Adderall",
+          "canRemove": 1,
+          "count": 1
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "advrepairkit",
+          "type": "item_standard",
+          "weight": 5,
+          "label": "Advanced Repairkit",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "repairkit_advanced",
+          "type": "item_standard",
+          "weight": 3,
+          "label": "Advanced Repairkit",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "highradio",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Aftermarket Radio",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "airbag",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Airbag",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "alive_chicken",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Alive Chicken",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "aluminium",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Aluminium",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "aluminum",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Aluminum",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "ammoanalyzer",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Ammo Analyzer",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "attorney",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Attorney",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "coke_pooch",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Bag of coke (5G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "meth_pooch",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Bag of meth (5G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "opium_pooch",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Bag of opium (5G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "weed_pooch",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Bag of weed (1G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "bahama_mama",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Bahama Mama",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "baking_soda",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Baking soda",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "ballas_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Ballas",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "bandage",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Bandage",
+          "canRemove": 1,
+          "count": 5
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "beer",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Beer",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "drugItem",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Black USB-C",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "blindfold",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Blindfold",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "bloodsample",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Blood Sample",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "blowpipe",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Blow Torch",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "blowtorch",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Blowtorch",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "blunt",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Blunt",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "bobbypin",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Bobbypin",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "bong",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Bong",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "book",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Book",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "pma_box",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Box",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "bulletsample",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Bullet Casing",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "bulletproof",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Bulletproof vest",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "burger",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Burger",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 1,
+          "name": "cpr_license",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "CPR License",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "battery",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Car Battery",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "car_door",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Car Door",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "car_hood",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Car Hood",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "carjack",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Car Jack",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "car_trunk",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Car Trunk",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "car_wheel",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Car Wheel",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "carne_asada_taco",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Carne Asada Taco",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "casino_chips",
+          "type": "item_standard",
+          "weight": 0,
+          "label": "Casino Chips",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "phone",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Cell phone",
+          "canRemove": 1,
+          "count": 3
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "cement",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Cement",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "bread",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Cheese Burger",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "chemistryset",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Chemistry Set",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "chicken_fillet",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Chicken Fillet",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "chicken_fried_rice",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Chicken Fried Rice",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "cigarette",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Cigarette",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "clothe",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Cloth",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "coal",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Coal",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "coke10g",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Cocaine (10G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "coke1g",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Cocaine (1G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "cokebrick",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Cocaine Brick (100G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "cocktail_shaker",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Cocktail Shaker",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "cola",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Coke",
+          "canRemove": 1,
+          "count": 1
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "coke",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Coke (1G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "copper",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Copper",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "cough_syrup",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Cough Syrup",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "coupon",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Coupon",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "dnaanalyzer",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "DNA Analyzer",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "debit_card",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Debit Card",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "defib",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Defibrillator",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "diamond",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Diamond",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "dildo",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Dildo",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "donut",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Donut",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "dough",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Dough",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "drill",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Drill",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "electric_scrap",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Electric Scrap",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "energy_drink",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Energy Drink",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "epinephrine",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Epinephrine",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "fabric",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Fabric",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "fake_id",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Fake ID",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "fish",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Fish",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "fishbait",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Fish Bait",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "fishingrod",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Fishing Rod",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "fried_rice",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Fried Rice",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "gambettis_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gambetti's",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "essence",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gas",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "gazbottle",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gas container",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "gelatin",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gelatin",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "gin",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gin",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "glass",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Glass",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "gold",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gold",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "goldbar",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gold Bar",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "goldnecklace",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gold Necklace",
+          "canRemove": 1,
+          "count": 3
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "goldwatch",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gold Watch",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "green_taco",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Green Taco",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "grove_street_family_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Grove Street Family's",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "grove_street_familys_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Grove Street Family's",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "gummy",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gummy",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "gun_license",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gun License",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "gunpowder",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gunpowder",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "gym_membership",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Gym Membership",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "hackerDevice",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Hacker Device",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "hammerwirecutter",
+          "type": "item_standard",
+          "weight": 3,
+          "label": "Hammer And Wire Cutter",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "handcuffs",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Handcuffs",
+          "canRemove": 1,
+          "count": 4
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "hat",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Hat",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "hqscale",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "High Quality Scale",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "id",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Identification Card",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "imp_armor",
+          "type": "item_standard",
+          "weight": 10,
+          "label": "Improvised Armor",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "iron",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Iron",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "jewels",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Jewels",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "keys",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Keys",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "carokit",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Kit carosserie",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "laptop",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Laptop",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "lead",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Lead",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "leather",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Leather",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "limestone",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Limestone",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "limonade",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Limonade",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "lithium",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Lithium Batteries",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "lockpick",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Lockpick",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "lost_mc_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Lost MC",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "lotteryticket",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Lottery Ticket",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "lysergic_acid",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Lysergic Acid",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "clip",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Magazine",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "martini",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Martini",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "meat",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Meat",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "medikit",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Medikit",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "metaldetector",
+          "type": "item_standard",
+          "weight": 3,
+          "label": "Metal Detector",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "meth10g",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Meth (10G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "meth1g",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Meth (1G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "meth",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Meth (1G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "methbrick",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Meth Brick (100G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "milkshake",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Milkshake",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "highrim",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Nice Rim",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "nitro",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Nitro",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "notepad",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Notepad",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "petrol",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Oil",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "olives",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Olives",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "opium",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Opium (1G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "orange_gummy",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Orange Gummy",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "oxy",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Oxy",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "oxygen_mask",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Oxygen Mask",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "pacificidcard",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Pacific ID",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "packaged_chicken",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Packaged Chicken",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "packaged_plank",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Packaged Plank",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "pants",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Pants",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "paper",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Paper",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "pepperoni",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Pepperoni",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "pepperoni_pizza",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Pepperoni Pizza",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "percocet",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Percocet",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "pickaxe",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Pickaxe",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "picnic",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Picknick kit",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "pl",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Pilot's License",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "pizza",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Pizza",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "oxycutter",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Plasma Torch",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "plastic",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Plastic",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "plastic_bag",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Plastic Bag",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "plate_changer",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Plate Changer",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "dildo2",
+          "type": "item_standard",
+          "weight": 2,
+          "label": "Pocket Pussy",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "pd_armor",
+          "type": "item_standard",
+          "weight": 7,
+          "label": "Police Armor",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "powerade",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Powerade",
+          "canRemove": 1,
+          "count": 15
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "professionals_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Professionals",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "protein_shake",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Protein Shake",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "radio",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Radio",
+          "canRemove": 1,
+          "count": 2
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "amazing_item",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Random Amazing Item",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "raspberry",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Raspberry",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "redgull",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Redbull",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "petrol_raffin",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Refined Oil",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "fixkit",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Repair kit",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "fixtool",
+          "type": "item_standard",
+          "weight": 4,
+          "label": "Repair kit",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "repairkit",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Repairkit",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "rice",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Rice",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "ring",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Ring",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "rolex",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Rolex Watch",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "rolling_paper",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Rolling Paper",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "rose",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Rose",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "rubber",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Rubber",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "saffron",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Saffron",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "contrat",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Salvage",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "sandwich",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Sandwich",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "saucy_pizza",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Saucy Pizza",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "scrap_metal",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Scrap Metal",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "turtle",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Sea Turtle",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "shark",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Shark",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "shirt",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Shirt",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "shoes",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Shoes",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "shrimp_fried_rice",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Shrimped Fried Rice",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "slaughtered_chicken",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Slaughtered Chicken",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "speaker",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Speaker",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "special_sauce",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Special Sauce",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "spicy_taco",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Spicy Taco",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 1,
+          "name": "spirit_coffee",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Spirit Coffee",
+          "canRemove": 1,
+          "count": 6
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "spirit_points",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Spirit Points",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "sportlunch",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Sportlunch",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "steel",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Steel",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "armor_plate",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Steel Armor Plate",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "lowradio",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Stock Radio",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "stockrim",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Stock Rim",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "stone",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Stone",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "swedenies_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Swedenies",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "c4_bank",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "TNT",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "taco_shell",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Taco Shell",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "tpl",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Temp. Pilot's License",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "bootyella_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "The Bootyella's",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "the_bootyellas_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "The Bootyella's",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "toothpaste",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Toothpaste",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "trout",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Trout",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "tuna",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Tuna",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "tunerchip",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Tunerchip",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "turtlebait",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Turtle Bait",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "umbrella",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Umbrella",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "uncut_rubbies",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Uncut Rubbies",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "vagos_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Vagos",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": " tincidunt quis felis. Donec ornare lacus venenatis consectetur imperdiet. Ut feugiat ultrices urna vitae semper. Maecenas iacul_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Vanilla Wafers",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "vanilla_wafers_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Vanilla Wafers",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "vegetables",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Vegetables",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "verscettis_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Verscettis",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "vodka",
+          "type": "item_standard",
+          "weight": 2,
+          "label": "Vodka",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "receipt",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "W.C receipt",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "washed_stone",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Washed Stone",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "washpan",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Washpan",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "watch",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Watch",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "water",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Water",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "weed",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Weed (1G)",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "weed_seed",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Weed seed",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": true,
+          "rare": 0,
+          "name": "whisky",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Whisky",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "wires",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Wires",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "wood",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Wood",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "wood_chips",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Wood Chips",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "wool",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Wool",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "yakuza_gang_invite",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "Yakuza",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "carotool",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "outils carosserie",
+          "canRemove": 1,
+          "count": 0
+        },
+        {
+          "usable": false,
+          "rare": 0,
+          "name": "rope",
+          "type": "item_standard",
+          "weight": 1,
+          "label": "rope",
+          "canRemove": 1,
+          "count": 0
+        }
+      ]
+    },
+    "playerInventory": [
+      "{}",
+      "{}",
+      {
+        "components": [],
+        "tintIndex": 0,
+        "type": "item_weapon",
+        "label": "Pistol",
+        "ammo": 439,
+        "name": "WEAPON_PISTOL"
+      },
+      "{}",
+      {
+        "count": 3,
+        "usable": false,
+        "type": "item_standard",
+        "weight": 1,
+        "rare": 0,
+        "label": "Cell phone",
+        "canRemove": 1,
+        "name": "phone"
+      },
+      {
+        "components": [],
+        "tintIndex": 0,
+        "type": "item_weapon",
+        "label": "Snow ball",
+        "ammo": 10,
+        "name": "WEAPON_SNOWBALL"
+      },
+      {
+        "count": 2,
+        "usable": false,
+        "type": "item_standard",
+        "weight": 1,
+        "rare": 0,
+        "label": "Radio",
+        "canRemove": 1,
+        "name": "radio"
+      },
+      {
+        "count": 1,
+        "usable": true,
+        "type": "item_standard",
+        "weight": 1,
+        "rare": 0,
+        "label": "Adderall",
+        "canRemove": 1,
+        "name": "adderall"
+      },
+      "{}",
+      "{}",
+      {
+        "count": 1,
+        "usable": true,
+        "type": "item_standard",
+        "weight": 1,
+        "rare": 0,
+        "label": "Coke",
+        "canRemove": 1,
+        "name": "cola"
+      },
+      "{}",
+      {
+        "count": 5,
+        "usable": true,
+        "type": "item_standard",
+        "weight": 1,
+        "rare": 0,
+        "label": "Bandage",
+        "canRemove": 1,
+        "name": "bandage"
+      },
+      {
+        "name": "money",
+        "label": "Cash",
+        "money": 5000,
+        "type": "item_account"
+      },
+      "{}",
+      "{}",
+      "{}",
+      {
+        "count": 3,
+        "usable": false,
+        "type": "item_standard",
+        "weight": 1,
+        "rare": 0,
+        "label": "Gold Necklace",
+        "canRemove": 1,
+        "name": "goldnecklace"
+      },
+      "{}",
+      "{}",
+      {
+        "count": 4,
+        "usable": false,
+        "type": "item_standard",
+        "weight": 1,
+        "rare": 0,
+        "label": "Handcuffs",
+        "canRemove": 1,
+        "name": "handcuffs"
+      },
+      {
+        "components": [],
+        "tintIndex": 0,
+        "type": "item_weapon",
+        "label": "Sniper rifle",
+        "ammo": 25,
+        "name": "WEAPON_SNIPERRIFLE"
+      },
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      {
+        "count": 6,
+        "usable": true,
+        "type": "item_standard",
+        "weight": 1,
+        "rare": 1,
+        "label": "Spirit Coffee",
+        "canRemove": 1,
+        "name": "spirit_coffee"
+      },
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      {
+        "count": 15,
+        "usable": true,
+        "type": "item_standard",
+        "weight": 1,
+        "rare": 0,
+        "label": "Powerade",
+        "canRemove": 1,
+        "name": "powerade"
+      },
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}",
+      "{}"
+    ],
+    "inventoryType": "Personal",
+    "info": {
+      "maxWeight": 150,
+      "weight": 40
+    }
+  }

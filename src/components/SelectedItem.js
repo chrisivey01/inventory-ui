@@ -106,7 +106,6 @@ export default () => {
                     />
                     <Typography
                         className={classes.countGrid}
-                        variant="outlined"
                     >
                         {item.count}
                     </Typography>
