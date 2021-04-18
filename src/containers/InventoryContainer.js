@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
             "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
         },
         "*::-webkit-scrollbar-thumb": {
-            borderRadius:"5px",
+            borderRadius: "5px",
             backgroundColor: "rgba(44, 62, 80, 1)",
             outline: "1px solid slategrey",
         },
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     inventoryDisplay: {
         justifyContent: "center",
         marginTop: "5%",
-        position: "fixed"
+        position: "fixed",
     },
     inventoryHide: {
         display: "none",
@@ -57,45 +57,47 @@ function InventoryContainer() {
 
     const onStart = (e, index, type) => {
         let payload;
+        if ((personalInventory.inventory[index] !== "{}")) {
+            if (type === "Personal") {
+                payload = {
+                    item: personalInventory.inventory[index],
+                    index: index,
+                    type: type,
+                };
+            } else {
+                payload = {
+                    item: otherInventory.inventory[index],
+                    index: index,
+                    type: type,
+                };
+            }
 
-        if (type === "Personal") {
-            payload = {
-                item: personalInventory.inventory[index],
-                index: index,
-                type: type,
-            };
-        } else {
-            payload = {
-                item: otherInventory.inventory[index],
-                index: index,
-                type: type,
-            };
-        }
-
-        if (e.button === 2) {
-            setAnchorEl(e.currentTarget);
-            dispatch(inventoryActions.openContextMenu(payload));
-        } else {
-            dispatch(inventoryActions.selectInventoryItem(payload));
-            dispatch(itemActions.setInfo(payload));
+            if (e.button === 2) {
+                setAnchorEl(e.currentTarget);
+                dispatch(inventoryActions.openContextMenu(payload));
+            } else {
+                dispatch(inventoryActions.selectInventoryItem(payload));
+                dispatch(itemActions.setInfo(payload));
+            }
         }
     };
 
     //selectedItem.data is the full item object
     const onStop = (e, index, dropLocation) => {
-        if (e.button !== 2 && index !== null) {
-
+        if (e.button !== 2 && index !== null && selectedItem.data !== "{}") {
             if (dropLocation === "Personal") {
                 const item = personalInventory.inventory[index];
                 if (selectedItem.type === "Store") {
                     dispatch(itemActions.clearInfo());
-                    if(selectedItem.data.type !== "item_weapon"){
+                    if (selectedItem.data.type !== "item_weapon") {
                         dispatch(
-                            inventoryActions.storeConfirmation(selectedItem.data)
+                            inventoryActions.storeConfirmation(
+                                selectedItem.data
+                            )
                         );
                     } else {
                         //if this is a weapons store just go right to buy
-                        agreeHandlerStore()
+                        agreeHandlerStore();
                     }
                 } else {
                     dispatch(itemActions.clearInfo());
@@ -110,6 +112,7 @@ function InventoryContainer() {
                             info
                         )
                     );
+                    dispatch(inventoryActions.removeSelectedItem());
                 }
             } else {
                 const item = otherInventory.inventory[index];
@@ -125,6 +128,7 @@ function InventoryContainer() {
                         info
                     )
                 );
+                dispatch(inventoryActions.removeSelectedItem());
             }
 
             dispatch(showPause());

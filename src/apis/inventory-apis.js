@@ -14,6 +14,7 @@ const dropItemUrl = "http://pma-inventory/DropItem";
 
 const givePlayerItemUrl = "http://pma-inventory/GivePlayerItem";
 
+const giveItemsFromSortsUrl = "http://pma-inventory/GiveItemsFromSort";
 
 const Apis = {
     openInventory() {
@@ -50,6 +51,10 @@ const Apis = {
 
     givePlayerItem(item, personalInventory) {
         return axios.post(givePlayerItemUrl, {item, personalInventory})
+    },
+
+    giveItemsFromSort(personalInventory) {
+        return axios.post(giveItemsFromSortsUrl, personalInventory)
     }
 };
 

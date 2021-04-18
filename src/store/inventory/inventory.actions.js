@@ -195,8 +195,8 @@ export const moveInventoryItem = (
                 (item) => item.name === selectedItem.data.name
             );
 
-            if(searchIndex === -1) {
-                searchIndex = index
+            if (searchIndex === -1) {
+                searchIndex = index;
             }
 
             if (dropLocation === "Trunk") {
@@ -227,7 +227,11 @@ export const moveInventoryItem = (
                         item
                     );
 
-                    if (searchIndex !== -1 && inventories.otherInventory.inventory[searchIndex] !== "{}") {
+                    if (
+                        searchIndex !== -1 &&
+                        inventories.otherInventory.inventory[searchIndex] !==
+                            "{}"
+                    ) {
                         if (selectedItem.data.count) {
                             inventories.otherInventory.inventory[
                                 searchIndex
@@ -276,7 +280,10 @@ export const moveInventoryItem = (
                     item
                 );
 
-                if (searchIndex !== -1 && inventories.otherInventory.inventory[searchIndex] !== "{}") {
+                if (
+                    searchIndex !== -1 &&
+                    inventories.otherInventory.inventory[searchIndex] !== "{}"
+                ) {
                     if (selectedItem.data.count) {
                         inventories.otherInventory.inventory[
                             searchIndex
@@ -704,6 +711,8 @@ export const giveItemSuccess = (contextItem, personalInventory, playerInfo) => {
             personalInventory,
             playerInfo,
         };
+
+        Apis.giveItemsFromSort(personalInventory);
         dispatch({ type: GIVE_ITEM_SUCCESS, payload: data });
     };
 };
@@ -782,7 +791,6 @@ const handleUpdateOfSplit = (data, splitItem, inventoryString) => {
                 }
                 Apis.updateInventory(data);
             }
-        } else {
             dispatch(closeConfirmation());
         }
     };
