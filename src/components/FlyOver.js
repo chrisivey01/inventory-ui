@@ -3,13 +3,10 @@ import {
     CardContent,
     CardHeader,
     Divider,
-    Grid,
-    Paper,
     Typography,
 } from "@material-ui/core";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
-import { showHoverItem } from "../store/flyover/flyover.actions";
 
 const FlyOver = () => {
     const showFlyOver = useSelector((state) => state.flyover.showFlyOver);
