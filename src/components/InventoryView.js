@@ -39,6 +39,8 @@ const PersonalInventory = ({
     anchorEl,
     onStart,
     onStop,
+    onMouseOver,
+    onMouseLeave,
     isSecondInventory,
 }) => {
     const classes = useStyles();
@@ -52,6 +54,8 @@ const PersonalInventory = ({
                         key={i}
                         onStart={onStart}
                         onStop={onStop}
+                        onMouseOver={onMouseOver}
+                        onMouseLeave={onMouseLeave}
                         i={i}
                         item={item}
                         inventoryType={inventory.type}
@@ -63,7 +67,7 @@ const PersonalInventory = ({
     );
 };
 
-const LargeInventory = ({ inventory, onStart, onStop, isSecondInventory }) => {
+const LargeInventory = ({ inventory, onStart, onStop, onMouseOver, onMouseLeave, isSecondInventory }) => {
     const classes = useStyles();
 
     return (
@@ -74,6 +78,8 @@ const LargeInventory = ({ inventory, onStart, onStop, isSecondInventory }) => {
                         key={i}
                         onStart={onStart}
                         onStop={onStop}
+                        onMouseOver={onMouseOver}
+                        onMouseLeave={onMouseLeave}
                         i={i}
                         item={item}
                         inventoryType={inventory.type}
@@ -85,7 +91,7 @@ const LargeInventory = ({ inventory, onStart, onStop, isSecondInventory }) => {
     );
 };
 
-const Shop = ({ inventory, onStart, onStop }) => {
+const Shop = ({ inventory, onStart, onStop, onMouseOver, onMouseLeave }) => {
     const classes = useStyles();
 
     return (
@@ -96,6 +102,8 @@ const Shop = ({ inventory, onStart, onStop }) => {
                         key={i}
                         onStart={onStart}
                         onStop={onStop}
+                        onMouseOver={onMouseOver}
+                        onMouseLeave={onMouseLeave}
                         i={i}
                         item={item}
                         inventoryType={inventory.type}
@@ -111,6 +119,8 @@ export default ({
     anchorEl,
     onStart,
     onStop,
+    onMouseOver,
+    onMouseLeave,
     isSecondInventory,
     info,
 }) => {
@@ -121,7 +131,8 @@ export default ({
             <Grid item>
                 {inventory.type === personal ? (
                     <Typography variant="h5">
-                        Capacity: {info.personal.weight}/{info.personal.maxWeight}
+                        Capacity: {info.personal.weight}/
+                        {info.personal.maxWeight}
                     </Typography>
                 ) : (
                     <Typography variant="h4">{inventory.title}</Typography>
@@ -134,6 +145,8 @@ export default ({
                         anchorEl={anchorEl}
                         onStart={onStart}
                         onStop={onStop}
+                        onMouseOver={onMouseOver}
+                        onMouseLeave={onMouseLeave}
                         isSecondInventory={isSecondInventory}
                     />
                 ) : (
@@ -148,6 +161,8 @@ export default ({
                         inventory={inventory}
                         onStart={onStart}
                         onStop={onStop}
+                        onMouseOver={onMouseOver}
+                        onMouseLeave={onMouseLeave}
                         isSecondInventory={isSecondInventory}
                     />
                 ) : (
@@ -159,6 +174,8 @@ export default ({
                         inventory={inventory}
                         onStart={onStart}
                         onStop={onStop}
+                        onMouseOver={onMouseOver}
+                        onMouseLeave={onMouseLeave}
                         isSecondInventory={isSecondInventory}
                     />
                 ) : (

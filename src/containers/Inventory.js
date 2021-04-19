@@ -2,11 +2,16 @@ import { Grid, makeStyles } from "@material-ui/core";
 import React, { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Confirmation from "../components/Confirmation";
+import FlyOver from "../components/FlyOver";
 import InventoryView from "../components/InventoryView";
 import Pause from "../components/Pause";
 import PlayerContextMenu from "../components/PlayerContextMenu";
 import SelectedItem from "../components/SelectedItem";
 import Snackbar from "../components/Snackbar";
+import {
+    leaveHoverItem,
+    showHoverItem,
+} from "../store/flyover/flyover.actions";
 import * as inventoryActions from "../store/inventory/inventory.actions";
 import * as itemActions from "../store/item/item.actions";
 import { removePause, showPause } from "../store/pause/pause.actions";
@@ -35,7 +40,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function InventoryContainer() {
+// const initialAxis = {
+//     mouseX: null,
+//     mouseY: null,
+// };
+
+function Inventory() {
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -58,27 +68,27 @@ function InventoryContainer() {
     const onStart = (e, index, type) => {
         let payload;
 
-            if (type === "Personal") {
-                payload = {
-                    item: personalInventory.inventory[index],
-                    index: index,
-                    type: type,
-                };
-            } else {
-                payload = {
-                    item: otherInventory.inventory[index],
-                    index: index,
-                    type: type,
-                };
-            }
+        if (type === "Personal") {
+            payload = {
+                item: personalInventory.inventory[index],
+                index: index,
+                type: type,
+            };
+        } else {
+            payload = {
+                item: otherInventory.inventory[index],
+                index: index,
+                type: type,
+            };
+        }
 
-            if (e.button === 2) {
-                setAnchorEl(e.currentTarget);
-                dispatch(inventoryActions.openContextMenu(payload));
-            } else {
-                dispatch(inventoryActions.selectInventoryItem(payload));
-                dispatch(itemActions.setInfo(payload));
-            }
+        if (e.button === 2) {
+            setAnchorEl(e.currentTarget);
+            dispatch(inventoryActions.openContextMenu(payload));
+        } else {
+            dispatch(inventoryActions.selectInventoryItem(payload));
+            dispatch(itemActions.setInfo(payload, e));
+        }
     };
 
     //selectedItem.data is the full item object
@@ -127,13 +137,36 @@ function InventoryContainer() {
                         info
                     )
                 );
-                
+
                 dispatch(inventoryActions.removeSelectedItem());
             }
 
             dispatch(showPause());
             setTimeout(() => dispatch(removePause()), 500);
         }
+    };
+
+    const onMouseOver = (event, i, inventoryType) => {
+        //    console.log(event.clientX)
+        //    console.log(event.clientY)
+        //    console.log(i)
+        //    console.log(personalInventory)
+        //    console.log(otherInventory)
+        //    console.log(inventoryType)
+        const axis = { x: event.clientX, y: event.clientY };
+        dispatch(
+            showHoverItem(
+                axis,
+                i,
+                personalInventory,
+                otherInventory,
+                inventoryType
+            )
+        );
+    };
+
+    const onMouseLeave = () => {
+        dispatch(leaveHoverItem());
     };
 
     const agreeHandlerStore = () => {
@@ -174,7 +207,6 @@ function InventoryContainer() {
                         selectedItem={selectedItem}
                     />
                 );
-                break;
             case "Drop":
                 return (
                     <Confirmation
@@ -183,7 +215,6 @@ function InventoryContainer() {
                         selectedItem={selectedItem}
                     />
                 );
-                break;
             case "Give":
                 return (
                     <Confirmation
@@ -192,7 +223,6 @@ function InventoryContainer() {
                         selectedItem={selectedItem}
                     />
                 );
-                break;
             case "Split":
                 return (
                     <Confirmation
@@ -201,7 +231,6 @@ function InventoryContainer() {
                         selectedItem={selectedItem}
                     />
                 );
-                break;
             default:
                 break;
         }
@@ -223,12 +252,16 @@ function InventoryContainer() {
                             info={info}
                             onStart={onStart}
                             onStop={onStop}
+                            onMouseOver={onMouseOver}
+                            onMouseLeave={onMouseLeave}
                             isSecondInventory={false}
                         />
                         <InventoryView
                             inventory={otherInventory}
                             onStart={onStart}
                             onStop={onStop}
+                            onMouseOver={onMouseOver}
+                            onMouseLeave={dispatch(onMouseLeave)}
                             isSecondInventory={true}
                         />
                     </Fragment>
@@ -236,6 +269,7 @@ function InventoryContainer() {
                     <Fragment />
                 )}
                 <SelectedItem />
+                <FlyOver />
                 <PlayerContextMenu anchorEl={anchorEl} />
             </Grid>
             {confirmationRenderer()}
@@ -243,4 +277,4 @@ function InventoryContainer() {
     );
 }
 
-export default InventoryContainer;
+export default Inventory;

@@ -1,5 +1,5 @@
 import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(() => ({
@@ -65,7 +65,7 @@ function fallbackSrc(ev) {
 
 export default () => {
     const classes = useStyles();
-    const [state, setState] = React.useState(initialState);
+    const [state, setState] = useState(initialState);
     const item = useSelector((state) => state.item.itemInfo);
 
     useEffect(() => {
@@ -85,7 +85,6 @@ export default () => {
     if (item.name) {
         return (
             <Paper
-                container
                 className={classes.hover}
                 style={
                     state.mouseY !== null && state.mouseX !== null

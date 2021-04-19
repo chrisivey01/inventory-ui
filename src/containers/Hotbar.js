@@ -84,7 +84,7 @@ function fallbackSrc(ev) {
     ev.target.src = "./assets/no-item.png";
 }
 
-function HotbarContainer() {
+function Hotbar() {
     const classes = useStyles();
     const personalInventory = useSelector(
         (state) => state.inventory.personalInventory
@@ -111,14 +111,10 @@ function HotbarContainer() {
                                         : classes.slot
                                 }
                             >
-                                <Typography
-                                    className={classes.slotNumberGrid}
-                                >
+                                <Typography className={classes.slotNumberGrid}>
                                     {i + 1}
                                 </Typography>
-                                <Typography
-                                    className={classes.countGrid}
-                                >
+                                <Typography className={classes.countGrid}>
                                     {item.ammo ? item.ammo : <Fragment />}
                                     {item.count ? item.count : <Fragment />}
                                     {item.money ? (
@@ -162,4 +158,4 @@ function HotbarContainer() {
     );
 }
 
-export default HotbarContainer;
+export default Hotbar;

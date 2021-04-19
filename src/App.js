@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
-import HotbarContainer from "./containers/HotbarContainer";
-import InventoryContainer from "./containers/InventoryContainer";
+import HotbarContainer from "./containers/Hotbar";
+import InventoryContainer from "./containers/Inventory";
 import Listener from "./containers/Listener";
 
 function App() {

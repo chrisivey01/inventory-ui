@@ -54,74 +54,64 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
     };
 
     const contextMenuHandler = () => {
-
         if (contextItem.type === "Personal") {
-
             if (contextItem.item.type === "item_weapon") {
                 return (
-                    <Fragment>
+                    <div>
                         <MenuItem onClick={handleUse}>Use</MenuItem>
                         <MenuItem onClick={handleDrop}>Drop</MenuItem>
                         <MenuItem onClick={handleGive}>Give</MenuItem>
-                    </Fragment>
+                    </div>
                 );
             } else {
                 if (contextItem.item.usable === true) {
                     return (
-                        <Fragment>
+                        <div>
                             <MenuItem onClick={handleUse}>Use</MenuItem>
                             <MenuItem onClick={handleDrop}>Drop</MenuItem>
                             <MenuItem onClick={handleGive}>Give</MenuItem>
                             <MenuItem onClick={handleSplit}>Split</MenuItem>
-                        </Fragment>
+                        </div>
                     );
                 } else if (contextItem.item.count === 1) {
                     return (
-                        <Fragment>
+                        <div>
                             <MenuItem onClick={handleDrop}>Drop</MenuItem>
                             <MenuItem onClick={handleGive}>Give</MenuItem>
-                        </Fragment>
+                        </div>
                     );
-                } else if (contextItem.item.count > 1 || contextItem.item.type === "item_account") {
+                } else if (
+                    contextItem.item.count > 1 ||
+                    contextItem.item.type === "item_account"
+                ) {
                     return (
-                        <Fragment>
+                        <div>
                             <MenuItem onClick={handleDrop}>Drop</MenuItem>
                             <MenuItem onClick={handleGive}>Give</MenuItem>
                             <MenuItem onClick={handleSplit}>Split</MenuItem>
-                        </Fragment>
+                        </div>
                     );
                 }
             }
-        } else if ( contextItem.item.count > 1 || contextItem.item.type === "item_account") {
+        } else if (
+            contextItem.item.count > 1 ||
+            contextItem.item.type === "item_account"
+        ) {
             return (
-                <Fragment>
+                <div>
                     <MenuItem onClick={handleSplit}>Split</MenuItem>
-                </Fragment>
+                </div>
             );
         }
     };
 
-    if (openContextMenu && contextItem.item.type !== undefined && contextItem.type === "Personal") {
+    if (contextItem.item) {
         return (
             <Menu
                 anchorEl={anchorEl}
                 open={openContextMenu}
                 onClose={handleClose}
                 keepMounted
-                autoFocusItem={openContextMenu}
-                id="menu-list-grow"
-            >
-                {contextMenuHandler()}
-            </Menu>
-        );
-    } else if (openContextMenu && contextItem.item.type !== undefined && contextItem.type !== "Personal" && contextItem.item.type !== "item_weapon") {
-        return (
-            <Menu
-                anchorEl={anchorEl}
-                open={openContextMenu}
-                onClose={handleClose}
-                keepMounted
-                autoFocusItem={openContextMenu}
                 id="menu-list-grow"
             >
                 {contextMenuHandler()}
