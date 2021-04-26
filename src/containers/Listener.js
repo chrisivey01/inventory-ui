@@ -183,6 +183,7 @@ export default () => {
                         inventoryType: event.data.inventoryType,
                         inventory: event.data.inventory,
                         title: event.data.inventoryTitle,
+                        inventorySize: event.data.inventorySize
                     };
                     dispatch(loadStorage(data));
                     break;

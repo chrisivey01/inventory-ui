@@ -857,8 +857,12 @@ export const loadStorage = (data) => {
         // }
 
         // if (data.title === "Evidence Locker") {
-        while (data.inventory.length === data.inventorySize) {
+        while (data.inventory.length <= data.inventorySize - 1) {
             data.inventory.push("{}");
+        }
+
+        while(data.inventory.length > data.inventorySize) {
+            data.inventory.pop();
         }
         // }
 
