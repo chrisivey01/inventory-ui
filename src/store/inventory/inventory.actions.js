@@ -831,27 +831,36 @@ export const loadOtherPlayerInventory = (data) => {
 
 export const loadStorage = (data) => {
     return (dispatch) => {
-        if (
-            data.inventory.length !== 50 &&
-            data.inventoryType !== "Store" &&
-            data.title !== "Evidence Locker"
-        ) {
-            while (
-                data.inventory.length !== 50 &&
-                data.inventory.length <= 50
-            ) {
-                data.inventory.push("{}");
-            }
-        }
+        // if (
+        //     data.inventory.length !== 15 &&
+        //     data.inventoryType !== "Motels"
+        // ) {
+        //     while (
+        //         data.inventory.length !== 15 &&
+        //         data.inventory.length <= 15
+        //     ) {
+        //         data.inventory.push("{}");
+        //     }
+        // }
 
-        if (data.title === "Evidence Locker") {
-            while (
-                data.inventory.length !== 200 &&
-                data.inventory.length <= 200
-            ) {
-                data.inventory.push("{}");
-            }
+        // if (
+        //     data.inventory.length !== 50 &&
+        //     data.inventoryType !== "Store" &&
+        //     data.title !== "Evidence Locker"
+        // ) {
+        //     while (
+        //         data.inventory.length !== 50 &&
+        //         data.inventory.length <= 50
+        //     ) {
+        //         data.inventory.push("{}");
+        //     }
+        // }
+
+        // if (data.title === "Evidence Locker") {
+        while (data.inventory.length === data.inventorySize) {
+            data.inventory.push("{}");
         }
+        // }
 
         dispatch({
             type: LOAD_STORAGE,

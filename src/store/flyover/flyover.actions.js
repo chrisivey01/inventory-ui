@@ -15,12 +15,12 @@ export const showHoverItem = (
                 item = personalInventory.inventory[i];
             }
         } else {
-            if (personalInventory.inventory[i] !== "{}") {
-                item = otherInventory[i];
+            if (otherInventory.inventory[i] !== "{}") {
+                item = otherInventory.inventory[i];
             }
         }
 
-        if (item !== undefined) {
+        if (item !== undefined && item !== '{}') {
             const data = {
                 item: item,
                 axis: axis,

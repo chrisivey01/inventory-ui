@@ -33,6 +33,7 @@ const store = "Store";
 const property = "Property";
 const player = "Player";
 const job = "Job";
+const motels = "Motels";
 
 const PersonalInventory = ({
     inventory,
@@ -67,7 +68,14 @@ const PersonalInventory = ({
     );
 };
 
-const LargeInventory = ({ inventory, onStart, onStop, onMouseOver, onMouseLeave, isSecondInventory }) => {
+const LargeInventory = ({
+    inventory,
+    onStart,
+    onStop,
+    onMouseOver,
+    onMouseLeave,
+    isSecondInventory,
+}) => {
     const classes = useStyles();
 
     return (
@@ -156,7 +164,8 @@ export default ({
                 {inventory.type === trunk ||
                 inventory.type === property ||
                 inventory.type === player ||
-                inventory.type === job ? (
+                inventory.type === job ||
+                inventory.type === motels ? (
                     <LargeInventory
                         inventory={inventory}
                         onStart={onStart}

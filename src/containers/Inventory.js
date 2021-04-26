@@ -40,11 +40,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-// const initialAxis = {
-//     mouseX: null,
-//     mouseY: null,
-// };
-
 function Inventory() {
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -147,12 +142,6 @@ function Inventory() {
     };
 
     const onMouseOver = (event, i, inventoryType) => {
-        //    console.log(event.clientX)
-        //    console.log(event.clientY)
-        //    console.log(i)
-        //    console.log(personalInventory)
-        //    console.log(otherInventory)
-        //    console.log(inventoryType)
         const axis = { x: event.clientX, y: event.clientY };
         dispatch(
             showHoverItem(
@@ -239,7 +228,6 @@ function Inventory() {
     return (
         <Fragment>
             {pause ? <Pause /> : <Fragment />}
-            <Snackbar />
             <Grid
                 className={classes.inventoryDisplay}
                 style={{ visibility: inventoryShow ? "visible" : "hidden" }}
@@ -261,7 +249,7 @@ function Inventory() {
                             onStart={onStart}
                             onStop={onStop}
                             onMouseOver={onMouseOver}
-                            onMouseLeave={dispatch(onMouseLeave)}
+                            onMouseLeave={onMouseLeave}
                             isSecondInventory={true}
                         />
                     </Fragment>
@@ -271,6 +259,7 @@ function Inventory() {
                 <SelectedItem />
                 <FlyOver />
                 <PlayerContextMenu anchorEl={anchorEl} />
+                <Snackbar />
             </Grid>
             {confirmationRenderer()}
         </Fragment>

@@ -66,7 +66,16 @@ function fallbackSrc(ev) {
     ev.target.src = "./assets/no-item.png";
 }
 
-export default ({ onStart, onStop, i, inventoryType, selectedType, item }) => {
+export default ({
+    onStart,
+    onStop,
+    onMouseOver,
+    onMouseLeave,
+    i,
+    inventoryType,
+    selectedType,
+    item,
+}) => {
     const classes = useStyles();
 
     return (
@@ -81,10 +90,10 @@ export default ({ onStart, onStop, i, inventoryType, selectedType, item }) => {
                     onMouseUp={(e) =>
                         onStop(e, i, inventoryType, selectedType, item.type)
                     }
+                    onMouseEnter={(e) => onMouseOver(e, i, inventoryType)}
+                    onMouseLeave={(e) => onMouseLeave()}
                 >
-                    <Typography
-                        className={classes.countGrid}
-                    >
+                    <Typography className={classes.countGrid}>
                         {item.price ? (
                             <span style={{ color: "green" }}>
                                 $

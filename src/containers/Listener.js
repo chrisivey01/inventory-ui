@@ -41,9 +41,9 @@ export default () => {
         };
     }, []);
 
-    useEffect(() => {
-        window.postMessage({inventoryType: "Personal"})
-    }, [])
+    // useEffect(() => {
+    //     window.postMessage({inventoryType: "Personal"})
+    // }, [])
 
     const onMessage = (e) => {
         if (e.data.useItem) {
@@ -183,6 +183,18 @@ export default () => {
                         inventoryType: event.data.inventoryType,
                         inventory: event.data.inventory,
                         title: event.data.inventoryTitle,
+                    };
+                    dispatch(loadStorage(data));
+                    break;
+                }
+
+                case "Motels": {
+                    const data = {
+                        inventoryType: event.data.inventoryType,
+                        inventory: event.data.inventory,
+                        title: event.data.inventoryTitle,
+                        info: event.data.info,
+                        inventorySize: event.data.inventorySize
                     };
                     dispatch(loadStorage(data));
                     break;

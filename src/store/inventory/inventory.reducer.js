@@ -97,6 +97,10 @@ const inventoryReducer = (state = initialState, action) => {
                     type: action.payload.inventoryType,
                     title: action.payload.title,
                 },
+                info: {
+                    ...state.info,
+                    other: action.payload.info
+                },
                 inventoryShow: true,
             };
         case types.SHOW_INVENTORY:

@@ -155,7 +155,11 @@ export const loadOtherInventory = (inventory, currentInventory) => {
             });
         }
 
-        while (inventoryArray.length < 50) {
+        while (inventoryArray.length < 50 && inventoryType !== "Motels") {
+            inventoryArray.push("{}");
+        }
+
+        while (inventoryArray.length < 15 && inventoryType === "Motels") {
             inventoryArray.push("{}");
         }
     } else {

@@ -32,7 +32,7 @@ const FlyOver = () => {
                 }
             >
                 <CardHeader title={item.label} />
-                <Divider style={{ backgroundColor: "#fff" }} />
+                <Divider style={{ backgroundColor: "#fff" }} variant="middle"/>
                 <CardContent>
                     <Typography style={{ color: "#fff" }}>
                         Weight: {item.weight} | Quantity: {item.count} |
