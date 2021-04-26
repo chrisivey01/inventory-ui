@@ -1,5 +1,6 @@
 import { Typography } from "@material-ui/core";
 import { Fragment } from "react";
+import RenderImage from "./RenderImage";
 
 const Slot = ({ i, inventoryType, item, classes }) => {
     const fallbackSrc = (ev) => {
@@ -31,11 +32,11 @@ const Slot = ({ i, inventoryType, item, classes }) => {
                             <Fragment />
                         )}
                     </Typography>
-                    <img
-                        draggable="false"
-                        className={classes.images}
-                        src={"./assets/" + item.name + ".png"}
-                        onError={fallbackSrc}
+
+                    <RenderImage
+                        classes={classes}
+                        item={item}
+                        fallbackSrc={fallbackSrc}
                     />
                     <Typography className={classes.name}>
                         {item.label}
