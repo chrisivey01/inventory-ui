@@ -1,14 +1,14 @@
 import React, { Fragment } from "react";
-import HotbarContainer from "./containers/Hotbar";
-import InventoryContainer from "./containers/Inventory";
+import Hotbar from "./containers/Hotbar";
+import Inventory from "./containers/Inventory";
 import Listener from "./containers/Listener";
 
 function App() {
     return (
         <Fragment>
             <Listener/>
-            <InventoryContainer />
-            <HotbarContainer />
+            <Inventory />
+            <Hotbar />
         </Fragment>
     );
 }

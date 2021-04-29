@@ -1,9 +1,26 @@
-import { Menu, MenuItem } from "@material-ui/core";
+import { makeStyles, Menu, MenuItem, MenuList, Paper } from "@material-ui/core";
 import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as inventoryActions from "../store/inventory/inventory.actions";
 
+const useStyles = makeStyles((theme) => ({
+    menu: {
+        backgroundColor: "#212121",
+        color: "#fff",
+        "& .MuiList-padding": {
+            paddingTop: 0,
+            paddingBottom: 0,
+        },
+        "& .MuiMenuItem-root": {
+            "&:hover":{
+                backgroundColor: "#666666"
+            }
+        },
+    },
+}));
+
 export default function PlayerContextMenu({ anchorEl, dropHandler }) {
+    const classes = useStyles();
     const openContextMenu = useSelector(
         (state) => state.inventory.openContextMenu
     );
@@ -58,9 +75,15 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
             if (contextItem.item.type === "item_weapon") {
                 return (
                     <div>
-                        <MenuItem onClick={handleUse}>Use</MenuItem>
-                        <MenuItem onClick={handleDrop}>Drop</MenuItem>
-                        <MenuItem onClick={handleGive}>Give</MenuItem>
+                        <MenuItem className="MenuItem" onClick={handleUse}>
+                            Use
+                        </MenuItem>
+                        <MenuItem className="MenuItem" onClick={handleDrop}>
+                            Drop
+                        </MenuItem>
+                        <MenuItem className="MenuItem" onClick={handleGive}>
+                            Give
+                        </MenuItem>
                     </div>
                 );
             } else {
@@ -99,7 +122,9 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
         ) {
             return (
                 <div>
-                    <MenuItem onClick={handleSplit}>Split</MenuItem>
+                    <MenuItem className="MenuItem" onClick={handleSplit}>
+                        Split
+                    </MenuItem>
                 </div>
             );
         }
@@ -108,6 +133,8 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
     if (contextItem.item) {
         return (
             <Menu
+                classes={{ paper: classes.menu }}
+                elevation={0}
                 anchorEl={anchorEl}
                 open={openContextMenu}
                 onClose={handleClose}

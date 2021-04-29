@@ -41,9 +41,11 @@ export default () => {
         };
     }, []);
 
-    // useEffect(() => {
-    //     window.postMessage({inventoryType: "Personal"})
-    // }, [])
+    if(process.env.NODE_ENV === "development"){
+        useEffect(() => {
+            window.postMessage({inventoryType: "Personal"})
+        }, [])
+    }
 
     const onMessage = (e) => {
         if (e.data.useItem) {
@@ -184,6 +186,18 @@ export default () => {
                         inventory: event.data.inventory,
                         title: event.data.inventoryTitle,
                         inventorySize: event.data.inventorySize
+                    };
+                    dispatch(loadStorage(data));
+                    break;
+                }
+
+                case "Gangs": {
+                    const data = {
+                        inventoryType: event.data.inventoryType,
+                        inventory: event.data.inventory,
+                        title: event.data.inventoryTitle,
+                        inventorySize: event.data.inventorySize,
+                        info: event.data.info
                     };
                     dispatch(loadStorage(data));
                     break;

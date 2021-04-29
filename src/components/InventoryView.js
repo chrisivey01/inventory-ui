@@ -2,6 +2,7 @@ import { Grid, makeStyles, Typography } from "@material-ui/core";
 import React, { Fragment } from "react";
 import InventorySlots from "./InventorySlots";
 import ShopSlots from "./ShopSlots";
+import StatsColoring from "./StatsColoring";
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -34,6 +35,7 @@ const property = "Property";
 const player = "Player";
 const job = "Job";
 const motels = "Motels";
+const gangs = "Gangs";
 
 const PersonalInventory = ({
     inventory,
@@ -138,10 +140,11 @@ export default ({
         <Grid container className={classes.container}>
             <Grid item>
                 {inventory.type === personal ? (
-                    <Typography variant="h5">
-                        Capacity: {info.personal.weight}/
-                        {info.personal.maxWeight}
-                    </Typography>
+                    <StatsColoring
+                        value={info.personal.weight}
+                        stat={"weight"}
+                        maxWeight={info.personal.maxWeight}
+                    />
                 ) : (
                     <Typography variant="h4">{inventory.title}</Typography>
                 )}
@@ -165,7 +168,8 @@ export default ({
                 inventory.type === property ||
                 inventory.type === player ||
                 inventory.type === job ||
-                inventory.type === motels ? (
+                inventory.type === motels ||
+                inventory.type === gangs ? (
                     <LargeInventory
                         inventory={inventory}
                         onStart={onStart}
