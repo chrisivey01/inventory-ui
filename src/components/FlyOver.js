@@ -1,14 +1,7 @@
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    Divider,
-    Typography,
-} from "@material-ui/core";
+import { Card, CardHeader, Divider } from "@material-ui/core";
 import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
-import StatsColoring from "./StatsColoring";
-
+import Stats from "./ItemStats/Stats";
 const FlyOver = () => {
     const showFlyOver = useSelector((state) => state.flyover.showFlyOver);
     const axis = useSelector((state) => state.flyover.axis);
@@ -23,8 +16,8 @@ const FlyOver = () => {
                               top: axis.y,
                               left: axis.x,
                               position: "absolute",
-                              width: "310px",
-                              height: "110px",
+                              width: "325px",
+                              height: "100px",
                               transform: "translate(2vw, -21vh)",
                               backgroundColor: "#212121",
                               color: "#fff",
@@ -34,30 +27,7 @@ const FlyOver = () => {
             >
                 <CardHeader title={item.label} />
                 <Divider style={{ backgroundColor: "#fff" }} variant="middle" />
-                <CardContent>
-                    <Typography variant={"body2"} style={{ color: "#fff" }}>
-                        Weight: {item.weight}
-                        {item.type !== "item_weapon" ? (
-                            <Typography  component={"span"}>
-                                {" "}
-                                | Quantity: {item.count}{" "}
-                            </Typography>
-                        ) : (
-                            <Fragment />
-                        )}
-                        {item.usable || item.type === "item_weapon" ? (
-                            <Fragment>
-                                <span> | </span>
-                                <StatsColoring value={100} stat={"item"} />
-                            </Fragment>
-                        ) : (
-                            <Fragment />
-                        )}
-                    </Typography>
-                </CardContent>
-                <Typography style={{ color: "white" }}>
-                    {JSON.stringify(item)}
-                </Typography>
+                <Stats item={item} />
             </Card>
         );
     } else {

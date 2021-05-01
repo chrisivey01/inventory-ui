@@ -771,7 +771,7 @@ const handleUpdateOfSplit = (data, splitItem, inventoryString) => {
             );
             let copyItem = { ...splitItem };
             if (newLocation !== -1) {
-                if (copyItem.type === "item_standard") {
+                if (copyItem.type === "item_standard" || copyItem.type === "item_food") {
                     copyItem.count = parseInt(data.quantity);
                 } else {
                     copyItem.money = parseInt(data.quantity);

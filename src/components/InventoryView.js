@@ -2,7 +2,7 @@ import { Grid, makeStyles, Typography } from "@material-ui/core";
 import React, { Fragment } from "react";
 import InventorySlots from "./InventorySlots";
 import ShopSlots from "./ShopSlots";
-import StatsColoring from "./StatsColoring";
+import StatsColoring from "./ItemStats/StatsColoring";
 
 const useStyles = makeStyles((theme) => ({
     container: {

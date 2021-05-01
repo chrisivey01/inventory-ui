@@ -18,9 +18,9 @@ export const loadInventory = (inventory, playerInventory) => {
         );
 
         let weapons;
-        playerInventory.unsorted.forEach((item) => {
-            item.type = "item_standard";
-        });
+        // playerInventory.unsorted.forEach((item) => {
+        //     item.type = "item_standard";
+        // });
         if (inventory.weapons) {
             weapons = inventory.weapons;
             weapons.map((item) => {
@@ -61,7 +61,7 @@ export const loadInventory = (inventory, playerInventory) => {
             array.push(weap);
         });
         items.forEach((item) => {
-            item.type = "item_standard";
+            // item.type = "item_standard";
             array.push(item);
         });
         inventory.accounts.forEach((item) => {
@@ -86,10 +86,8 @@ export const loadInventory = (inventory, playerInventory) => {
                 indexMap.forEach((index) => {
                     if (playerInv[index].count && indexMap.length > 1) {
                         count = playerInv[index].count + count;
-                    } else if(playerInv[index].money && indexMap.length > 1) {
+                    } else if (playerInv[index].money && indexMap.length > 1) {
                         count = playerInv[index].money + count;
-                    } else {
-                        count = playerInv[index];
                     }
                 });
                 if (item.count >= count || item.money >= count) {
@@ -98,8 +96,8 @@ export const loadInventory = (inventory, playerInventory) => {
                             return playerInv[invIndex];
                         }
 
-                        if(playerInv[i].money === count){
-                            return playerInv[invIndex]
+                        if (playerInv[i].money === count) {
+                            return playerInv[invIndex];
                         }
                     });
                 } else {
@@ -245,7 +243,7 @@ export const useInventoryItem = (
         if (
             previousItem &&
             previousItem.type === "item_weapon" &&
-            flattenedInventory[itemIndex].name !== previousItem.name 
+            flattenedInventory[itemIndex].name !== previousItem.name
         ) {
             item.unequip = false;
             return item;
@@ -256,8 +254,11 @@ export const useInventoryItem = (
                 return item;
                 break;
             case "item_weapon":
-                if(previousItem){
-                    if (previousItem.unequip === undefined || previousItem.unequip) {
+                if (previousItem) {
+                    if (
+                        previousItem.unequip === undefined ||
+                        previousItem.unequip
+                    ) {
                         item.unequip = false;
                         return item;
                         break;
