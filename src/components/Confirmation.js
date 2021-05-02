@@ -5,6 +5,7 @@ import {
     DialogContent,
     DialogTitle,
     IconButton,
+    makeStyles,
     Slide,
     TextField,
     Typography,
@@ -21,6 +22,24 @@ import {
     updateQuantityStore,
 } from "../store/inventory/inventory.actions";
 
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        overflowY: "unset",
+        backgroundColor: "#212121",
+        color: "#fff",
+
+        "& .MuiInputBase-root": {
+            color: "#fff",
+        },
+    },
+    button: {
+        border: "none",
+        color: "#fff",
+    },
+
+
+}));
+
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -36,12 +55,13 @@ const RenderShopConfirmation = ({
     disagreeHandler,
     dispatch,
 }) => {
+    const classes = useStyles();
     return (
         <Dialog
             open={confirmation.show}
-            // onClose={closeHandler}
             TransitionComponent={Transition}
             keepMounted
+            classes={{ paper: classes.paper }}
         >
             <DialogTitle>{confirmation.title}</DialogTitle>
             <DialogContent>
@@ -53,7 +73,7 @@ const RenderShopConfirmation = ({
 
                 <TextField
                     autoFocus
-                    style={{ border: "none" }}
+                    className="MuiInputBase-root"
                     value={quantity ? quantity : null}
                     onChange={(e) =>
                         dispatch(
@@ -68,13 +88,13 @@ const RenderShopConfirmation = ({
                     size="small"
                 />
                 <IconButton
-                    style={{ border: "none" }}
+                    classes={{ root: classes.button }}
                     onClick={() => dispatch(addItemStore())}
                 >
                     <Add />
                 </IconButton>
                 <IconButton
-                    style={{ border: "none" }}
+                    classes={{ root: classes.button }}
                     onClick={() =>
                         dispatch(
                             subtractItemStore(
@@ -90,11 +110,21 @@ const RenderShopConfirmation = ({
             </DialogContent>
             <DialogActions>
                 {quantity > 0 ? (
-                    <Button onClick={agreeHandler}>Agree</Button>
+                    <Button
+                        classes={{ root: classes.button }}
+                        onClick={agreeHandler}
+                    >
+                        Agree
+                    </Button>
                 ) : (
                     <Fragment />
                 )}
-                <Button onClick={disagreeHandler}>Disagree</Button>
+                <Button
+                    classes={{ root: classes.button }}
+                    onClick={disagreeHandler}
+                >
+                    Disagree
+                </Button>
             </DialogActions>
         </Dialog>
     );
@@ -109,6 +139,7 @@ const RenderContextConfirmation = ({
     dispatch,
 }) => {
     const inputRef = useRef();
+    const classes = useStyles();
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -126,12 +157,13 @@ const RenderContextConfirmation = ({
             onClose={closeHandler}
             TransitionComponent={Transition}
             keepMounted
+            classes={{ paper: classes.paper }}
         >
             <DialogTitle>{confirmation.title}</DialogTitle>
             <DialogContent>
                 <TextField
                     inputRef={inputRef}
-                    style={{ border: "none" }}
+                    className="MuiInputBase-root"
                     value={quantity ? quantity : null}
                     onChange={(e) =>
                         dispatch(updateQuantityContext(e.target.value))
@@ -140,13 +172,13 @@ const RenderContextConfirmation = ({
                     size="small"
                 />
                 <IconButton
-                    style={{ border: "none" }}
+                    classes={{ root: classes.button }}
                     onClick={() => dispatch(addItemContext())}
                 >
                     <Add />
                 </IconButton>
                 <IconButton
-                    style={{ border: "none" }}
+                    classes={{ root: classes.button }}
                     onClick={() => dispatch(subtractItemContext())}
                 >
                     <Remove />
@@ -154,11 +186,21 @@ const RenderContextConfirmation = ({
             </DialogContent>
             <DialogActions>
                 {quantity > 0 ? (
-                    <Button onClick={agreeHandler}>Agree</Button>
+                    <Button
+                        classes={{ root: classes.button }}
+                        onClick={agreeHandler}
+                    >
+                        Agree
+                    </Button>
                 ) : (
                     <Fragment />
                 )}
-                <Button onClick={disagreeHandler}>Disagree</Button>
+                <Button
+                    classes={{ root: classes.button }}
+                    onClick={disagreeHandler}
+                >
+                    Disagree
+                </Button>
             </DialogActions>
         </Dialog>
     );

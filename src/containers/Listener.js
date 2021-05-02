@@ -250,7 +250,6 @@ export default () => {
             dispatch(closeContextMenu());
             dispatch(closeHotbar());
             document.querySelector("#blur").style = "display:none";
-
         }
     };
 

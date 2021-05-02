@@ -579,8 +579,7 @@ export const storeConfirmationHandler = (
                     inventory[itemIndex].price =
                         inventory[itemIndex].count * selectedItem.data.price;
                     inventory[itemIndex].count =
-                        inventory[itemIndex].count + quantity;
-                    inventory[itemIndex].type = "item_standard";
+                        inventory[itemIndex].count + parseInt(quantity);
                 }
                 inventory[moneyIndex].money =
                     inventory[moneyIndex].money -
@@ -589,13 +588,13 @@ export const storeConfirmationHandler = (
                 if (bracketIndex && itemIndex < 0) {
                     inventory[bracketIndex] = {};
                     inventory[bracketIndex].name = selectedItem.data.name;
-                    inventory[bracketIndex].count = quantity;
-                    inventory[bracketIndex].type = "item_standard";
+                    inventory[bracketIndex].count = parseInt(quantity);
+                    // inventory[bracketIndex].type = "item_standard";
                 }
 
-                if (otherInventory.type === "Store") {
-                    selectedItem.data.type = "item_standard";
-                }
+                // if (otherInventory.type === "Store") {
+                //     selectedItem.data.type = "item_standard";
+                // }
 
                 updated = {
                     inventory,

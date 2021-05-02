@@ -6,8 +6,10 @@ const FlyOver = () => {
     const showFlyOver = useSelector((state) => state.flyover.showFlyOver);
     const axis = useSelector((state) => state.flyover.axis);
     const item = useSelector((state) => state.flyover.item);
+    const otherInventory = useSelector((state) => state.inventory.otherInventory);
 
-    if (showFlyOver && item.type !== "item_account") {
+
+    if (showFlyOver && item.type !== "item_account" && otherInventory.type !== "Store") {
         return (
             <Card
                 style={

@@ -260,8 +260,8 @@ function Inventory() {
                 <FlyOver />
                 <PlayerContextMenu anchorEl={anchorEl} />
                 <Snackbar />
+                {confirmationRenderer()}
             </Grid>
-            {confirmationRenderer()}
         </Fragment>
     );
 }
