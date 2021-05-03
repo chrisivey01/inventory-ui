@@ -589,7 +589,8 @@ export const storeConfirmationHandler = (
                     inventory[bracketIndex] = {};
                     inventory[bracketIndex].name = selectedItem.data.name;
                     inventory[bracketIndex].count = parseInt(quantity);
-                    // inventory[bracketIndex].type = "item_standard";
+                    inventory[bracketIndex].type = selectedItem.data.type;
+                    inventory[bracketIndex].label = selectedItem.data.label;
                 }
 
                 // if (otherInventory.type === "Store") {
@@ -685,17 +686,26 @@ export const showSplitConfirmation = () => {
 };
 
 export const dropItemHandler = (contextItem, personalInventory, playerInfo) => {
+    // Apis.dropItem(contextItem);
     return (dispatch) => {
-        if (personalInventory[contextItem.index].count) {
-            playerInfo.weight -= personalInventory[contextItem.index].count;
-        }
-        personalInventory[contextItem.index] = "{}";
-        const data = {
-            personalInventory,
-            playerInfo,
-        };
-        dispatch({ type: DROP_ITEM_HANDLER, payload: data });
-        Apis.dropItem(contextItem);
+        Apis.dropItem(contextItem, personalInventory)
+            .then((res) => {
+                if (res.data === "true") {
+                    if (personalInventory[contextItem.index].count) {
+                        playerInfo.weight -=
+                            personalInventory[contextItem.index].count;
+                    }
+                    personalInventory[contextItem.index] = "{}";
+                    const data = {
+                        personalInventory,
+                        playerInfo,
+                    };
+                    dispatch({ type: DROP_ITEM_HANDLER, payload: data });
+                } else {
+                    console.log("Error");
+                }
+            })
+            .catch((error) => console.log(error));
     };
 };
 
@@ -770,7 +780,10 @@ const handleUpdateOfSplit = (data, splitItem, inventoryString) => {
             );
             let copyItem = { ...splitItem };
             if (newLocation !== -1) {
-                if (copyItem.type === "item_standard" || copyItem.type === "item_food") {
+                if (
+                    copyItem.type === "item_standard" ||
+                    copyItem.type === "item_food"
+                ) {
                     copyItem.count = parseInt(data.quantity);
                 } else {
                     copyItem.money = parseInt(data.quantity);
@@ -860,7 +873,7 @@ export const loadStorage = (data) => {
             data.inventory.push("{}");
         }
 
-        while(data.inventory.length > data.inventorySize) {
+        while (data.inventory.length > data.inventorySize) {
             data.inventory.pop();
         }
         // }

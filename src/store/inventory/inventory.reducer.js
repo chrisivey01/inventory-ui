@@ -99,7 +99,7 @@ const inventoryReducer = (state = initialState, action) => {
                 },
                 info: {
                     ...state.info,
-                    other: action.payload.info
+                    other: action.payload.info,
                 },
                 inventoryShow: true,
             };
@@ -278,16 +278,16 @@ const inventoryReducer = (state = initialState, action) => {
         case types.ADD_ITEM_STORE:
             return {
                 ...state,
-                quantity: state.quantity + 1,
+                quantity: state.quantity ? parseInt(state.quantity) + parseInt(1) : 1,
                 storeItem: {
                     ...state.storeItem,
-                    price: state.storeItem.price + state.boughtItem.price,
+                    price: state.storeItem ? state.storeItem.price + state.boughtItem.price : state.boughtItem.price,
                 },
             };
         case types.SUBTRACT_ITEM_STORE:
             return {
                 ...state,
-                quantity: state.quantity - 1,
+                quantity: parseInt(state.quantity) - parseInt(1),
                 storeItem: {
                     ...state.storeItem,
                     price: state.storeItem.price - state.boughtItem.price,
@@ -296,12 +296,15 @@ const inventoryReducer = (state = initialState, action) => {
         case types.ADD_ITEM_CONTEXT:
             return {
                 ...state,
-                quantity: state.quantity + 1,
+                quantity: parseInt(state.quantity) + parseInt(1),
             };
         case types.SUBTRACT_ITEM_CONTEXT:
             return {
                 ...state,
-                quantity: state.quantity !== 0 ? state.quantity - 1 : 0,
+                quantity:
+                    parseInt(state.quantity) !== parseInt(0)
+                        ? parseInt(state.quantity) - parseInt(1)
+                        : parseInt(0),
             };
         case types.OPEN_CONTEXT_MENU:
             return {

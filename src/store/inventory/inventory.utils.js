@@ -90,16 +90,25 @@ export const loadInventory = (inventory, playerInventory) => {
                         count = playerInv[index].money + count;
                     }
                 });
-                if (item.count >= count || item.money >= count) {
-                    indexMap.forEach((i) => {
-                        if (playerInv[i].count === count) {
-                            return playerInv[invIndex];
-                        }
+                if (count !== 0) {
+                    for (let i of indexMap) {
+                        playerInv[i] = "{}";
+                    }
+                    playerInv[invIndex] = item;
+                    // indexMap.forEach((i) => {
+                    //     if (playerInv[i].count === count) {
+                    //         playerInv[invIndex];
+                    //     }
 
-                        if (playerInv[i].money === count) {
-                            return playerInv[invIndex];
-                        }
-                    });
+                    //     if (playerInv[i].money <= count) {
+                    //         count = 0
+                    //         playerInv[invIndex] = item;
+                    //     }
+
+                    //     if (playerInv[i].money === count || playerInv[i].count === count ) {
+                    //         playerInv[invIndex] = item;
+                    //     }
+                    // });
                 } else {
                     return (playerInv[invIndex] = item);
                 }

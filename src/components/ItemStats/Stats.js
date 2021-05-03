@@ -15,7 +15,7 @@ const Stats = ({ item }) => {
     };
 
     const ifWeapon = () => {
-        if (item.type === "item_weapon") {
+        if (item.type === "item_weapon" && item.weaponData) {
             return (
                 <Fragment>
                     <StatsColoring
