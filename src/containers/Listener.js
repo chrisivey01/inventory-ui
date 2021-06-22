@@ -191,6 +191,17 @@ export default () => {
                     break;
                 }
 
+                case "Restaurant": {
+                    const data = {
+                        inventoryType: event.data.inventoryType,
+                        inventory: event.data.inventory,
+                        title: event.data.inventoryTitle,
+                        inventorySize: event.data.inventorySize
+                    };
+                    dispatch(loadStorage(data));
+                    break;
+                }
+
                 case "Gangs": {
                     const data = {
                         inventoryType: event.data.inventoryType,
