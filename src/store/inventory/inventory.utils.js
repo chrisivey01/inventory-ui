@@ -197,9 +197,9 @@ export const loadOtherPlayerInventory = (inventory) => {
     inventoryArray = inventory.inventory.filter((item) => item.count > 0);
 
     let weapons;
-    inventoryArray.forEach((item) => {
-        item.type = "item_standard";
-    });
+    // inventoryArray.forEach((item) => {
+    //     item.type = "item_standard";
+    // });
     if (inventory.weapons) {
         weapons = inventory.weapons;
         weapons.map((item) => {
@@ -238,7 +238,7 @@ export const useInventoryItem = (
     if (flattenedInventory[itemIndex] !== "{}") {
         Apis.useInventoryItem(flattenedInventory[itemIndex], itemIndex);
 
-        if (flattenedInventory[itemIndex].type === "item_standard") {
+        if (flattenedInventory[itemIndex].type === "item_standard" || flattenedInventory[itemIndex].type === "item_food") {
             if (flattenedInventory[itemIndex].count === 0) {
                 flattenedInventory[itemIndex] = "{}";
             } else {
@@ -260,6 +260,9 @@ export const useInventoryItem = (
 
         switch (flattenedInventory[itemIndex].type) {
             case "item_standard":
+                return item;
+                break;
+            case "item_food":
                 return item;
                 break;
             case "item_weapon":

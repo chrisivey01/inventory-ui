@@ -1,4 +1,4 @@
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, Fade } from "@material-ui/core";
 import React, { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Confirmation from "../components/Confirmation";
@@ -228,9 +228,9 @@ function Inventory() {
     return (
         <Fragment>
             {pause ? <Pause /> : <Fragment />}
+            <Fade in={inventoryShow} timeout={1000,1000}>
             <Grid
                 className={classes.inventoryDisplay}
-                style={{ visibility: inventoryShow ? "visible" : "hidden" }}
                 container
             >
                 {personalInventory.inventory.length > 0 ? (
@@ -262,6 +262,7 @@ function Inventory() {
                 <Snackbar />
                 {confirmationRenderer()}
             </Grid>
+            </Fade>
         </Fragment>
     );
 }

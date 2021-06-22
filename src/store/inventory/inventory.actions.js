@@ -147,107 +147,159 @@ export const moveInventoryItem = (
             itemDropIndex: index,
         };
 
-        //SWAPS BETWEEN PERSONAL INVENTORY
-        if (selectedItem.type === "Personal" && dropLocation === "Personal") {
-            //this is for item splits, and recombinding stacks, this makes it to where you cant stack a stack on a stack[dupe]
-            if (
-                selectedItem.data.name ===
-                    personalInventory.inventory[index].name &&
-                selectedItem.index !== index
-            ) {
-                let moveToSlot = inventories.personalInventory.inventory.splice(
-                    selectedItem.index,
-                    1,
-                    "{}"
-                );
-                if (moveToSlot[0].count) {
-                    moveToSlot[0].count += item.count;
-                    inventories.personalInventory.inventory.splice(
-                        index,
+        if(selectedItem.data !== '{}'){
+
+            //SWAPS BETWEEN PERSONAL INVENTORY
+            if (selectedItem.type === "Personal" && dropLocation === "Personal") {
+                //this is for item splits, and recombinding stacks, this makes it to where you cant stack a stack on a stack[dupe]
+                if (
+                    selectedItem.data.name ===
+                        personalInventory.inventory[index].name &&
+                    selectedItem.index !== index
+                ) {
+                    let moveToSlot = inventories.personalInventory.inventory.splice(
+                        selectedItem.index,
                         1,
-                        moveToSlot[0]
+                        "{}"
                     );
-                } else if (moveToSlot[0].money) {
-                    moveToSlot[0].money += item.money;
-                    inventories.personalInventory.inventory.splice(
-                        index,
-                        1,
-                        moveToSlot[0]
-                    );
-                }
-            } else {
-                const moveToSlot = inventories.personalInventory.inventory.splice(
-                    selectedItem.index,
-                    1,
-                    item
-                );
-                inventories.personalInventory.inventory.splice(
-                    index,
-                    1,
-                    moveToSlot[0]
-                );
-            }
-        }
-
-        //PUTS ITEMS INTO OTHER INVENTORY
-        if (selectedItem.type === "Personal" && dropLocation !== "Personal") {
-            let searchIndex = inventories.otherInventory.inventory.findIndex(
-                (item) => item.name === selectedItem.data.name
-            );
-
-            if (searchIndex === -1) {
-                searchIndex = index;
-            }
-
-            if (dropLocation === "Trunk") {
-                let trunkWeight = 0;
-                let maxWeight = info.other.max / 750;
-
-                if (inventories.otherInventory.inventory[index] !== "{}") {
-                    return null;
-                }
-
-                if (selectedItem.data.type === "item_standard") {
-                    trunkWeight =
-                        selectedItem.data.count * selectedItem.data.weight;
-                } else if (selectedItem.data.type === "item_weapon") {
-                    trunkWeight = trunkWeight + 1;
-                }
-
-                inventories.otherInventory.inventory.forEach((item) => {
-                    if (item.count) {
-                        trunkWeight += item.count * item.weight;
+                    if (moveToSlot[0].count) {
+                        moveToSlot[0].count += item.count;
+                        inventories.personalInventory.inventory.splice(
+                            index,
+                            1,
+                            moveToSlot[0]
+                        );
+                    } else if (moveToSlot[0].money) {
+                        moveToSlot[0].money += item.money;
+                        inventories.personalInventory.inventory.splice(
+                            index,
+                            1,
+                            moveToSlot[0]
+                        );
                     }
-                });
-
-                if (trunkWeight <= maxWeight) {
+                } else {
                     const moveToSlot = inventories.personalInventory.inventory.splice(
                         selectedItem.index,
                         1,
                         item
                     );
-
+                    inventories.personalInventory.inventory.splice(
+                        index,
+                        1,
+                        moveToSlot[0]
+                    );
+                }
+            }
+    
+            //PUTS ITEMS INTO OTHER INVENTORY
+            if (selectedItem.type === "Personal" && dropLocation !== "Personal") {
+                let searchIndex = inventories.otherInventory.inventory.findIndex(
+                    (item) => item.name === selectedItem.data.name
+                );
+    
+                if (searchIndex === -1) {
+                    searchIndex = index;
+                }
+    
+                if (dropLocation === "Trunk") {
+                    let trunkWeight = 0;
+                    let maxWeight = info.other.max / 750;
+    
+                    if (inventories.otherInventory.inventory[index] !== "{}") {
+                        return null;
+                    }
+    
+                    if (selectedItem.data.type === "item_standard" || selectedItem.data.type === "item_food") {
+                        trunkWeight =
+                            selectedItem.data.count * selectedItem.data.weight;
+                    } else if (selectedItem.data.type === "item_weapon") {
+                        trunkWeight = trunkWeight + 1;
+                    }
+    
+                    inventories.otherInventory.inventory.forEach((item) => {
+                        if (item.count) {
+                            trunkWeight += item.count * item.weight;
+                        }
+                    });
+    
+                    if (trunkWeight <= maxWeight) {
+                        const moveToSlot = inventories.personalInventory.inventory.splice(
+                            selectedItem.index,
+                            1,
+                            item
+                        );
+    
+                        if (
+                            searchIndex !== -1 &&
+                            inventories.otherInventory.inventory[searchIndex] !==
+                                "{}"
+                        ) {
+                            if (selectedItem.data.count) {
+                                inventories.otherInventory.inventory[
+                                    searchIndex
+                                ].count =
+                                    selectedItem.data.count +
+                                    inventories.otherInventory.inventory[
+                                        searchIndex
+                                    ].count;
+                            } else if (selectedItem.data.money) {
+                                inventories.otherInventory.inventory[
+                                    searchIndex
+                                ].money =
+                                    selectedItem.data.money +
+                                    inventories.otherInventory.inventory[
+                                        searchIndex
+                                    ].money;
+                            } else {
+                                inventories.otherInventory.inventory.splice(
+                                    index,
+                                    1,
+                                    moveToSlot[0]
+                                );
+                            }
+                            inventories.personalInventory.inventory[
+                                selectedItem.index
+                            ] = "{}";
+                        } else {
+                            inventories.otherInventory.inventory.splice(
+                                index,
+                                1,
+                                moveToSlot[0]
+                            );
+                        }
+                    } else {
+                        //if overweight do this
+                        dispatch(showErrorMessage("Over capacity."));
+                        return null;
+                    }
+                } else {
+                    if (inventories.otherInventory.inventory[index] !== "{}") {
+                        return null;
+                    }
+                    const moveToSlot = inventories.personalInventory.inventory.splice(
+                        selectedItem.index,
+                        1,
+                        item
+                    );
+    
                     if (
                         searchIndex !== -1 &&
-                        inventories.otherInventory.inventory[searchIndex] !==
-                            "{}"
+                        inventories.otherInventory.inventory[searchIndex] !== "{}"
                     ) {
                         if (selectedItem.data.count) {
                             inventories.otherInventory.inventory[
                                 searchIndex
                             ].count =
                                 selectedItem.data.count +
-                                inventories.otherInventory.inventory[
-                                    searchIndex
-                                ].count;
+                                inventories.otherInventory.inventory[searchIndex]
+                                    .count;
                         } else if (selectedItem.data.money) {
                             inventories.otherInventory.inventory[
                                 searchIndex
                             ].money =
                                 selectedItem.data.money +
-                                inventories.otherInventory.inventory[
-                                    searchIndex
-                                ].money;
+                                inventories.otherInventory.inventory[searchIndex]
+                                    .money;
                         } else {
                             inventories.otherInventory.inventory.splice(
                                 index,
@@ -265,150 +317,101 @@ export const moveInventoryItem = (
                             moveToSlot[0]
                         );
                     }
-                } else {
-                    //if overweight do this
-                    dispatch(showErrorMessage("Over capacity."));
-                    return null;
-                }
-            } else {
-                if (inventories.otherInventory.inventory[index] !== "{}") {
-                    return null;
-                }
-                const moveToSlot = inventories.personalInventory.inventory.splice(
-                    selectedItem.index,
-                    1,
-                    item
-                );
-
-                if (
-                    searchIndex !== -1 &&
-                    inventories.otherInventory.inventory[searchIndex] !== "{}"
-                ) {
-                    if (selectedItem.data.count) {
-                        inventories.otherInventory.inventory[
-                            searchIndex
-                        ].count =
-                            selectedItem.data.count +
-                            inventories.otherInventory.inventory[searchIndex]
-                                .count;
-                    } else if (selectedItem.data.money) {
-                        inventories.otherInventory.inventory[
-                            searchIndex
-                        ].money =
-                            selectedItem.data.money +
-                            inventories.otherInventory.inventory[searchIndex]
-                                .money;
-                    } else {
-                        inventories.otherInventory.inventory.splice(
-                            index,
-                            1,
-                            moveToSlot[0]
-                        );
-                    }
-                    inventories.personalInventory.inventory[
-                        selectedItem.index
-                    ] = "{}";
-                } else {
-                    inventories.otherInventory.inventory.splice(
-                        index,
-                        1,
-                        moveToSlot[0]
-                    );
                 }
             }
-        }
-
-        //SWAPS BETWEEN PERSONAL AND PLAYER TO PREVENT DUPING, THIS NEEDS TO REMAIN BEFORE OTHERS
-        if (selectedItem.type === "Player" && dropLocation === "Player") {
-            return null;
-        }
-
-        if (selectedItem.type !== "Personal" && dropLocation !== "Personal") {
-            const moveToSlot = inventories.otherInventory.inventory.splice(
-                selectedItem.index,
-                1,
-                item
-            );
-
-            inventories.otherInventory.inventory.splice(
-                index,
-                1,
-                moveToSlot[0]
-            );
-        }
-
-        //GETS ITEM FROM OTHER INVENTORY
-        if (selectedItem.type !== "Personal" && dropLocation === "Personal") {
-            let maxWeight = info.personal.maxWeight;
-            let weight = info.personal.weight;
-
-            if (selectedItem.data.count) {
-                weight = selectedItem.data.count + weight;
-            }
-
-            if (inventories.personalInventory.inventory[index] !== "{}") {
+    
+            //SWAPS BETWEEN PERSONAL AND PLAYER TO PREVENT DUPING, THIS NEEDS TO REMAIN BEFORE OTHERS
+            if (selectedItem.type === "Player" && dropLocation === "Player") {
                 return null;
             }
-
-            if (checkWeight(weight, maxWeight)) {
-                //DEALING WITH SPLITS [GETS]
-                const searchIndex = inventories.personalInventory.inventory.findIndex(
-                    (item) => item.name === selectedItem.data.name
-                );
-                if (
-                    inventories.personalInventory.inventory[searchIndex] &&
-                    inventories.personalInventory.inventory[searchIndex]
-                        .type === "item_weapon"
-                ) {
-                    return dispatch(
-                        showErrorMessage("You already have this weapon.")
-                    );
-                }
+    
+            if (selectedItem.type !== "Personal" && dropLocation !== "Personal") {
                 const moveToSlot = inventories.otherInventory.inventory.splice(
                     selectedItem.index,
                     1,
                     item
                 );
-                if (searchIndex !== -1) {
-                    if (selectedItem.data.count) {
-                        inventories.personalInventory.inventory[
-                            searchIndex
-                        ].count =
-                            selectedItem.data.count +
-                            inventories.personalInventory.inventory[searchIndex]
-                                .count;
-                    } else if (selectedItem.data.money) {
-                        inventories.personalInventory.inventory[
-                            searchIndex
-                        ].money =
-                            selectedItem.data.money +
-                            inventories.personalInventory.inventory[searchIndex]
-                                .money;
+    
+                inventories.otherInventory.inventory.splice(
+                    index,
+                    1,
+                    moveToSlot[0]
+                );
+            }
+    
+            //GETS ITEM FROM OTHER INVENTORY
+            if (selectedItem.type !== "Personal" && dropLocation === "Personal") {
+                let maxWeight = info.personal.maxWeight;
+                let weight = info.personal.weight;
+    
+                if (selectedItem.data.count) {
+                    weight = selectedItem.data.count + weight;
+                }
+    
+                if (inventories.personalInventory.inventory[index] !== "{}") {
+                    return null;
+                }
+    
+                if (checkWeight(weight, maxWeight)) {
+                    //DEALING WITH SPLITS [GETS]
+                    const searchIndex = inventories.personalInventory.inventory.findIndex(
+                        (item) => item.name === selectedItem.data.name
+                    );
+                    if (
+                        inventories.personalInventory.inventory[searchIndex] &&
+                        inventories.personalInventory.inventory[searchIndex]
+                            .type === "item_weapon"
+                    ) {
+                        return dispatch(
+                            showErrorMessage("You already have this weapon.")
+                        );
+                    }
+                    const moveToSlot = inventories.otherInventory.inventory.splice(
+                        selectedItem.index,
+                        1,
+                        item
+                    );
+                    if (searchIndex !== -1) {
+                        if (selectedItem.data.count) {
+                            inventories.personalInventory.inventory[
+                                searchIndex
+                            ].count =
+                                selectedItem.data.count +
+                                inventories.personalInventory.inventory[searchIndex]
+                                    .count;
+                        } else if (selectedItem.data.money) {
+                            inventories.personalInventory.inventory[
+                                searchIndex
+                            ].money =
+                                selectedItem.data.money +
+                                inventories.personalInventory.inventory[searchIndex]
+                                    .money;
+                        } else {
+                            inventories.otherInventory.inventory.splice(
+                                index,
+                                1,
+                                moveToSlot[0]
+                            );
+                        }
+                        inventories.otherInventory.inventory[selectedItem.index] =
+                            "{}";
                     } else {
-                        inventories.otherInventory.inventory.splice(
+                        inventories.personalInventory.inventory.splice(
                             index,
                             1,
                             moveToSlot[0]
                         );
                     }
-                    inventories.otherInventory.inventory[selectedItem.index] =
-                        "{}";
                 } else {
-                    inventories.personalInventory.inventory.splice(
-                        index,
-                        1,
-                        moveToSlot[0]
-                    );
+                    //if overweight do this
+                    dispatch(showErrorMessage("Over capacity."));
+                    return null;
                 }
-            } else {
-                //if overweight do this
-                dispatch(showErrorMessage("Over capacity."));
-                return null;
             }
+    
+            dispatch({ type: MOVE_INVENTORY_ITEM, payload: inventories });
+            Apis.updateInventory(inventories);
         }
-
-        dispatch({ type: MOVE_INVENTORY_ITEM, payload: inventories });
-        Apis.updateInventory(inventories);
     };
 };
 
