@@ -901,6 +901,10 @@ export const updateWeaponClip = (data) => {
 
 export const doubleClickSwap = (personalInventory, otherInventory, index, type) => {
     return (dispatch) => {
+        if(personalInventory.inventory.length === 0 || otherInventory.inventory.length === 0) {
+            return
+        }
+        
         if(type === "Personal"){
             const item = personalInventory.inventory[index]
             const freeLocation = otherInventory.inventory.indexOf("{}")
