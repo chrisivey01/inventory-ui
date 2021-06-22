@@ -36,6 +36,7 @@ const player = "Player";
 const job = "Job";
 const motels = "Motels";
 const gangs = "Gangs";
+const restaurant = "Restaurant";
 
 const PersonalInventory = ({
     inventory,
@@ -168,6 +169,7 @@ export default ({
                 inventory.type === property ||
                 inventory.type === player ||
                 inventory.type === job ||
+                inventory.type === restaurant ||
                 inventory.type === motels ||
                 inventory.type === gangs ? (
                     <LargeInventory
