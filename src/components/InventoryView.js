@@ -39,6 +39,7 @@ const gangs = "Gangs";
 const restaurant = "Restaurant";
 
 const PersonalInventory = ({
+    onClick,
     inventory,
     anchorEl,
     onStart,
@@ -54,6 +55,7 @@ const PersonalInventory = ({
             {inventory.inventory.map((item, i) => {
                 return (
                     <InventorySlots
+                        onClick={onClick}
                         anchorEl={anchorEl}
                         key={i}
                         onStart={onStart}
@@ -72,6 +74,7 @@ const PersonalInventory = ({
 };
 
 const LargeInventory = ({
+    onClick,
     inventory,
     onStart,
     onStop,
@@ -95,6 +98,7 @@ const LargeInventory = ({
                         item={item}
                         inventoryType={inventory.type}
                         isSecondInventory={isSecondInventory}
+                        onClick={onClick}
                     />
                 );
             })}
@@ -134,6 +138,7 @@ export default ({
     onMouseLeave,
     isSecondInventory,
     info,
+    onClick
 }) => {
     const classes = useStyles();
 
@@ -160,6 +165,7 @@ export default ({
                         onMouseOver={onMouseOver}
                         onMouseLeave={onMouseLeave}
                         isSecondInventory={isSecondInventory}
+                        onClick={onClick}
                     />
                 ) : (
                     <Fragment />
@@ -179,6 +185,7 @@ export default ({
                         onMouseOver={onMouseOver}
                         onMouseLeave={onMouseLeave}
                         isSecondInventory={isSecondInventory}
+                        onClick={onClick}
                     />
                 ) : (
                     <Fragment />
@@ -192,6 +199,7 @@ export default ({
                         onMouseOver={onMouseOver}
                         onMouseLeave={onMouseLeave}
                         isSecondInventory={isSecondInventory}
+                        onClick={onClick}
                     />
                 ) : (
                     <Fragment />

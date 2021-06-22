@@ -1,5 +1,5 @@
-import { makeStyles, Paper, Typography } from "@material-ui/core";
-import React, { Fragment } from "react";
+import { makeStyles, Paper } from "@material-ui/core";
+import React from "react";
 import Slot from "./Slot";
 
 const useStyles = makeStyles((theme) => ({
@@ -78,6 +78,7 @@ export default ({
     onMouseOver,
     onMouseLeave,
     selectedType,
+    onClick
 }) => {
     const classes = useStyles();
 
@@ -85,6 +86,7 @@ export default ({
         <Paper
             elevation={3}
             className={classes.slot}
+            onClick={(e) => onClick(e, i, inventoryType, selectedType, item.type)}
             onMouseDown={(e) =>
                 onStart(e, i, inventoryType, selectedType, item.type)
             }

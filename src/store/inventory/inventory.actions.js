@@ -12,6 +12,9 @@ export const LOAD_OTHER_PLAYER_INVENTORY = "LOAD_OTHER_PLAYER_INVENTORY";
 export const SELECT_INVENTORY_ITEM = "SELECT_INVENTORY_ITEM";
 export const SELECT_INVENTORY_ITEM_INDEX = "SELECT_INVENTORY_ITEM_INDEX";
 export const MOVE_INVENTORY_ITEM = "MOVE_INVENTORY_ITEM";
+
+export const DOUBLE_CLICK_SWAP = "DOUBLE_CLICK_SWAP";
+
 export const USE_ITEM_HANDLER = "USE_ITEM_HANDLER";
 export const USE_INVENTORY_ITEM = "USE_INVENTORY_ITEM";
 export const HIDE_USE_INVENTORY_ITEM = "HIDE_USE_INVENTORY_ITEM";
@@ -893,3 +896,24 @@ export const updateWeaponClip = (data) => {
         dispatch({ type: UPDATE_WEAPON_CLIP, payload: data });
     };
 };
+
+
+
+export const doubleClickSwap = (personalInventory, otherInventory, index, type) => {
+    return (dispatch) => {
+        if(type === "Personal"){
+            const item = personalInventory.inventory[index]
+            const freeLocation = otherInventory.inventory.indexOf("{}")
+            
+            personalInventory.inventory[index] = "{}"
+            otherInventory.inventory[freeLocation] = item
+        } else {
+            const item = otherInventory.inventory[index]
+            const freeLocation = personalInventory.inventory.indexOf("{}")
+            
+            otherInventory.inventory[index] = "{}"
+            personalInventory.inventory[freeLocation] = item
+        }
+        dispatch({ type: DOUBLE_CLICK_SWAP, payload: data });
+    }
+}

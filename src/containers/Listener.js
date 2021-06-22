@@ -17,6 +17,8 @@ import {
     updateWeaponClip,
 } from "../store/inventory/inventory.actions";
 import personalInventoryJson from '../helpers/personalInventory.json';
+import playerJson from "../data/player.json";
+import trunkJson from "../data/trunk.json";
 
 export default () => {
     const dispatch = useDispatch();
@@ -43,7 +45,8 @@ export default () => {
 
     if(process.env.NODE_ENV === "development"){
         useEffect(() => {
-            window.postMessage({inventoryType: "Personal"})
+            window.postMessage(playerJson, '*')
+            window.postMessage(trunkJson, '*')
         }, [])
     }
 
@@ -90,7 +93,19 @@ export default () => {
             switch (event.data.inventoryType) {
                 case "Personal": {
                     if (process.env.NODE_ENV === "development") {
-                        dispatch(loadInventory(personalInventoryJson));
+                        // dispatch(loadInventory(personalInventoryJson));
+                        const data = {
+                            inventory: event.data.inventory,
+                            playerInventory: event.data.playerInventory,
+                            inventoryType: event.data.inventoryType,
+                            info: event.data.info,
+                            inventoryTitle: event.data.inventoryTitle,
+                        };
+                        if (event.data.updateInventory) {
+                            dispatch(updateInventory(data));
+                        } else {
+                            dispatch(loadInventory(data));
+                        }
                     } else {
                         if (!event.data.closeInventory) {
                             const data = {
@@ -104,8 +119,6 @@ export default () => {
                                 dispatch(updateInventory(data));
                             } else {
                                 dispatch(loadInventory(data));
-                                document.querySelector("#blur").style =
-                                    "position: absolute; height: 100%;width: 100%;background-color: rgba(0, 0, 0, 0.8);bottom: 0;left: 0; display:block;";
                             }
                         }
                     }
@@ -260,7 +273,6 @@ export default () => {
             );
             dispatch(closeContextMenu());
             dispatch(closeHotbar());
-            document.querySelector("#blur").style = "display:none";
         }
     };
 

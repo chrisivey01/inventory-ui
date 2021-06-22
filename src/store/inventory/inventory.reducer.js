@@ -406,6 +406,18 @@ const inventoryReducer = (state = initialState, action) => {
                     }),
                 },
             };
+        case types.DOUBLE_CLICK_SWAP:
+            return {
+                ...state, 
+                personalInventory: {
+                    ...state.personalInventory,
+                    inventory: action.payload.personalInventory,
+                },
+                otherInventory: {
+                    ...state.otherInventory,
+                    inventory: action.payload.otherInventory,
+                },
+            }
 
         default:
             return state;

@@ -186,6 +186,25 @@ function Inventory() {
         dispatch(inventoryActions.closeConfirmation());
     };
 
+
+    // dispatch(
+    //     inventoryActions.moveInventoryItem(
+    //         item,
+    //         personalInventory,
+    //         otherInventory,
+    //         selectedItem,
+    //         dropLocation,
+    //         index,
+    //         info
+    //     )
+
+    const onClick = (e, index, type, selectedType, item) => {
+        if(e.detail === 2){
+                dispatch(
+                    inventoryActions.doubleClickSwap(personalInventory, otherInventory, index, type))
+        }
+    }
+
     const confirmationRenderer = () => {
         switch (confirmation.type) {
             case "Store":
@@ -228,7 +247,7 @@ function Inventory() {
     return (
         <Fragment>
             {pause ? <Pause /> : <Fragment />}
-            <Fade in={inventoryShow} timeout={1000,1000}>
+            <Fade in={inventoryShow} timeout={500,500}>
             <Grid
                 className={classes.inventoryDisplay}
                 container
@@ -242,6 +261,7 @@ function Inventory() {
                             onStop={onStop}
                             onMouseOver={onMouseOver}
                             onMouseLeave={onMouseLeave}
+                            onClick={onClick}
                             isSecondInventory={false}
                         />
                         <InventoryView
@@ -250,6 +270,7 @@ function Inventory() {
                             onStop={onStop}
                             onMouseOver={onMouseOver}
                             onMouseLeave={onMouseLeave}
+                            onClick={onClick}
                             isSecondInventory={true}
                         />
                     </Fragment>
