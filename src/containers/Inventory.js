@@ -186,22 +186,10 @@ function Inventory() {
         dispatch(inventoryActions.closeConfirmation());
     };
 
-
-    // dispatch(
-    //     inventoryActions.moveInventoryItem(
-    //         item,
-    //         personalInventory,
-    //         otherInventory,
-    //         selectedItem,
-    //         dropLocation,
-    //         index,
-    //         info
-    //     )
-
     const onClick = (e, index, type, selectedType, item) => {
-        if(e.detail === 2){
-                dispatch(
-                    inventoryActions.doubleClickSwap(personalInventory, otherInventory, index, type))
+        if (e.detail === 2) {
+            dispatch(
+                inventoryActions.doubleClickSwap(personalInventory, otherInventory, index, type))
         }
     }
 
@@ -247,42 +235,42 @@ function Inventory() {
     return (
         <Fragment>
             {pause ? <Pause /> : <Fragment />}
-            <Fade in={inventoryShow} timeout={500,500}>
-            <Grid
-                className={classes.inventoryDisplay}
-                container
-            >
-                {personalInventory.inventory.length > 0 ? (
-                    <Fragment>
-                        <InventoryView
-                            inventory={personalInventory}
-                            info={info}
-                            onStart={onStart}
-                            onStop={onStop}
-                            onMouseOver={onMouseOver}
-                            onMouseLeave={onMouseLeave}
-                            onClick={onClick}
-                            isSecondInventory={false}
-                        />
-                        <InventoryView
-                            inventory={otherInventory}
-                            onStart={onStart}
-                            onStop={onStop}
-                            onMouseOver={onMouseOver}
-                            onMouseLeave={onMouseLeave}
-                            onClick={onClick}
-                            isSecondInventory={true}
-                        />
-                    </Fragment>
-                ) : (
-                    <Fragment />
-                )}
-                <SelectedItem />
-                <FlyOver />
-                <PlayerContextMenu anchorEl={anchorEl} />
-                <Snackbar />
-                {confirmationRenderer()}
-            </Grid>
+            <Fade in={inventoryShow} timeout={500, 500}>
+                <Grid
+                    className={classes.inventoryDisplay}
+                    container
+                >
+                    {personalInventory.inventory.length > 0 ? (
+                        <Fragment>
+                            <InventoryView
+                                inventory={personalInventory}
+                                info={info}
+                                onStart={onStart}
+                                onStop={onStop}
+                                onMouseOver={onMouseOver}
+                                onMouseLeave={onMouseLeave}
+                                onClick={onClick}
+                                isSecondInventory={false}
+                            />
+                            <InventoryView
+                                inventory={otherInventory}
+                                onStart={onStart}
+                                onStop={onStop}
+                                onMouseOver={onMouseOver}
+                                onMouseLeave={onMouseLeave}
+                                onClick={onClick}
+                                isSecondInventory={true}
+                            />
+                        </Fragment>
+                    ) : (
+                        <Fragment />
+                    )}
+                    <SelectedItem />
+                    <FlyOver />
+                    <PlayerContextMenu anchorEl={anchorEl} />
+                    <Snackbar />
+                    {confirmationRenderer()}
+                </Grid>
             </Fade>
         </Fragment>
     );

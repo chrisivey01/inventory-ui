@@ -86,7 +86,7 @@ export default ({
         <Paper
             elevation={3}
             className={classes.slot}
-            onClick={(e) => onClick(e, i, inventoryType, selectedType, item.type)}
+            // onClick={(e) => onClick(e, i, inventoryType, selectedType, item.type)}
             onMouseDown={(e) =>
                 onStart(e, i, inventoryType, selectedType, item.type)
             }

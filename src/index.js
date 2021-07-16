@@ -8,12 +8,12 @@ import combineReducers from "./store/index";
 import "@fontsource/roboto";
 
 import logger from 'redux-logger'
-const middle = [thunk, logger]
+const middle = [thunk]
 const store = createStore(combineReducers, applyMiddleware(...middle));
 
 ReactDOM.render(
   <Provider store={store}>
-        <App />
+    <App />
   </Provider>,
   document.getElementById('root')
 );

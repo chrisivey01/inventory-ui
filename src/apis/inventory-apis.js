@@ -8,6 +8,9 @@ const openTrunkUrl = "http://pma-inventory/OpenTrunk";
 
 const updateInventoryUrl = "http://pma-inventory/UpdateInventory";
 
+const swapUpdateInventoryUrl = "http://pma-inventory/SwapUpdateInventory";
+
+
 const buyItemUrl = "http://pma-inventory/BuyItem";
 
 const dropItemUrl = "http://pma-inventory/DropItem";
@@ -23,11 +26,11 @@ const Apis = {
 
     closeInventory(data) {
         return axios.post(closeInventoryUrl, data);
-	},
-	
-	useItem(item) {
-		return axios.post(useItemUrl, item)
-	},
+    },
+
+    useItem(item) {
+        return axios.post(useItemUrl, item)
+    },
 
     useInventoryItem(item) {
         return axios.post(useHotbarItemUrl, item);
@@ -41,6 +44,10 @@ const Apis = {
         return axios.post(updateInventoryUrl, data);
     },
 
+    swapUpdateInventory(data) {
+        return axios.post(swapUpdateInventoryUrl, data);
+    },
+
     buyItem(item) {
         return axios.post(buyItemUrl, item);
     },
@@ -50,7 +57,7 @@ const Apis = {
     },
 
     givePlayerItem(item, personalInventory) {
-        return axios.post(givePlayerItemUrl, {item, personalInventory})
+        return axios.post(givePlayerItemUrl, { item, personalInventory })
     },
 
     giveItemsFromSort(personalInventory) {

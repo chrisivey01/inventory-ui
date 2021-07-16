@@ -43,7 +43,7 @@ export default () => {
         };
     }, []);
 
-    if(process.env.NODE_ENV === "development"){
+    if (process.env.NODE_ENV === "development") {
         useEffect(() => {
             window.postMessage(playerJson, '*')
             window.postMessage(trunkJson, '*')
@@ -93,7 +93,6 @@ export default () => {
             switch (event.data.inventoryType) {
                 case "Personal": {
                     if (process.env.NODE_ENV === "development") {
-                        // dispatch(loadInventory(personalInventoryJson));
                         const data = {
                             inventory: event.data.inventory,
                             playerInventory: event.data.playerInventory,
