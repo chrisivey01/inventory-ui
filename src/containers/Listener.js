@@ -192,6 +192,16 @@ export default () => {
                     break;
                 }
 
+                // case "Tech Store": {
+                //     const data = {
+                //         inventoryType: event.data.inventoryType,
+                //         inventory: event.data.inventory,
+                //         title: event.data.inventoryTitle,
+                //     };
+                //     dispatch(loadStorage(data));
+                //     break;
+                // }
+
                 case "Job": {
                     const data = {
                         inventoryType: event.data.inventoryType,

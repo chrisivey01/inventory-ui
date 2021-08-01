@@ -875,7 +875,7 @@ const returnUpdatedArray = (splitContext, data, inventoryString) => {
 
 const handleUpdateOfSplit = (data, splitItem, inventoryString) => {
     return (dispatch) => {
-        if (data.quantity > 0) {
+        if (data && data.quantity > 0) {
             const newLocation = data[inventoryString].inventory.findIndex(
                 (item) => item === "{}"
             );
