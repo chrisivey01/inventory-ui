@@ -742,14 +742,14 @@ export const storeConfirmationHandler = (
 
 
 const needLicenseCheck = (item) => {
-    if (item === "weapon_pistol_mk2") {
+    if (item === "weapon_pistol_mk2" || item === "weapon_musket") {
         return true
     } else {
         return false
     }
 }
 const verifyIfGunLicense = (dispatch, gunLicenseIndex, item) => {
-    if (gunLicenseIndex === -1 && item === "weapon_pistol_mk2") {
+    if (gunLicenseIndex === -1 && (item === "weapon_pistol_mk2" || item === "weapon_musket")) {
         return false
     }
     return true
