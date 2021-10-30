@@ -1,10 +1,6 @@
 import Apis from "../../apis/inventory-apis";
-import {
-    showErrorMessage
-} from "../snackbar/snackbar.actions";
-import {
-    weaponReset
-} from "../../helpers/weapons";
+import {showErrorMessage} from "../snackbar/snackbar.actions";
+import {weaponReset} from "../../helpers/weapons";
 
 export const LOAD_INVENTORY = "LOAD_INVENTORY";
 export const QUICK_UPDATE_INVENTORY = "QUICK_UPDATE_INVENTORY";
@@ -145,6 +141,7 @@ export const moveInventoryItem = (
     info
 ) => {
     return (dispatch) => {
+        if (selectedItem.index === null) return;
         let inventories = {
             personalInventory: {
                 ...personalInventory
@@ -259,25 +256,25 @@ export const moveInventoryItem = (
                         if (
                             searchIndex !== -1 &&
                             inventories.otherInventory.inventory[
-                            searchIndex
-                            ] !== "{}"
+                                searchIndex
+                                ] !== "{}"
                         ) {
                             if (selectedItem.data.count) {
                                 inventories.otherInventory.inventory[
                                     searchIndex
-                                ].count =
+                                    ].count =
                                     selectedItem.data.count +
                                     inventories.otherInventory.inventory[
                                         searchIndex
-                                    ].count;
+                                        ].count;
                             } else if (selectedItem.data.money) {
                                 inventories.otherInventory.inventory[
                                     searchIndex
-                                ].money =
+                                    ].money =
                                     selectedItem.data.money +
                                     inventories.otherInventory.inventory[
                                         searchIndex
-                                    ].money;
+                                        ].money;
                             } else {
                                 inventories.otherInventory.inventory.splice(
                                     index,
@@ -287,7 +284,7 @@ export const moveInventoryItem = (
                             }
                             inventories.personalInventory.inventory[
                                 selectedItem.index
-                            ] = "{}";
+                                ] = "{}";
                         } else {
                             inventories.otherInventory.inventory.splice(
                                 index,
@@ -319,19 +316,19 @@ export const moveInventoryItem = (
                         if (selectedItem.data.count) {
                             inventories.otherInventory.inventory[
                                 searchIndex
-                            ].count =
+                                ].count =
                                 selectedItem.data.count +
                                 inventories.otherInventory.inventory[
                                     searchIndex
-                                ].count;
+                                    ].count;
                         } else if (selectedItem.data.money) {
                             inventories.otherInventory.inventory[
                                 searchIndex
-                            ].money =
+                                ].money =
                                 selectedItem.data.money +
                                 inventories.otherInventory.inventory[
                                     searchIndex
-                                ].money;
+                                    ].money;
                         } else {
                             inventories.otherInventory.inventory.splice(
                                 index,
@@ -341,7 +338,7 @@ export const moveInventoryItem = (
                         }
                         inventories.personalInventory.inventory[
                             selectedItem.index
-                        ] = "{}";
+                            ] = "{}";
                     } else {
                         inventories.otherInventory.inventory.splice(
                             index,
@@ -415,19 +412,19 @@ export const moveInventoryItem = (
                         if (selectedItem.data.count) {
                             inventories.personalInventory.inventory[
                                 searchIndex
-                            ].count =
+                                ].count =
                                 selectedItem.data.count +
                                 inventories.personalInventory.inventory[
                                     searchIndex
-                                ].count;
+                                    ].count;
                         } else if (selectedItem.data.money) {
                             inventories.personalInventory.inventory[
                                 searchIndex
-                            ].money =
+                                ].money =
                                 selectedItem.data.money +
                                 inventories.personalInventory.inventory[
                                     searchIndex
-                                ].money;
+                                    ].money;
                         } else {
                             inventories.otherInventory.inventory.splice(
                                 index,
@@ -437,7 +434,7 @@ export const moveInventoryItem = (
                         }
                         inventories.otherInventory.inventory[
                             selectedItem.index
-                        ] = "{}";
+                            ] = "{}";
                     } else {
                         inventories.personalInventory.inventory.splice(
                             index,
@@ -740,7 +737,6 @@ export const storeConfirmationHandler = (
     };
 }
 
-
 const needLicenseCheck = (item) => {
     if (item === "weapon_pistol_mk2" || item === "weapon_musket") {
         return true
@@ -827,7 +823,8 @@ export const giveItemSuccess = (contextItem, personalInventory, playerInfo) => {
     };
 };
 
-export const giveItemFailure = () => { };
+export const giveItemFailure = () => {
+};
 
 export const giveItemHandler = (contextItem, personalInventory, playerInfo) => {
     return (dispatch) => {
