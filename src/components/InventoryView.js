@@ -37,6 +37,8 @@ const job = "Job";
 const motels = "Motels";
 const gangs = "Gangs";
 const restaurant = "Restaurant";
+const apartment = "Apartment";
+
 
 const PersonalInventory = ({
     onClick,
@@ -177,7 +179,8 @@ export default ({
                 inventory.type === job ||
                 inventory.type === restaurant ||
                 inventory.type === motels ||
-                inventory.type === gangs ? (
+                inventory.type === gangs ||
+                inventory.type === apartment ? (
                     <LargeInventory
                         inventory={inventory}
                         onStart={onStart}

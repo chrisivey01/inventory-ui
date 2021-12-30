@@ -248,6 +248,17 @@ export default () => {
                     break;
                 }
 
+                case "Apartment": {
+                    const data = {
+                        inventoryType: event.data.inventoryType,
+                        inventory: event.data.inventory,
+                        title: event.data.inventoryTitle,
+                        inventorySize: event.data.inventorySize
+                    };
+                    dispatch(loadStorage(data));
+                    break;
+                }
+
                 case "UpdateAmmo": {
                     const data = {
                         weapon: event.data.weapon,
