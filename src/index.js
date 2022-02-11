@@ -1,19 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { applyMiddleware, createStore } from 'redux';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
-import App from './App';
+import App from "./App";
 import combineReducers from "./store/index";
 import "@fontsource/roboto";
 
-import logger from 'redux-logger'
-const middle = [thunk]
+import logger from "redux-logger";
+const middle = [thunk, logger];
 const store = createStore(combineReducers, applyMiddleware(...middle));
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById("root")
 );

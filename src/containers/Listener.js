@@ -16,7 +16,7 @@ import {
     loadStorage,
     updateWeaponClip,
 } from "../store/inventory/inventory.actions";
-import personalInventoryJson from '../helpers/personalInventory.json';
+import personalInventoryJson from "../helpers/personalInventory.json";
 import playerJson from "../data/player.json";
 import trunkJson from "../data/trunk.json";
 
@@ -43,14 +43,8 @@ export default () => {
         };
     }, []);
 
-    if (process.env.NODE_ENV === "development") {
-        useEffect(() => {
-            window.postMessage(playerJson, '*')
-            window.postMessage(trunkJson, '*')
-        }, [])
-    }
-
     const onMessage = (e) => {
+
         if (e.data.useItem) {
             switch (e.data.useItem) {
                 case "useItemOne": {
@@ -207,7 +201,7 @@ export default () => {
                         inventoryType: event.data.inventoryType,
                         inventory: event.data.inventory,
                         title: event.data.inventoryTitle,
-                        inventorySize: event.data.inventorySize
+                        inventorySize: event.data.inventorySize,
                     };
                     dispatch(loadStorage(data));
                     break;
@@ -218,7 +212,7 @@ export default () => {
                         inventoryType: event.data.inventoryType,
                         inventory: event.data.inventory,
                         title: event.data.inventoryTitle,
-                        inventorySize: event.data.inventorySize
+                        inventorySize: event.data.inventorySize,
                     };
                     dispatch(loadStorage(data));
                     break;
@@ -230,7 +224,7 @@ export default () => {
                         inventory: event.data.inventory,
                         title: event.data.inventoryTitle,
                         inventorySize: event.data.inventorySize,
-                        info: event.data.info
+                        info: event.data.info,
                     };
                     dispatch(loadStorage(data));
                     break;
@@ -242,7 +236,7 @@ export default () => {
                         inventory: event.data.inventory,
                         title: event.data.inventoryTitle,
                         info: event.data.info,
-                        inventorySize: event.data.inventorySize
+                        inventorySize: event.data.inventorySize,
                     };
                     dispatch(loadStorage(data));
                     break;
@@ -253,7 +247,7 @@ export default () => {
                         inventoryType: event.data.inventoryType,
                         inventory: event.data.inventory,
                         title: event.data.inventoryTitle,
-                        inventorySize: event.data.inventorySize
+                        inventorySize: event.data.inventorySize,
                     };
                     dispatch(loadStorage(data));
                     break;

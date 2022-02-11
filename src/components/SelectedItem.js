@@ -103,9 +103,7 @@ export default () => {
                         src={"./assets/" + item.name + ".png"}
                         onError={fallbackSrc}
                     />
-                    <Typography
-                        className={classes.countGrid}
-                    >
+                    <Typography className={classes.countGrid}>
                         {item.count}
                     </Typography>
 

@@ -1,6 +1,6 @@
 import Apis from "../../apis/inventory-apis";
-import {showErrorMessage} from "../snackbar/snackbar.actions";
-import {weaponReset} from "../../helpers/weapons";
+import { showErrorMessage } from "../snackbar/snackbar.actions";
+import { weaponReset } from "../../helpers/weapons";
 
 export const LOAD_INVENTORY = "LOAD_INVENTORY";
 export const QUICK_UPDATE_INVENTORY = "QUICK_UPDATE_INVENTORY";
@@ -144,16 +144,16 @@ export const moveInventoryItem = (
         if (selectedItem.index === null) return;
         let inventories = {
             personalInventory: {
-                ...personalInventory
+                ...personalInventory,
             },
             otherInventory: {
-                ...otherInventory
+                ...otherInventory,
             },
             selectedItem: {
-                ...selectedItem
+                ...selectedItem,
             },
             info: {
-                ...info
+                ...info,
             },
             dropLocation: dropLocation,
             itemDropIndex: index,
@@ -168,7 +168,7 @@ export const moveInventoryItem = (
                 //this is for item splits, and recombinding stacks, this makes it to where you cant stack a stack on a stack[dupe]
                 if (
                     selectedItem.data.name ===
-                    personalInventory.inventory[index].name &&
+                        personalInventory.inventory[index].name &&
                     selectedItem.index !== index
                 ) {
                     let moveToSlot =
@@ -257,24 +257,24 @@ export const moveInventoryItem = (
                             searchIndex !== -1 &&
                             inventories.otherInventory.inventory[
                                 searchIndex
-                                ] !== "{}"
+                            ] !== "{}"
                         ) {
                             if (selectedItem.data.count) {
                                 inventories.otherInventory.inventory[
                                     searchIndex
-                                    ].count =
+                                ].count =
                                     selectedItem.data.count +
                                     inventories.otherInventory.inventory[
                                         searchIndex
-                                        ].count;
+                                    ].count;
                             } else if (selectedItem.data.money) {
                                 inventories.otherInventory.inventory[
                                     searchIndex
-                                    ].money =
+                                ].money =
                                     selectedItem.data.money +
                                     inventories.otherInventory.inventory[
                                         searchIndex
-                                        ].money;
+                                    ].money;
                             } else {
                                 inventories.otherInventory.inventory.splice(
                                     index,
@@ -284,7 +284,7 @@ export const moveInventoryItem = (
                             }
                             inventories.personalInventory.inventory[
                                 selectedItem.index
-                                ] = "{}";
+                            ] = "{}";
                         } else {
                             inventories.otherInventory.inventory.splice(
                                 index,
@@ -311,24 +311,24 @@ export const moveInventoryItem = (
                     if (
                         searchIndex !== -1 &&
                         inventories.otherInventory.inventory[searchIndex] !==
-                        "{}"
+                            "{}"
                     ) {
                         if (selectedItem.data.count) {
                             inventories.otherInventory.inventory[
                                 searchIndex
-                                ].count =
+                            ].count =
                                 selectedItem.data.count +
                                 inventories.otherInventory.inventory[
                                     searchIndex
-                                    ].count;
+                                ].count;
                         } else if (selectedItem.data.money) {
                             inventories.otherInventory.inventory[
                                 searchIndex
-                                ].money =
+                            ].money =
                                 selectedItem.data.money +
                                 inventories.otherInventory.inventory[
                                     searchIndex
-                                    ].money;
+                                ].money;
                         } else {
                             inventories.otherInventory.inventory.splice(
                                 index,
@@ -338,7 +338,7 @@ export const moveInventoryItem = (
                         }
                         inventories.personalInventory.inventory[
                             selectedItem.index
-                            ] = "{}";
+                        ] = "{}";
                     } else {
                         inventories.otherInventory.inventory.splice(
                             index,
@@ -412,19 +412,19 @@ export const moveInventoryItem = (
                         if (selectedItem.data.count) {
                             inventories.personalInventory.inventory[
                                 searchIndex
-                                ].count =
+                            ].count =
                                 selectedItem.data.count +
                                 inventories.personalInventory.inventory[
                                     searchIndex
-                                    ].count;
+                                ].count;
                         } else if (selectedItem.data.money) {
                             inventories.personalInventory.inventory[
                                 searchIndex
-                                ].money =
+                            ].money =
                                 selectedItem.data.money +
                                 inventories.personalInventory.inventory[
                                     searchIndex
-                                    ].money;
+                                ].money;
                         } else {
                             inventories.otherInventory.inventory.splice(
                                 index,
@@ -434,7 +434,7 @@ export const moveInventoryItem = (
                         }
                         inventories.otherInventory.inventory[
                             selectedItem.index
-                            ] = "{}";
+                        ] = "{}";
                     } else {
                         inventories.personalInventory.inventory.splice(
                             index,
@@ -451,7 +451,7 @@ export const moveInventoryItem = (
 
             dispatch({
                 type: MOVE_INVENTORY_ITEM,
-                payload: inventories
+                payload: inventories,
             });
             Apis.updateInventory(inventories);
         }
@@ -473,7 +473,7 @@ export const useInventoryItem = (itemIndex) => {
             payload: itemIndex,
         });
 
-        setTimeout(() => dispatch(hideUseInventoryItem()), 500);
+        setTimeout(async () => await dispatch(hideUseInventoryItem()), 2000);
     };
 };
 
@@ -537,7 +537,7 @@ export const updateQuantityStore = (quantity, storeItem, boughtItem) => {
         const regExp = /^\d+$/;
         if (regExp.test(quantity) || quantity === "") {
             let item = {
-                ...storeItem
+                ...storeItem,
             };
             if (item.price === 0) {
                 item.price = boughtItem.price;
@@ -554,7 +554,7 @@ export const updateQuantityStore = (quantity, storeItem, boughtItem) => {
                 type: UPDATE_QUANTITY_STORE,
                 payload: {
                     quantity,
-                    item
+                    item,
                 },
             });
         }
@@ -682,7 +682,9 @@ export const storeConfirmationHandler = (
                 });
 
                 if (itemIndex === -1) {
-                    const needLicense = needLicenseCheck(selectedItem.data.name.toLowerCase())
+                    const needLicense = needLicenseCheck(
+                        selectedItem.data.name.toLowerCase()
+                    );
                     if (needLicense && gunLicense === -1) {
                         dispatch(
                             showErrorMessage(
@@ -699,7 +701,8 @@ export const storeConfirmationHandler = (
                         );
 
                         inventory[moneyIndex].money =
-                            inventory[moneyIndex].money - selectedItem.data.price;
+                            inventory[moneyIndex].money -
+                            selectedItem.data.price;
 
                         if (bracketIndex && itemIndex < 0) {
                             const weapon = weaponReset(selectedItem.data);
@@ -725,37 +728,36 @@ export const storeConfirmationHandler = (
                         });
                     }
                 } else {
-                    dispatch(
-                        showErrorMessage(
-                            "You already have this weapon."
-                        )
-                    );
+                    dispatch(showErrorMessage("You already have this weapon."));
                     return;
                 }
             }
         }
     };
-}
+};
 
 const needLicenseCheck = (item) => {
     if (item === "weapon_pistol_mk2" || item === "weapon_musket") {
-        return true
+        return true;
     } else {
-        return false
+        return false;
     }
-}
+};
 const verifyIfGunLicense = (dispatch, gunLicenseIndex, item) => {
-    if (gunLicenseIndex === -1 && (item === "weapon_pistol_mk2" || item === "weapon_musket")) {
-        return false
+    if (
+        gunLicenseIndex === -1 &&
+        (item === "weapon_pistol_mk2" || item === "weapon_musket")
+    ) {
+        return false;
     }
-    return true
-}
+    return true;
+};
 
 export const openContextMenu = (data) => {
     return (dispatch) => {
         dispatch({
             type: OPEN_CONTEXT_MENU,
-            payload: data
+            payload: data,
         });
     };
 };
@@ -763,7 +765,7 @@ export const openContextMenu = (data) => {
 export const closeContextMenu = () => {
     return (dispatch) => {
         dispatch({
-            type: CLOSE_CONTEXT_MENU
+            type: CLOSE_CONTEXT_MENU,
         });
     };
 };
@@ -793,7 +795,7 @@ export const dropItemHandler = (contextItem, personalInventory, playerInfo) => {
                     };
                     dispatch({
                         type: DROP_ITEM_HANDLER,
-                        payload: data
+                        payload: data,
                     });
                 } else {
                     console.log("Error");
@@ -818,13 +820,12 @@ export const giveItemSuccess = (contextItem, personalInventory, playerInfo) => {
         Apis.giveItemsFromSort(personalInventory);
         dispatch({
             type: GIVE_ITEM_SUCCESS,
-            payload: data
+            payload: data,
         });
     };
 };
 
-export const giveItemFailure = () => {
-};
+export const giveItemFailure = () => {};
 
 export const giveItemHandler = (contextItem, personalInventory, playerInfo) => {
     return (dispatch) => {
@@ -877,7 +878,7 @@ const handleUpdateOfSplit = (data, splitItem, inventoryString) => {
                 (item) => item === "{}"
             );
             let copyItem = {
-                ...splitItem
+                ...splitItem,
             };
             if (newLocation !== -1) {
                 if (
@@ -912,7 +913,7 @@ export const splitItemHandler = (data) => {
     return (dispatch) => {
         if (data.contextItem.type === "Personal") {
             let splitContext = {
-                ...data.contextItem
+                ...data.contextItem,
             };
             data = returnUpdatedArray(splitContext, data, "personalInventory");
 
@@ -925,7 +926,7 @@ export const splitItemHandler = (data) => {
             );
         } else {
             let splitContext = {
-                ...data.contextItem
+                ...data.contextItem,
             };
             data = returnUpdatedArray(splitContext, data, "otherInventory");
 
@@ -993,7 +994,7 @@ export const updateWeaponClip = (data) => {
     return (dispatch) => {
         dispatch({
             type: UPDATE_WEAPON_CLIP,
-            payload: data
+            payload: data,
         });
     };
 };
@@ -1029,13 +1030,13 @@ export const doubleClickSwap = (
         Apis.swapUpdateInventory({
             personalInventory,
             otherInventory,
-            type
+            type,
         })
             .then((res) => {
                 if (res.data === "true") {
                     dispatch({
                         type: DOUBLE_CLICK_SWAP,
-                        payload: data
+                        payload: data,
                     });
                 }
             })

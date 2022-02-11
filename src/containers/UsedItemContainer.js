@@ -79,25 +79,25 @@ export default () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const usedItem = useSelector((state) => state.inventory.usedItem);
-    const show = useSelector((state) => state.inventory.show);
-    useEffect(() => {
-        const timer = setTimeout(
-            () => dispatch(actions.hideUseInventoryItem()),
-            2000
-        );
-        return () => setTimeout(timer);
-    }, [usedItem, show]);
+    // useEffect(() => {
+        // console.log(usedItem);
+        // const timer = setTimeout(
+        //     () => dispatch(actions.hideUseInventoryItem()),
+        //     2000
+        // );
+        // return () => setTimeout(timer);
+    // }, [usedItem]);
 
     const itemPopupHandler = () => {
-        if (usedItem.count) {
+        if (usedItem.data.count) {
             return <Typography className={classes.textUsed}>USED</Typography>;
-        } else if (usedItem.type === "item_weapon" && usedItem.unequip) {
+        } else if (usedItem.data.type === "item_weapon" && usedItem.data.unequip) {
             return (
                 <Typography className={classes.textUsed}>UNEQUIP</Typography>
             );
         } else if (
-            usedItem.type === "item_weapon" &&
-            usedItem.unequip !== true
+            usedItem.data.type === "item_weapon" &&
+            usedItem.data.unequip !== true
         ) {
             return <Typography className={classes.textUsed}>EQUIP</Typography>;
         } else {
@@ -105,25 +105,23 @@ export default () => {
         }
     };
 
-    return (
-        <div>
-            {show ? (
-                <Fade className={classes.grid} timeout={2000} in={show}>
-                    <Paper className={classes.slot}>
-                        {itemPopupHandler()}
-                        <img
-                            draggable="false"
-                            className={classes.img}
-                            src={"./assets/" + usedItem.name + ".png"}
-                        />
-                        <Typography className={classes.name}>
-                            {usedItem.label}
-                        </Typography>
-                    </Paper>
-                </Fade>
-            ) : (
-                <Fragment />
-            )}
-        </div>
-    );
+    if (usedItem && usedItem.show) {
+        return (
+            <Fade className={classes.grid} timeout={2000} in={usedItem.show}>
+                <Paper className={classes.slot}>
+                    {itemPopupHandler()}
+                    <img
+                        draggable="false"
+                        className={classes.img}
+                        src={"./assets/" + usedItem.data.name + ".png"}
+                    />
+                    <Typography className={classes.name}>
+                        {usedItem.data.label}
+                    </Typography>
+                </Paper>
+            </Fade>
+        );
+    } else {
+        return <></>;
+    }
 };

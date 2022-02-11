@@ -36,8 +36,6 @@ const useStyles = makeStyles((theme) => ({
         border: "none",
         color: "#fff",
     },
-
-
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {

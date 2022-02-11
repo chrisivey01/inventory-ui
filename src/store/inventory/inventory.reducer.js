@@ -156,11 +156,15 @@ const inventoryReducer = (state = initialState, action) => {
         case types.USE_INVENTORY_ITEM:
             return {
                 ...state,
-                usedItem: utils.useInventoryItem(
-                    state.personalInventory.inventory,
-                    action.payload,
-                    state.usedItem
-                ),
+                usedItem: {
+                    ...state.usedItem,
+                    data: utils.useInventoryItem(
+                        state.personalInventory.inventory,
+                        action.payload,
+                        state.usedItem
+                    ),
+                    show: true,
+                },
                 personalInventory: {
                     ...state.personalInventory,
                     inventory: state.personalInventory.inventory.map((item) => {
@@ -193,6 +197,11 @@ const inventoryReducer = (state = initialState, action) => {
             return {
                 ...state,
                 useIndex: null,
+                usedItem: {
+                    ...state.usedItem,
+                    data: null,
+                    show: false,
+                },
             };
         case types.UPDATE_WEAPON_INFO:
             return {
@@ -278,10 +287,14 @@ const inventoryReducer = (state = initialState, action) => {
         case types.ADD_ITEM_STORE:
             return {
                 ...state,
-                quantity: state.quantity ? parseInt(state.quantity) + parseInt(1) : 1,
+                quantity: state.quantity
+                    ? parseInt(state.quantity) + parseInt(1)
+                    : 1,
                 storeItem: {
                     ...state.storeItem,
-                    price: state.storeItem ? state.storeItem.price + state.boughtItem.price : state.boughtItem.price,
+                    price: state.storeItem
+                        ? state.storeItem.price + state.boughtItem.price
+                        : state.boughtItem.price,
                 },
             };
         case types.SUBTRACT_ITEM_STORE:
@@ -408,7 +421,7 @@ const inventoryReducer = (state = initialState, action) => {
             };
         case types.DOUBLE_CLICK_SWAP:
             return {
-                ...state, 
+                ...state,
                 personalInventory: {
                     ...state.personalInventory,
                     inventory: action.payload.personalInventory,
@@ -417,7 +430,7 @@ const inventoryReducer = (state = initialState, action) => {
                     ...state.otherInventory,
                     inventory: action.payload.otherInventory,
                 },
-            }
+            };
 
         default:
             return state;
