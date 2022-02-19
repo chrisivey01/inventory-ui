@@ -1,7 +1,7 @@
 import { Fade, makeStyles, Paper, Typography } from "@material-ui/core";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../store/inventory/inventory.actions";
+import { hideUseInventoryItem } from "../store/inventory/inventory.actions";
 const useStyles = makeStyles((theme) => ({
     grid: {
         bottom: 225,
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
         position: "absolute",
         transform: "translate(-50%, 0%)",
         backgroundColor: "rgba(0,0,0,0.4)",
-        fontSize: 12,
+        fontSize: 11,
         padding: "0px 5px 0px 0px",
     },
     img: {
@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
         border: "none",
         backgroundColor: "rgba(34, 49, 63, 1)",
         borderRadius: 3,
+        padding: 3,
     },
     textCount: {
         position: "absolute",
@@ -79,35 +80,46 @@ export default () => {
     const dispatch = useDispatch();
     const classes = useStyles();
     const usedItem = useSelector((state) => state.inventory.usedItem);
-    // useEffect(() => {
-        // console.log(usedItem);
-        // const timer = setTimeout(
-        //     () => dispatch(actions.hideUseInventoryItem()),
-        //     2000
-        // );
-        // return () => setTimeout(timer);
-    // }, [usedItem]);
-
+    const [showItem, setShowItem] = useState(false);
     const itemPopupHandler = () => {
-        if (usedItem.data.count) {
-            return <Typography className={classes.textUsed}>USED</Typography>;
-        } else if (usedItem.data.type === "item_weapon" && usedItem.data.unequip) {
-            return (
-                <Typography className={classes.textUsed}>UNEQUIP</Typography>
-            );
-        } else if (
-            usedItem.data.type === "item_weapon" &&
-            usedItem.data.unequip !== true
-        ) {
-            return <Typography className={classes.textUsed}>EQUIP</Typography>;
-        } else {
-            return <Fragment />;
+        if (usedItem.data) {
+            if (usedItem.data.count) {
+                return (
+                    <Typography className={classes.textUsed}>USED</Typography>
+                );
+            } else if (
+                usedItem.data.type === "item_weapon" &&
+                !usedItem.equipWeapon
+            ) {
+                return (
+                    <Typography className={classes.textUsed}>
+                        UNEQUIP
+                    </Typography>
+                );
+            } else if (
+                usedItem.data.type === "item_weapon" &&
+                usedItem.equipWeapon
+            ) {
+                return (
+                    <Typography className={classes.textUsed}>EQUIP</Typography>
+                );
+            } else {
+                return <Fragment />;
+            }
         }
     };
 
-    if (usedItem && usedItem.show) {
+    useEffect(() => {
+        setShowItem(true);
+
+        setTimeout(() => {
+            setShowItem(false);
+        }, 2000);
+    }, [usedItem]);
+
+    if (usedItem.data) {
         return (
-            <Fade className={classes.grid} timeout={2000} in={usedItem.show}>
+            <Fade className={classes.grid} timeout={2000} in={showItem}>
                 <Paper className={classes.slot}>
                     {itemPopupHandler()}
                     <img

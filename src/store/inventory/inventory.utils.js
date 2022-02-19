@@ -236,53 +236,46 @@ export const useInventoryItem = (
     previousItem
 ) => {
     if (flattenedInventory[itemIndex] !== "{}") {
-        Apis.useInventoryItem(flattenedInventory[itemIndex], itemIndex);
-
-        if (flattenedInventory[itemIndex].type === "item_standard" || flattenedInventory[itemIndex].type === "item_food") {
-            if (flattenedInventory[itemIndex].count === 0) {
-                flattenedInventory[itemIndex] = "{}";
-            } else {
-                flattenedInventory[itemIndex];
-            }
-            return flattenedInventory[itemIndex];
-        }
-
-        let item = flattenedInventory[itemIndex];
-
-        if (
-            previousItem &&
-            previousItem.type === "item_weapon" &&
-            flattenedInventory[itemIndex].name !== previousItem.name
-        ) {
-            item.unequip = false;
-            return item;
-        }
-
-        switch (flattenedInventory[itemIndex].type) {
-            case "item_standard":
-                return item;
-                break;
-            case "item_food":
-                return item;
-                break;
-            case "item_weapon":
-                if (previousItem) {
-                    if (
-                        previousItem.unequip === undefined ||
-                        previousItem.unequip
-                    ) {
-                        item.unequip = false;
-                        return item;
-                        break;
-                    } else if (previousItem.unequip === false) {
-                        item.unequip = true;
-                        return item;
-                        break;
+        Apis.useInventoryItem(flattenedInventory[itemIndex], itemIndex).then(
+            () => {
+                if (
+                    flattenedInventory[itemIndex].type === "item_standard" ||
+                    flattenedInventory[itemIndex].type === "item_food"
+                ) {
+                    if (flattenedInventory[itemIndex].count === 0) {
+                        flattenedInventory[itemIndex] = "{}";
+                    } else {
+                        flattenedInventory[itemIndex];
                     }
+                    return flattenedInventory[itemIndex];
                 }
-            default:
-                return;
-        }
+
+                let item = flattenedInventory[itemIndex];
+
+                // if (
+                //     previousItem &&
+                //     previousItem.type === "item_weapon" &&
+                //     flattenedInventory[itemIndex].name !== previousItem.name
+                // ) {
+                //     item.unequip = false;
+                //     return item;
+                // }
+
+                switch (flattenedInventory[itemIndex].type) {
+                    case "item_standard":
+                        return item;
+                        break;
+                    case "item_food":
+                        return item;
+                        break;
+                    case "item_weapon":
+                        return item;
+                        break;
+                    default:
+                        return;
+                }
+            }
+        );
     }
 };
 

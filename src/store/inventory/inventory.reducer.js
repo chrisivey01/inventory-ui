@@ -25,6 +25,7 @@ const initialState = {
     boughtItem: {},
     storeItem: {},
     usedItem: {},
+    usedItemList: [],
     confirmation: {
         show: false,
         title: "",
@@ -154,17 +155,13 @@ const inventoryReducer = (state = initialState, action) => {
                 },
             };
         case types.USE_INVENTORY_ITEM:
+            utils.useInventoryItem(
+                state.personalInventory.inventory,
+                action.payload.itemIndex,
+                state.usedItem
+            );
             return {
                 ...state,
-                usedItem: {
-                    ...state.usedItem,
-                    data: utils.useInventoryItem(
-                        state.personalInventory.inventory,
-                        action.payload,
-                        state.usedItem
-                    ),
-                    show: true,
-                },
                 personalInventory: {
                     ...state.personalInventory,
                     inventory: state.personalInventory.inventory.map((item) => {
@@ -183,15 +180,26 @@ const inventoryReducer = (state = initialState, action) => {
                     personal: {
                         ...state.personal,
                         weight: state.personalInventory.inventory[
-                            action.payload
+                            action.payload.itemIndex
                         ].count
                             ? state.info.personal.weight - 1
-                            : state.personalInventory.inventory[action.payload]
-                                  .count,
+                            : state.personalInventory.inventory[
+                                  action.payload.itemIndex
+                              ].count,
                     },
                 },
                 openContextMenu: false,
-                useIndex: action.payload,
+                useIndex: action.payload.itemIndex,
+            };
+        case types.ITEM_USE_HANDLER:
+            return {
+                ...state,
+                usedItem: {
+                    ...state.usedItem,
+                    show: true,
+                    data: action.payload.itemData,
+                    equipWeapon: action.payload.equipWeapon,
+                },
             };
         case types.HIDE_USE_INVENTORY_ITEM:
             return {

@@ -55,6 +55,7 @@ export const REMOVED_SELECTED_ITEM = "REMOVED_SELECTED_ITEM";
 export const LOAD_STORAGE = "LOAD_STORAGE";
 
 export const UPDATE_WEAPON_CLIP = "UPDATE_WEAPON_CLIP";
+export const ITEM_USE_HANDLER = "ITEM_USE_HANDLER";
 
 export const loadInventory = (data) => {
     return (dispatch) => {
@@ -466,20 +467,29 @@ const checkWeight = (weight, maxWeight) => {
     }
 };
 
-export const useInventoryItem = (itemIndex) => {
+export const useInventoryItem = (itemIndex, equipWeapon) => {
     return (dispatch) => {
         dispatch({
             type: USE_INVENTORY_ITEM,
-            payload: itemIndex,
+            payload: { itemIndex: itemIndex, equipWeapon: equipWeapon },
         });
 
-        setTimeout(async () => await dispatch(hideUseInventoryItem()), 2000);
+        // setTimeout(async () => await dispatch(hideUseInventoryItem()), 2000);
     };
 };
 
 export const hideUseInventoryItem = () => ({
     type: HIDE_USE_INVENTORY_ITEM,
 });
+
+export const itemUseHandler = (payload) => {
+    return (dispatch) => {
+        dispatch({
+            type: ITEM_USE_HANDLER,
+            payload: payload,
+        });
+    };
+};
 
 export const updateWeapon = (weaponData) => {
     return (dispatch) => {

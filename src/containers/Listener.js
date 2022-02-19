@@ -15,6 +15,7 @@ import {
     useInventoryItem,
     loadStorage,
     updateWeaponClip,
+    itemUseHandler,
 } from "../store/inventory/inventory.actions";
 import personalInventoryJson from "../helpers/personalInventory.json";
 import playerJson from "../data/player.json";
@@ -35,6 +36,7 @@ export default () => {
     const quantity = useSelector((state) => state.inventory.quantity);
     const boughtItem = useSelector((state) => state.inventory.boughtItem);
     const contextItem = useSelector((state) => state.inventory.contextItem);
+    const usedItem = useSelector((state) => state.inventory.usedItem);
 
     useEffect(() => {
         window.addEventListener("message", (e) => onMessage(e));
@@ -44,27 +46,26 @@ export default () => {
     }, []);
 
     const onMessage = (e) => {
-
         if (e.data.useItem) {
             switch (e.data.useItem) {
                 case "useItemOne": {
-                    dispatch(useInventoryItem(0));
+                    dispatch(useInventoryItem(0, e.data.equipWeapon));
                     break;
                 }
                 case "useItemTwo": {
-                    dispatch(useInventoryItem(1));
+                    dispatch(useInventoryItem(1, e.data.equipWeapon));
                     break;
                 }
                 case "useItemThree": {
-                    dispatch(useInventoryItem(2));
+                    dispatch(useInventoryItem(2, e.data.equipWeapon));
                     break;
                 }
                 case "useItemFour": {
-                    dispatch(useInventoryItem(3));
+                    dispatch(useInventoryItem(3, e.data.equipWeapon));
                     break;
                 }
                 case "useItemFive": {
-                    dispatch(useInventoryItem(4));
+                    dispatch(useInventoryItem(4, e.data.equipWeapon));
                     break;
                 }
                 default:
@@ -78,6 +79,20 @@ export default () => {
 
             if (e.data.updateItem) {
                 dispatch(updateItem(e.data.itemData, personalInventory.sorted));
+                dispatch(
+                    itemUseHandler({
+                        itemData: e.data.itemData,
+                    })
+                );
+            }
+
+            if (e.data.itemUse) {
+                dispatch(
+                    itemUseHandler({
+                        itemData: e.data.itemData,
+                        equipWeapon: e.data.equipWeapon,
+                    })
+                );
             }
         }
     };
