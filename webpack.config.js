@@ -1,5 +1,7 @@
 const path = require("path");
-const buildPath = path.resolve(__dirname, "..", "dist");
+const buildPath = path.resolve(
+    "C:\/Projects\/FXServer\/server-data\/resources\/pma-inventory\/dist"
+);
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { ProvidePlugin } = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -50,9 +52,7 @@ const ui = {
             filename: "[name].css",
         }),
         new CopyPlugin({
-            patterns: [
-                { from: "src/assets", to: `${buildPath}/assets` },
-            ],
+            patterns: [{ from: "src/assets", to: `${buildPath}/assets` }],
         }),
     ],
     optimization: {
