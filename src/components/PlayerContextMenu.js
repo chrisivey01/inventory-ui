@@ -37,6 +37,7 @@ export default function PlayerContextMenu({ anchorEl, dropHandler }) {
     };
 
     const handleUse = () => {
+        // dispatch(inventoryActions.itemUseHandler(contextItem))
         dispatch(
             inventoryActions.useItemHandler(
                 contextItem,
