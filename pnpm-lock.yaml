@@ -16,6 +16,7 @@ specifiers:
   html-loader: 3.0.1
   html-webpack-plugin: 5.5.0
   mini-css-extract-plugin: ^2.5.3
+  pnpm: ^6.32.10
   postcss-loader: ^6.2.1
   react: 17.0.2
   react-dom: 17.0.2
@@ -39,6 +40,7 @@ dependencies:
   '@material-ui/icons': 4.11.2_fced322086cd04afb0b6feec9e866920
   '@material-ui/lab': 4.0.0-alpha.60_fced322086cd04afb0b6feec9e866920
   axios: 0.24.0
+  pnpm: 6.32.10
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
   react-image: 4.0.3_react-dom@17.0.2+react@17.0.2
@@ -2939,6 +2941,12 @@ packages:
     dependencies:
       find-up: 4.1.0
     dev: true
+
+  /pnpm/6.32.10:
+    resolution: {integrity: sha512-1+TscklAKWvI6iNY1cVfRsHY9h5dgarHF3zYfg+yVyaS270uvKlQKXBnaX6T6YGXNGWNXqWhDUS9EIzKCDs7Dw==}
+    engines: {node: '>=12.17'}
+    hasBin: true
+    dev: false
 
   /popper.js/1.16.1-lts:
     resolution: {integrity: sha512-Kjw8nKRl1m+VrSFCoVGPph93W/qrSO7ZkqPpTf7F4bk/sqcfWK019dWBUpE/fBOsOQY1dks/Bmcbfn1heM/IsA==}
