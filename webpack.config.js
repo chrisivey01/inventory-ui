@@ -68,7 +68,7 @@ const ui = {
     optimization: {
         minimize: false,
     },
-    devtool: "inline-source-map",
+    devtool: "eval-cheap-module-source-map",
 };
 
 module.exports = [ui];

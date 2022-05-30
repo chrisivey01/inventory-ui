@@ -38,6 +38,7 @@ const motels = "Motels";
 const gangs = "Gangs";
 const restaurant = "Restaurant";
 const apartment = "Apartment";
+const secondary = "Secondary"
 
 
 const PersonalInventory = ({
@@ -180,7 +181,8 @@ export default ({
                 inventory.type === restaurant ||
                 inventory.type === motels ||
                 inventory.type === gangs ||
-                inventory.type === apartment ? (
+                inventory.type === apartment ||
+                inventory.type === secondary ? (
                     <LargeInventory
                         inventory={inventory}
                         onStart={onStart}
